@@ -1,5 +1,3 @@
-# Created by https://www.toptal.com/developers/gitignore/api/java,gradle
-
 ### Java ###
 # Compiled class file
 *.class
@@ -85,4 +83,4 @@ out/
 ### VS Code ###
 .vscode/
 
-# End of https://www.toptal.com/developers/gitignore/api/java,gradle
+/Management-Library-System/src/main/resources/application-dev.properties
