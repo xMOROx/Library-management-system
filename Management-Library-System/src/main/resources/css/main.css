@@ -1,0 +1,34 @@
+#homeButtonsPanel{
+    -fx-background-color: #2b579a;
+}
+
+#back{
+    -fx-background-color: #2b579a;
+}
+
+.mfx-button{
+    -fx-background-radius: 0;
+    -fx-background-color: rgba(0,0,0,0);
+}
+
+.mfx-button:focused{
+    -fx-background-color: rgba(0,0,0,0.1);
+}
+
+.mfx-button:hover{
+    -fx-background-color: rgba(0,0,0,0.1);
+}
+
+.mfx-button:disabled, .mfx-button:default:disabled{
+    -fx-background-color: rgba(0,0,0,0.1);
+}
+.mfx-button:default{
+    -fx-background-color:rgba(0,0,0,0.1);
+}
+.mfx-button:pressed, .mfx-button:hover:pressed{
+    -fx-background-color: rgba(0,0,0,0.1);
+}
+
+.mfx-button:default:hover{
+    -fx-background-color: rgba(0,0,0,0.1);
+}
