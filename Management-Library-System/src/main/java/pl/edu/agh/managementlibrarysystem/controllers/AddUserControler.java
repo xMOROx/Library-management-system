@@ -4,6 +4,7 @@ import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -11,6 +12,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
@@ -19,6 +22,7 @@ import org.springframework.stereotype.Controller;
 import pl.edu.agh.managementlibrarysystem.config.events.OpenWindowEvent;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -36,7 +40,7 @@ public class AddUserControler implements Initializable {
     private BooleanProperty emailBool;
     private BooleanProperty passwordBool;
     private BooleanProperty repeatPasswordBool;
-    private Pattern patternEmail = Pattern.compile(".+@.+\\..+", Pattern.CASE_INSENSITIVE);
+    private Pattern patternEmail;
 
     @FXML
     public TextField name;
@@ -54,11 +58,14 @@ public class AddUserControler implements Initializable {
     public PasswordField repeatPassword;
     @FXML
     public MFXButton cancel;
+    @FXML
+    public VBox errorVbox;
 
     public AddUserControler(@Value("classpath:/fxml/login.fxml") Resource backWindow,
                            ApplicationContext applicationContext) {
         this.applicationContext = applicationContext;
         this.backWindow = backWindow;
+        this.patternEmail = Pattern.compile(".+@.+\\..+", Pattern.CASE_INSENSITIVE);
     }
     @FXML
     public void addClicked(MouseEvent mouseEvent){
@@ -69,7 +76,45 @@ public class AddUserControler implements Initializable {
     public void cancelClicked(MouseEvent mouseEvent){
         applicationContext.publishEvent(new OpenWindowEvent((Stage)((Node)mouseEvent.getSource()).getScene().getWindow(),backWindow));
     }
-
+    @FXML
+    public void keyTyped(){
+        updateErrorList();
+    }
+    public void updateErrorList() {
+        ObservableList<Node> list = this.errorVbox.getChildren();
+        list.clear();
+        Color c = Color.color(1,0,0);
+        if(!nameBool.get()){
+            Label l = new Label();
+            l.setText("Problem with name");
+            l.setTextFill(c);
+            list.add(l);
+        }
+        if(!surnameBool.get()){
+            Label l = new Label();
+            l.setText("Problem with surname");
+            l.setTextFill(c);
+            list.add(l);
+        }
+        if(!emailBool.get()){
+            Label l = new Label();
+            l.setText("Problem with email");
+            l.setTextFill(c);
+            list.add(l);
+        }
+        if(!passwordBool.get()){
+            Label l = new Label();
+            l.setText("Problem with password");
+            l.setTextFill(c);
+            list.add(l);
+        }
+        if(!repeatPasswordBool.get()){
+            Label l = new Label();
+            l.setText("Passwords aren't equal");
+            l.setTextFill(c);
+            list.add(l);
+        }
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -112,5 +157,10 @@ public class AddUserControler implements Initializable {
         repeatPasswordBool.bind(Bindings.createBooleanBinding(() -> {
             return password.getText().equals(repeatPassword.getText());
         }, repeatPassword.textProperty(), password.textProperty()));
+        name.focusedProperty().addListener((observable,oldValue,newValue)->{
+            if(!newValue){
+
+            }
+        });
     }
 }
