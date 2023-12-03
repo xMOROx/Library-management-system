@@ -39,7 +39,6 @@ public class LoadingStageListener implements ApplicationListener<StageReadyEvent
     @Override
     public void onApplicationEvent(StageReadyEvent event) {
         try {
-
             Stage stage = event.getStage();
             URL url = this.fxmlLoadingScreen.getURL();
             FXMLLoader fxmlLoader = new FXMLLoader(url);

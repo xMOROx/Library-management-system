@@ -10,7 +10,7 @@ import javafx.scene.layout.VBox;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
-import pl.edu.agh.managementlibrarysystem.config.events.BorderPaneReadyEvent;
+//import pl.edu.agh.managementlibrarysystem.config.events.BorderPaneReadyEvent;
 
 import java.io.IOException;
 

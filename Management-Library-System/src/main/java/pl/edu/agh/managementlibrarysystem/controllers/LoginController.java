@@ -7,8 +7,11 @@ import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -20,21 +23,25 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Controller;
+import pl.edu.agh.managementlibrarysystem.config.events.CommonActions;
 import pl.edu.agh.managementlibrarysystem.config.events.MainAppReadyEvent;
+import pl.edu.agh.managementlibrarysystem.config.events.OpenWindowEvent;
 import pl.edu.agh.managementlibrarysystem.config.events.StageReadyEvent;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 @Controller
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public class LoginController implements Initializable {
 
     private final ApplicationContext applicationContext;
-
+    private final Resource createUserFxml;
     @FXML
     private Label welcome;
     @FXML
@@ -55,6 +62,12 @@ public class LoginController implements Initializable {
     private PasswordField passwordTextField;
     @FXML
     private AnchorPane parentRoot;
+
+    public LoginController(@Value("classpath:/fxml/create-user.fxml") Resource createUserFxml,
+                           ApplicationContext applicationContext) {
+        this.applicationContext = applicationContext;
+        this.createUserFxml = createUserFxml;
+    }
 
     static void tooltipFactory(Label close, Label minimize) {
         Tooltip closeApp = new Tooltip("Close");
@@ -123,7 +136,7 @@ public class LoginController implements Initializable {
 
     @FXML
     private void createAccount(MouseEvent mouseEvent) {
-
+        applicationContext.publishEvent(new OpenWindowEvent((Stage)((Node)mouseEvent.getSource()).getScene().getWindow(),this.createUserFxml));
     }
 
     private void requestFocus(TextField field) {
