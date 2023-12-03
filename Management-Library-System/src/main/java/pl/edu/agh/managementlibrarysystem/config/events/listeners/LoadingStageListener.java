@@ -5,19 +5,17 @@ import javafx.concurrent.Task;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
+import pl.edu.agh.managementlibrarysystem.config.events.CommonActions;
 import pl.edu.agh.managementlibrarysystem.config.events.StageReadyEvent;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -48,16 +46,7 @@ public class LoadingStageListener implements ApplicationListener<StageReadyEvent
             fxmlLoader.setControllerFactory(this.applicationContext::getBean);
 
             Parent root = fxmlLoader.load();
-            Scene scene = new Scene(root);
-            stage.initStyle(StageStyle.UNDECORATED);
-            stage.getIcons().add(new Image("/images/books.png"));
-
-            stage.setResizable(true);
-
-            enableDrag(stage, root);
-
-            stage.setScene(scene);
-            stage.setTitle(this.applicationTitle);
+            CommonActions.createPrimaryStage(stage, root, applicationTitle);
             stage.show();
 
             Thread thread = getThreadLoginScreen(stage);
@@ -66,21 +55,6 @@ public class LoadingStageListener implements ApplicationListener<StageReadyEvent
             Logger.getLogger(LoadingStageListener.class.getName()).log(Level.SEVERE, null, e);
         }
 
-    }
-
-    private void enableDrag(Stage stage, Parent root) {
-        AtomicReference<Double> xOffset = new AtomicReference<>((double) 0);
-        AtomicReference<Double> yOffset = new AtomicReference<>((double) 0);
-
-        root.setOnMousePressed(mouseEvent -> {
-            xOffset.set(mouseEvent.getSceneX());
-            yOffset.set(mouseEvent.getSceneY());
-        });
-
-        root.setOnMouseDragged(mouseEvent -> {
-            stage.setX(mouseEvent.getScreenX() - xOffset.get());
-            stage.setY(mouseEvent.getScreenY() - yOffset.get());
-        });
     }
 
     private Thread getThreadLoginScreen(Stage stage) {
@@ -96,7 +70,7 @@ public class LoadingStageListener implements ApplicationListener<StageReadyEvent
 
                         Parent root2 = fxmlLoader1.load();
 
-                        enableDrag(stage, root2);
+                        CommonActions.enableDrag(stage, root2);
 
                         Scene scene2 = new Scene(root2);
 

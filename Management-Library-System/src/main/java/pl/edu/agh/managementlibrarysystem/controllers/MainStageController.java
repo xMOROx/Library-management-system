@@ -45,61 +45,61 @@ public class MainStageController {
     private Label testLabel;
 
     @FXML
-    public void stageDragged(MouseEvent mouseEvent) {
+    private void stageDragged(MouseEvent mouseEvent) {
 
     }
 
     @FXML
-    public void stagePressed(MouseEvent mouseEvent) {
+    private void stagePressed(MouseEvent mouseEvent) {
     }
 
     @FXML
-    public void logout(ActionEvent actionEvent) {
-
-    }
-
-    @FXML
-    public void loadHomePanel(ActionEvent actionEvent) {
+    private void logout(ActionEvent actionEvent) {
 
     }
 
     @FXML
-    public void loadBooksPanel(ActionEvent actionEvent) throws IOException {
+    private void loadHomePanel(ActionEvent actionEvent) {
 
     }
 
     @FXML
-    public void loadStudentPanel(ActionEvent actionEvent) {
+    private void loadBooksPanel(ActionEvent actionEvent) throws IOException {
 
     }
 
     @FXML
-    public void loadIssueBooksPanel(ActionEvent actionEvent) {
+    private void loadStudentPanel(ActionEvent actionEvent) {
 
     }
 
     @FXML
-    public void loadReturnBooksPanel(ActionEvent actionEvent) {
+    private void loadIssueBooksPanel(ActionEvent actionEvent) {
 
     }
 
     @FXML
-    public void viewAllIssuedBooks(ActionEvent actionEvent) {
+    private void loadReturnBooksPanel(ActionEvent actionEvent) {
 
     }
 
     @FXML
-    public void loadSendAnnouncementsPanel(ActionEvent actionEvent) {
+    private void viewAllIssuedBooks(ActionEvent actionEvent) {
 
     }
 
     @FXML
-    public void loadSettingsPanel(ActionEvent actionEvent) {
+    private void loadSendAnnouncementsPanel(ActionEvent actionEvent) {
 
     }
 
     @FXML
-    public void closeApp(ActionEvent actionEvent) {
+    private void loadSettingsPanel(ActionEvent actionEvent) {
+
+    }
+
+    @FXML
+    private void closeApp(ActionEvent actionEvent) {
 
     }
 }

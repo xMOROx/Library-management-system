@@ -23,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Controller;
+import pl.edu.agh.managementlibrarysystem.config.events.MainAppReadyEvent;
 import pl.edu.agh.managementlibrarysystem.config.events.StageReadyEvent;
 
 import java.net.URL;
@@ -33,7 +34,6 @@ import java.util.ResourceBundle;
 public class LoginController implements Initializable {
 
     private final ApplicationContext applicationContext;
-
 
     @FXML
     private Label welcome;
@@ -93,27 +93,34 @@ public class LoginController implements Initializable {
         requestFocus(usernameTextField);
         requestFocus(passwordTextField);
     }
+
     @FXML
     private void close(MouseEvent mouseEvent) {
-        ((ConfigurableApplicationContext)applicationContext).close();
+        ((ConfigurableApplicationContext) applicationContext).close();
         Platform.exit();
     }
+
     @FXML
     private void minimize(MouseEvent mouseEvent) {
         Stage stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
         stage.setIconified(true);
     }
+
     @FXML
     private void login(ActionEvent actionEvent) {
+        applicationContext.publishEvent(new MainAppReadyEvent((Stage)((Node)actionEvent.getSource()).getScene().getWindow()));
     }
+
     @FXML
     private void signIn(KeyEvent keyEvent) {
 
     }
+
     @FXML
     private void loadPasswordRetrievalPanel(MouseEvent mouseEvent) {
 
     }
+
     @FXML
     private void createAccount(MouseEvent mouseEvent) {
 
