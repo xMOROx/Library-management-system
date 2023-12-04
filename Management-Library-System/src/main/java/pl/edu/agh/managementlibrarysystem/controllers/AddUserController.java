@@ -23,6 +23,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Controller;
 import pl.edu.agh.managementlibrarysystem.config.events.CommonActions;
 import pl.edu.agh.managementlibrarysystem.config.events.OpenWindowEvent;
+import pl.edu.agh.managementlibrarysystem.services.UserService;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -35,7 +36,7 @@ import java.util.regex.Pattern;
 public class AddUserController implements Initializable {
 
     private final ApplicationContext applicationContext;
-
+    private final UserService userService;
     private final Resource backWindow;
     private final Pattern patternEmail;
     @FXML
@@ -67,10 +68,11 @@ public class AddUserController implements Initializable {
     private BooleanProperty repeatPasswordBool;
 
     public AddUserController(@Value("classpath:/fxml/login.fxml") Resource backWindow,
-                             ApplicationContext applicationContext) {
+                             ApplicationContext applicationContext, UserService userService) {
         this.applicationContext = applicationContext;
         this.backWindow = backWindow;
         this.patternEmail = Pattern.compile(".+@.+\\..+", Pattern.CASE_INSENSITIVE);
+        this.userService = userService;
     }
 
     private static void errorLabel(String error_message, Color c, ObservableList<Node> list) {
@@ -83,6 +85,7 @@ public class AddUserController implements Initializable {
     @FXML
     public void addClicked(MouseEvent mouseEvent) {
         System.out.println("Adding works");
+        this.userService.addUser(name.getText(),surname.getText(),email.getText(),password.getText());
     }
 
     @FXML
