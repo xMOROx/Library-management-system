@@ -7,22 +7,17 @@ import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Tooltip;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -31,13 +26,11 @@ import org.springframework.stereotype.Controller;
 import pl.edu.agh.managementlibrarysystem.config.events.CommonActions;
 import pl.edu.agh.managementlibrarysystem.config.events.MainAppReadyEvent;
 import pl.edu.agh.managementlibrarysystem.config.events.OpenWindowEvent;
-import pl.edu.agh.managementlibrarysystem.config.events.StageReadyEvent;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 @Controller
-//@RequiredArgsConstructor
 public class LoginController implements Initializable {
 
     private final ApplicationContext applicationContext;
@@ -69,20 +62,16 @@ public class LoginController implements Initializable {
         this.createUserFxml = createUserFxml;
     }
 
-    static void tooltipFactory(Label close, Label minimize) {
-        Tooltip closeApp = new Tooltip("Close");
-        closeApp.setStyle("-fx-font-size:11");
-        closeApp.setMinSize(20, 20);
-        close.setTooltip(closeApp);
-        Tooltip minimizeApp = new Tooltip("Minimize");
-        minimizeApp.setStyle("-fx-font-size:11");
-        minimizeApp.setMinSize(20, 20);
-        minimize.setTooltip(minimizeApp);
-    }
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        tooltipFactory(close, minimize);
+        CommonActions.tooltipInitializer(close, minimize);
+        playTransitionAnimation();
+        requestFocus(usernameTextField);
+        requestFocus(passwordTextField);
+    }
+
+    private void playTransitionAnimation() {
         TranslateTransition translateWelcomeText = new TranslateTransition(Duration.millis(1500), welcome);
         translateWelcomeText.setToX(50);
         TranslateTransition translateTransitionUserLogin = new TranslateTransition(Duration.millis(1500), userLogin);
@@ -103,8 +92,6 @@ public class LoginController implements Initializable {
         ParallelTransition parallelTransition = new ParallelTransition();
         parallelTransition.getChildren().addAll(fadeParentRoot, translateWelcomeText, translateTransitionUserLogin, translateUsernameLabel, translateUsernameField, translatePasswordLabel, translatePasswordField, translateButton);
         parallelTransition.play();
-        requestFocus(usernameTextField);
-        requestFocus(passwordTextField);
     }
 
     @FXML

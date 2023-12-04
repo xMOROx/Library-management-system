@@ -7,7 +7,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -15,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Controller;
+import pl.edu.agh.managementlibrarysystem.config.events.CommonActions;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -36,11 +36,7 @@ public class LoadController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
-        Tooltip closeApp = new Tooltip("Close");
-        closeApp.setStyle("-fx-font-size:11");
-        closeApp.setMinSize(20, 20);
-        close.setTooltip(closeApp);
+        CommonActions.tooltipInitializer(close, minimize);
         FadeTransition fadeinText = new FadeTransition(Duration.seconds(1), text);
         fadeinText.setToValue(1);
 

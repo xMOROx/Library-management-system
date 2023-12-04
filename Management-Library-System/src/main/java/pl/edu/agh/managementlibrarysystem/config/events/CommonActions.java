@@ -2,6 +2,8 @@ package pl.edu.agh.managementlibrarysystem.config.events;
 
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -38,5 +40,16 @@ public class CommonActions {
         stage.setScene(scene);
         stage.setTitle(applicationTitle);
 
+    }
+
+    public static void tooltipInitializer(Label close, Label minimize) {
+        Tooltip closeApp = new Tooltip("Close");
+        closeApp.setStyle("-fx-font-size:11");
+        closeApp.setMinSize(20, 20);
+        close.setTooltip(closeApp);
+        Tooltip minimizeApp = new Tooltip("Minimize");
+        minimizeApp.setStyle("-fx-font-size:11");
+        minimizeApp.setMinSize(20, 20);
+        minimize.setTooltip(minimizeApp);
     }
 }

@@ -8,25 +8,33 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="327.0" prefWidth="510.0" style="-fx-background-color: #2b579a;" stylesheets="@../css/create-user.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.agh.managementlibrarysystem.controllers.AddUserControler">
-   <children>
-      <Label layoutX="101.0" layoutY="91.0" text="Name" />
-      <Label layoutX="102.0" layoutY="123.0" text="Surname" />
-      <Label layoutX="102.0" layoutY="155.0" text="Email" />
-      <Label layoutX="100.0" layoutY="189.0" text="Password" />
-      <Label layoutX="101.0" layoutY="220.0" text="Repeat password" />
-      <TextField onKeyTyped="#keyTyped" fx:id="name" layoutX="240.0" layoutY="87.0" />
-      <TextField onKeyTyped="#keyTyped" fx:id="surname" layoutX="240.0" layoutY="119.0" />
-      <TextField onKeyTyped="#keyTyped" fx:id="email" layoutX="240.0" layoutY="151.0" />
-      <MFXButton fx:id="addUser" layoutX="334.0" layoutY="281.0" onMouseClicked="#addClicked" text="Add user" />
-      <PasswordField onKeyTyped="#keyTyped" fx:id="password" layoutX="240.0" layoutY="185.0" />
-      <PasswordField onKeyTyped="#keyTyped" fx:id="repeatPassword" layoutX="240.0" layoutY="216.0" />
-      <MFXButton fx:id="cancel" layoutX="418.0" layoutY="281.0" onMouseClicked="#cancelClicked" prefHeight="30.0" prefWidth="68.0" text="Cancel" />
-      <Label layoutX="53.0" layoutY="25.0" text="Add new user">
-         <font>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="327.0" prefWidth="510.0" style="-fx-background-color: #2b579a;" stylesheets="@../css/create-user.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.agh.managementlibrarysystem.controllers.AddUserController">
+    <Label layoutX="101.0" layoutY="91.0" text="Name" />
+    <Label layoutX="102.0" layoutY="123.0" text="Surname" />
+    <Label layoutX="102.0" layoutY="155.0" text="Email" />
+    <Label layoutX="100.0" layoutY="189.0" text="Password" />
+    <Label layoutX="101.0" layoutY="220.0" text="Repeat password" />
+    <TextField fx:id="name" layoutX="240.0" layoutY="87.0" onKeyTyped="#keyTyped" />
+    <TextField fx:id="surname" layoutX="240.0" layoutY="119.0" onKeyTyped="#keyTyped" />
+    <TextField fx:id="email" layoutX="240.0" layoutY="151.0" onKeyTyped="#keyTyped" />
+    <MFXButton fx:id="addUser" layoutX="334.0" layoutY="281.0" onMouseClicked="#addClicked" text="Add user" />
+    <PasswordField fx:id="password" layoutX="240.0" layoutY="185.0" onKeyTyped="#keyTyped" />
+    <PasswordField fx:id="repeatPassword" layoutX="240.0" layoutY="216.0" onKeyTyped="#keyTyped" />
+    <MFXButton fx:id="cancel" layoutX="418.0" layoutY="281.0" onMouseClicked="#cancelClicked" prefHeight="30.0" prefWidth="68.0" text="Cancel" />
+    <Label layoutX="53.0" layoutY="25.0" text="Add new user">
+        <font>
             <Font name="Segoe UI Light" size="43.0" />
-         </font>
-      </Label>
-      <VBox fx:id="errorVbox" layoutX="3.0" layoutY="238.0" prefHeight="90.0" prefWidth="226.0" />
-   </children>
+        </font>
+    </Label>
+    <VBox fx:id="errorVbox" layoutX="3.0" layoutY="238.0" prefHeight="90.0" prefWidth="226.0" />
+   <Label fx:id="close" layoutX="487.0" layoutY="3.0" onMouseClicked="#close" prefHeight="0.0" prefWidth="16.0" text="X" textFill="WHITE">
+      <font>
+         <Font name="System Bold" size="20.0" />
+      </font>
+   </Label>
+   <Label fx:id="minimize" layoutX="450.0" layoutY="-23.0" onMouseClicked="#minimize" prefHeight="57.0" prefWidth="22.0" text="-" textFill="WHITE">
+      <font>
+         <Font size="55.0" />
+      </font>
+   </Label>
 </AnchorPane>
