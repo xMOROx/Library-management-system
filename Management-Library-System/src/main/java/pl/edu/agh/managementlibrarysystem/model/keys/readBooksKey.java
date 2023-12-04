@@ -1,33 +1,35 @@
-package pl.edu.agh.managementlibrarysystem.model.readBooks;
+package pl.edu.agh.managementlibrarysystem.model.keys;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import lombok.Getter;
+import lombok.Setter;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
+@Getter
+@Setter
 @Embeddable
-public class Read_books_key implements Serializable {
+public class readBooksKey implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 798123798312L;
+
     @Column(name="book_id")
-    Long book_id;
+    private Long book_id;
     @Column(name="user_id")
-    Long user_id;
+    private Long user_id;
 
-    public Read_books_key() {
-    }
-    public Long getBook_id() {
-        return book_id;
+    public readBooksKey() {
     }
 
-    public void setBook_id(Long book_id) {
-        this.book_id = book_id;
-    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Read_books_key that = (Read_books_key) o;
+        readBooksKey that = (readBooksKey) o;
         return Objects.equals(book_id, that.book_id) && Objects.equals(user_id, that.user_id);
     }
 
@@ -36,11 +38,4 @@ public class Read_books_key implements Serializable {
         return Objects.hash(book_id, user_id);
     }
 
-    public Long getUser_id() {
-        return user_id;
-    }
-
-    public void setUser_id(Long user_id) {
-        this.user_id = user_id;
-    }
 }
