@@ -9,9 +9,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -86,8 +84,20 @@ public class AddUserController implements Initializable {
 
     @FXML
     public void addClicked(MouseEvent mouseEvent) {
-        System.out.println("Adding works");
-        this.userService.addUser(name.getText(),surname.getText(),email.getText(),password.getText());
+        this.userService.addUser(name.getText(), surname.getText(), email.getText(), password.getText());
+        clearFields();
+        Alert alert = new Alert(Alert.AlertType.NONE, "User added successfully", ButtonType.OK);
+        alert.showAndWait()
+                .filter(response -> response == ButtonType.OK)
+                .ifPresent(response -> applicationContext.publishEvent(new OpenWindowEvent((Stage) ((Node) mouseEvent.getSource()).getScene().getWindow(), backWindow)));
+    }
+
+    private void clearFields() {
+        name.clear();
+        surname.clear();
+        email.clear();
+        password.clear();
+        repeatPassword.clear();
     }
 
     @FXML
