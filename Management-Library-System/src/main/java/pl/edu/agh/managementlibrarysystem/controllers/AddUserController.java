@@ -39,6 +39,7 @@ public class AddUserController implements Initializable {
     private final UserService userService;
     private final Resource backWindow;
     private final Pattern patternEmail;
+
     @FXML
     private TextField name;
     @FXML
@@ -61,6 +62,7 @@ public class AddUserController implements Initializable {
     private Label close;
     @FXML
     private Label minimize;
+
     private BooleanProperty nameBool;
     private BooleanProperty surnameBool;
     private BooleanProperty emailBool;

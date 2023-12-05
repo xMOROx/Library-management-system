@@ -1,23 +1,38 @@
 package pl.edu.agh.managementlibrarysystem.controllers;
 
 import io.github.palexdev.materialfx.controls.MFXButton;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
+import pl.edu.agh.managementlibrarysystem.config.events.OpenWindowEvent;
 //import pl.edu.agh.managementlibrarysystem.config.events.BorderPaneReadyEvent;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.Optional;
+import java.util.ResourceBundle;
 
 @Controller
 @RequiredArgsConstructor
-public class MainStageController {
+public class MainStageController implements Initializable {
     private final ApplicationContext applicationContext;
+
+    public BorderPane pane;
 
     @FXML
     private BorderPane borderpane;
@@ -44,6 +59,12 @@ public class MainStageController {
     @FXML
     private Label testLabel;
 
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        pane = borderpane;
+        back.setTooltip(new Tooltip("Logout"));
+    }
+
     @FXML
     private void stageDragged(MouseEvent mouseEvent) {
 
@@ -55,7 +76,9 @@ public class MainStageController {
 
     @FXML
     private void logout(ActionEvent actionEvent) {
-
+        applicationContext
+                .publishEvent(new OpenWindowEvent((Stage) ((Node) actionEvent.getSource()).getScene().getWindow(),
+                        new ClassPathResource("fxml/login.fxml")));
     }
 
     @FXML
@@ -100,6 +123,14 @@ public class MainStageController {
 
     @FXML
     private void closeApp(ActionEvent actionEvent) {
-
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation");
+        alert.setHeaderText(null);
+        alert.setContentText("Are you sure you want to close the application ?");
+        Optional<ButtonType> option = alert.showAndWait();
+        if (option.isPresent() && option.get() == ButtonType.OK) {
+            ((ConfigurableApplicationContext) applicationContext).close();
+            Platform.exit();
+        }
     }
 }

@@ -1,4 +1,4 @@
-package pl.edu.agh.managementlibrarysystem.model.util;
+package pl.edu.agh.managementlibrarysystem.models.util;
 
 public enum Type {
     BOOKS_ARE_DUE,

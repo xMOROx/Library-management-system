@@ -1,4 +1,4 @@
-package pl.edu.agh.managementlibrarysystem.model;
+package pl.edu.agh.managementlibrarysystem.models;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -44,6 +44,10 @@ public class Book {
     private char cover;
     @Column(name = "description", columnDefinition = "varchar(255) default 'No description'")
     private String description;
+    @Column(name = "image", columnDefinition = "varchar(255) default 'No image'")
+    private String image;
+    @Column(name = "table_of_content", columnDefinition = "varchar(255)")
+    private String tableOfContent;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Genre.class)
     @JoinTable(
@@ -57,7 +61,7 @@ public class Book {
     private Publisher publishers;
 
     public Book(String title, String isbn, int edition, int quantity, int remaining_books, char availability, char cover, String description,
-                Set<Author> authors, Set<Genre> genres, Publisher publishers, Set<ReadBook> read_books, Set<IssuedBook> issued_books, Set<Notification> notification) {
+                Set<Author> authors, Set<Genre> genres, Publisher publishers, Set<ReadBook> read_books, Set<IssuedBook> issued_books, Set<Notification> notification, String image, String tableOfContent) {
         this.title = title;
         this.isbn = isbn;
         this.edition = edition;
@@ -72,6 +76,7 @@ public class Book {
         this.read_books = read_books;
         this.issued_books = issued_books;
         this.notification = notification;
+        this.image = image;
     }
 
     public Book() {

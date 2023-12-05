@@ -1,9 +1,9 @@
-package pl.edu.agh.managementlibrarysystem.model;
+package pl.edu.agh.managementlibrarysystem.models;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import pl.edu.agh.managementlibrarysystem.model.util.Permission;
+import pl.edu.agh.managementlibrarysystem.models.util.Permission;
 
 import java.util.Set;
 

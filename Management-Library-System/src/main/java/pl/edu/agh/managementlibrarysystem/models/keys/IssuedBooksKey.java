@@ -1,4 +1,4 @@
-package pl.edu.agh.managementlibrarysystem.model.keys;
+package pl.edu.agh.managementlibrarysystem.models.keys;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;

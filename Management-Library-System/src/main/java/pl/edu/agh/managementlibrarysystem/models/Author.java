@@ -1,4 +1,4 @@
-package pl.edu.agh.managementlibrarysystem.model;
+package pl.edu.agh.managementlibrarysystem.models;
 
 import jakarta.persistence.*;
 import lombok.Getter;

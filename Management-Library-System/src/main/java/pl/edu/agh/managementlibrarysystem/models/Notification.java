@@ -1,10 +1,10 @@
-package pl.edu.agh.managementlibrarysystem.model;
+package pl.edu.agh.managementlibrarysystem.models;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import pl.edu.agh.managementlibrarysystem.model.keys.notificationKey;
-import pl.edu.agh.managementlibrarysystem.model.util.Type;
+import pl.edu.agh.managementlibrarysystem.models.keys.notificationKey;
+import pl.edu.agh.managementlibrarysystem.models.util.Type;
 
 import java.sql.Date;
 
