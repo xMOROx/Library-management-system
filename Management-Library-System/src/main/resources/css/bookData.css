@@ -1,0 +1,19 @@
+
+.mfx-button{
+    -fx-background-color: #2b579a;
+    -fx-text-fill: white;
+}
+
+.mfx-button:hover{
+    -fx-background-color: #219297;
+    -fx-text-fill: white;
+}
+
+.mfx-button:focused{
+    -fx-background-color: #2b579a;
+}
+
+
+.mfx-combo-box {
+    -fx-min-width: 150;
+}

@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" fx:id="parentRoot" prefHeight="327.0" prefWidth="510.0" style="-fx-background-color: #2b579a;" stylesheets="@../css/login.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.agh.managementlibrarysystem.controllers.LoginController">
+<AnchorPane id="AnchorPane" fx:id="parentRoot" prefHeight="327.0" prefWidth="510.0" style="-fx-background-color: #2b579a;" stylesheets="@../css/login.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.agh.managementlibrarysystem.controller.LoginController">
     <Label fx:id="welcome" layoutX="14.0" layoutY="19.0" prefHeight="57.0" prefWidth="194.0" text="Welcome">
         <font>
             <Font name="Segoe UI Light" size="49.0" />

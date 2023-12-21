@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<BorderPane prefHeight="400.0" prefWidth="600.0" stylesheets="@../css/books.css" xmlns="http://javafx.com/javafx/19"
+            xmlns:fx="http://javafx.com/fxml/1" fx:id="root"
+            fx:controller="pl.edu.agh.managementlibrarysystem.controller.entry.PublisherDataEntryController">
+
+    <center>
+        <Pane prefHeight="181.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+            <Label fx:id="publisherName" layoutX="93.0" layoutY="79.0" prefHeight="27.0" prefWidth="59.0" text="Name">
+                <font>
+                    <Font name="Segoe UI Semilight" size="18.0"/>
+                </font>
+            </Label>
+            <MFXTextField fx:id="publisherNameInput" layoutX="153.0" layoutY="59.0" prefHeight="25.0"
+                          prefWidth="315.0"/>
+
+            <MFXButton fx:id="cancel" layoutX="188.0" layoutY="119.0" onAction="#cancel" prefHeight="25.0"
+                       prefWidth="103.0" style="-fx-background-radius: 0;" text="Cancel"
+                       xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+                <font>
+                    <Font name="Segoe UI Semilight" size="18.0"/>
+                </font>
+            </MFXButton>
+
+            <MFXButton fx:id="save" layoutX="311.0" layoutY="120.0" onAction="#save" prefHeight="25.0" prefWidth="103.0"
+                       style="-fx-background-radius: 0;" text="Save">
+                <font>
+                    <Font name="Segoe UI Semilight" size="18.0"/>
+                </font>
+            </MFXButton>
+            <Label layoutX="175.0" layoutY="4.0" prefHeight="53.0" prefWidth="272.0" text="Add publisher">
+                <font>
+                    <Font name="Segoe UI Semibold" size="36.0"/>
+                </font>
+            </Label>
+        </Pane>
+    </center>
+</BorderPane>

@@ -8,7 +8,7 @@
 <BorderPane fx:id="borderpane" onMouseDragged="#stageDragged" onMousePressed="#stagePressed" prefHeight="651.0"
             prefWidth="1141.0" style="-fx-border-color: #2b579a;" xmlns="http://javafx.com/javafx/19"
             xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="pl.edu.agh.managementlibrarysystem.controllers.MainStageController">
+            fx:controller="pl.edu.agh.managementlibrarysystem.controller.MainStageController">
     <left>
         <VBox fx:id="homeButtonsPanel" maxWidth="140.0" minWidth="140.0" prefHeight="651.0" prefWidth="140.0"
               stylesheets="@../css/main.css" BorderPane.alignment="CENTER">
@@ -93,7 +93,7 @@
                     <Insets left="1.0" right="1.0"/>
                 </VBox.margin>
             </MFXButton>
-            <MFXButton fx:id="close" alignment="CENTER" layoutX="10.0" layoutY="285.0" onAction="#closeApp"
+            <MFXButton fx:id="closeButton" alignment="CENTER" layoutX="10.0" layoutY="285.0" onAction="#closeApp"
                        prefHeight="40.0" prefWidth="150.0" text="Close" textAlignment="JUSTIFY" textFill="WHITE">
                 <font>
                     <Font size="16.0"/>

@@ -7,7 +7,7 @@
 <?import javafx.scene.text.Font?>
 <AnchorPane id="AnchorPane" prefHeight="327.0" prefWidth="510.0" style="-fx-background-color: #2b579a;"
             stylesheets="@../css/load.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="pl.edu.agh.managementlibrarysystem.controllers.LoadController">
+            fx:controller="pl.edu.agh.managementlibrarysystem.controller.LoadController">
     <ImageView fitHeight="16.0" fitWidth="179.0" layoutX="165.0" layoutY="171.0" pickOnBounds="true"
                preserveRatio="true">
         <Image url="@../images/load.gif"/>

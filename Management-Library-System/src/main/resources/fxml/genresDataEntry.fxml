@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane fx:id="root" prefHeight="400.0" prefWidth="600.0" stylesheets="@../css/books.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.agh.managementlibrarysystem.controller.entry.GenresDataEntryController">
+
+    <center>
+        <Pane prefHeight="181.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+            <MFXTextField fx:id="genreTypeInput" layoutX="153.0" layoutY="60.0" prefHeight="25.0" prefWidth="315.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" />
+            <Label fx:id="genreType" layoutX="59.0" layoutY="80.0" prefHeight="27.0" prefWidth="94.0" text="Genre type">
+                <font>
+                    <Font name="Segoe UI Semilight" size="18.0" />
+                </font>
+            </Label>
+
+            <MFXButton fx:id="cancel" layoutX="188.0" layoutY="183.0" onAction="#cancel" prefHeight="25.0" prefWidth="103.0" style="-fx-background-radius: 0;" text="Cancel">
+                <font>
+                    <Font name="Segoe UI Semilight" size="18.0" />
+                </font>
+            </MFXButton>
+
+            <MFXButton fx:id="save" layoutX="311.0" layoutY="184.0" onAction="#save" prefHeight="25.0" prefWidth="103.0" style="-fx-background-radius: 0;" text="Save" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+                <font>
+                    <Font name="Segoe UI Semilight" size="18.0" />
+                </font>
+            </MFXButton>
+            <Label layoutX="212.0" prefHeight="53.0" prefWidth="219.0" text="Add genre">
+                <font>
+                    <Font name="Segoe UI Semibold" size="36.0" />
+                </font>
+            </Label>
+            <ComboBox fx:id="parentGenreComboBox" layoutX="201.0" layoutY="129.0" prefHeight="25.0" prefWidth="264.0" />
+            <Label fx:id="genreParentType" layoutX="55.0" layoutY="128.0" prefHeight="27.0" prefWidth="157.0" text="Genre parent type">
+                <font>
+                    <Font name="Segoe UI Semilight" size="18.0" />
+                </font>
+            </Label>
+        </Pane>
+    </center>
+</BorderPane>

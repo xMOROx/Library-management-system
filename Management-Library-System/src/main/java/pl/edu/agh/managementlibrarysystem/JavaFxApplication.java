@@ -8,7 +8,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.GenericApplicationContext;
-import pl.edu.agh.managementlibrarysystem.config.events.StageReadyEvent;
+import pl.edu.agh.managementlibrarysystem.event.StageReadyEvent;
 
 public class JavaFxApplication extends Application {
     private ConfigurableApplicationContext springContext;
