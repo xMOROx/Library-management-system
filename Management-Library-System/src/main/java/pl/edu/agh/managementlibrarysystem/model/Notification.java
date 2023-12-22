@@ -13,7 +13,7 @@ import java.sql.Date;
 @Entity(name = "notifications")
 public class Notification {
     @EmbeddedId
-    notificationKey id;
+    private notificationKey id;
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @MapsId("book_id")
     @JoinColumn(name = "book_id")

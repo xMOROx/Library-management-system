@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import pl.edu.agh.managementlibrarysystem.model.util.Permission;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -12,11 +13,11 @@ import java.util.Set;
 @Entity(name = "users")
 public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY, targetEntity = ReadBook.class)
-    Set<ReadBook> read_books;
+    private Set<ReadBook> read_books = new HashSet<>();
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY, targetEntity = IssuedBook.class)
-    Set<IssuedBook> issued_books;
+    private Set<IssuedBook> issued_books = new HashSet<>();
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY, targetEntity = Notification.class)
-    Set<Notification> notification;
+    private Set<Notification> notification = new HashSet<>();
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

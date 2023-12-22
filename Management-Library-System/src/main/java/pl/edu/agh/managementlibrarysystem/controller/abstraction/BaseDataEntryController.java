@@ -22,4 +22,6 @@ public abstract class BaseDataEntryController<E> {
     protected abstract void save(E event);
     @FXML
     protected abstract void cancel(E event);
+
+    protected abstract void clearFields();
 }

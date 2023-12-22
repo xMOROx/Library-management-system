@@ -10,7 +10,7 @@ import pl.edu.agh.managementlibrarysystem.model.keys.readBooksKey;
 @Entity(name = "read_books")
 public class ReadBook {
     @EmbeddedId
-    readBooksKey id;
+    private readBooksKey id;
     @ManyToOne
     @MapsId("book_id")
     @JoinColumn(name = "book_id")

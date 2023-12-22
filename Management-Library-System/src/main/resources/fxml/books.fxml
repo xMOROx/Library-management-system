@@ -167,18 +167,18 @@
     </center>
     <bottom>
         <HBox fx:id="controlBox" prefHeight="32.0" prefWidth="1000.0" spacing="5.0" BorderPane.alignment="CENTER">
-            <ImageView fitHeight="25.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" rotate="-90.0">
+            <ImageView fx:id="arrow" fitHeight="25.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" rotate="-90.0">
                 <HBox.margin>
                     <Insets left="6.0" />
                 </HBox.margin>
                 <Image url="@../images/up_right_64px.png" />
             </ImageView>
-            <CheckBox fx:id="checkAll" mnemonicParsing="false" text="Check all">
+            <CheckBox fx:id="checkAllCheckbox" mnemonicParsing="false" text="Check all">
                 <HBox.margin>
                     <Insets top="5.0" />
                 </HBox.margin>
             </CheckBox>
-            <Hyperlink onAction="#deleteSelectedBooks" text="Delete" textFill="#2b579a">
+            <Hyperlink fx:id="delete" onAction="#deleteSelectedBooks" text="Delete" textFill="#2b579a">
                 <graphic>
                     <FontIcon fill="#e9594d" iconLiteral="far-trash-alt" iconSize="15" />
                 </graphic>

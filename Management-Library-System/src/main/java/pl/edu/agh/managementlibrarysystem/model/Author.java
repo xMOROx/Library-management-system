@@ -3,6 +3,7 @@ package pl.edu.agh.managementlibrarysystem.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -20,6 +21,6 @@ public class Author {
     @Column(name = "last_name")
     private String lastName;
 
-    @ManyToMany(mappedBy = "authors", fetch = FetchType.LAZY, cascade = CascadeType.ALL, targetEntity = Book.class)
-    private Set<Book> books;
+    @ManyToMany(mappedBy = "authors", fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = Book.class)
+    private Set<Book> books = new HashSet<>();
 }

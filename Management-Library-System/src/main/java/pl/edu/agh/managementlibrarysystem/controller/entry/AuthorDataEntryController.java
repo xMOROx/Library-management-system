@@ -7,8 +7,10 @@ import javafx.fxml.Initializable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import pl.edu.agh.managementlibrarysystem.controller.abstraction.BaseDataEntryController;
+import pl.edu.agh.managementlibrarysystem.event.fxml.NewItemAddedEvent;
 import pl.edu.agh.managementlibrarysystem.model.Author;
 import pl.edu.agh.managementlibrarysystem.service.AuthorService;
+import pl.edu.agh.managementlibrarysystem.utils.Alerts;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -32,12 +34,35 @@ public class AuthorDataEntryController extends BaseDataEntryController<ActionEve
     @FXML
     @Override
     protected void save(ActionEvent actionEvent) {
-        authorService.saveAuthor(
+        String numberRegex = ".*\\d.*";
+        String authorName = this.authorNameInput.getText();
+        String authorLastname = this.authorLastnameInput.getText();
+
+
+        if (authorName.matches(numberRegex)) {
+            Alerts.showErrorAlert("Wrong input", "Author name cannot contain a number");
+            return;
+        }
+
+        if (authorLastname.matches(numberRegex)) {
+            Alerts.showErrorAlert("Wrong input", "Author lastname cannot contain a number");
+            return;
+        }
+
+
+        if (authorService.saveAuthor(
                 Author.builder()
-                        .firstName(this.authorNameInput.getText())
-                        .lastName(this.authorLastnameInput.getText())
+                        .firstName(Character.toUpperCase(authorName.charAt(0)) + authorName.substring(1).toLowerCase())
+                        .lastName(Character.toUpperCase(authorLastname.charAt(0)) + authorLastname.substring(1).toLowerCase())
                         .build()
-        );
+        )) {
+            this.root.fireEvent(new NewItemAddedEvent(NewItemAddedEvent.NEW_AUTHOR));
+            Alerts.showAddingAlert("Author added", "Author has been added successfully", authorName + " " + authorLastname);
+            this.cancel(actionEvent);
+
+        }
+
+        this.clearFields();
     }
 
     @FXML
@@ -45,5 +70,11 @@ public class AuthorDataEntryController extends BaseDataEntryController<ActionEve
     protected void cancel(ActionEvent event) {
         this.root.fireEvent(new BookDataEntryController.EntryHelperEmptyEvent());
         this.root.setCenter(null);
+    }
+
+    @Override
+    protected void clearFields() {
+        this.authorNameInput.clear();
+        this.authorLastnameInput.clear();
     }
 }

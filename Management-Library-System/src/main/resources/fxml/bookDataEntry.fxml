@@ -1,132 +1,128 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import io.github.palexdev.materialfx.controls.*?>
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
-<BorderPane fx:id="root" prefHeight="519.0" prefWidth="993.0" style="-fx-background-color: white;"
-            stylesheets="@../css/bookData.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="pl.edu.agh.managementlibrarysystem.controller.entry.BookDataEntryController">
+
+<BorderPane fx:id="root" prefHeight="519.0" prefWidth="993.0" style="-fx-background-color: white;" stylesheets="@../css/bookData.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.agh.managementlibrarysystem.controller.entry.BookDataEntryController">
     <top>
         <VBox prefHeight="519.0" prefWidth="993.0" BorderPane.alignment="CENTER">
             <HBox alignment="CENTER_LEFT" prefHeight="51.0" prefWidth="993.0" spacing="30.0">
-                <MFXButton contentDisplay="GRAPHIC_ONLY" onAction="#back" prefHeight="40.0" prefWidth="40.0"
-                           rippleColor="white"
-                           style="-fx-background-color: white; -fx-background-radius: 20000; -fx-border-color: black; -fx-border-radius: 20000;">
+                <MFXButton contentDisplay="GRAPHIC_ONLY" onAction="#back" prefHeight="40.0" prefWidth="40.0" rippleColor="white" style="-fx-background-color: white; -fx-background-radius: 20000; -fx-border-color: black; -fx-border-radius: 20000;">
                     <graphic>
-                        <FontIcon iconLiteral="fas-arrow-left" iconSize="16"/>
+                        <FontIcon iconLiteral="fas-arrow-left" iconSize="16" />
                     </graphic>
                     <HBox.margin>
-                        <Insets left="10.0"/>
+                        <Insets left="10.0" />
                     </HBox.margin>
                 </MFXButton>
                 <Pane prefHeight="51.0" prefWidth="915.0">
-                    <MFXButton fx:id="addAuthorButton" layoutX="14.0" layoutY="10.0" onAction="#addAuthor"
-                               prefHeight="29.0" prefWidth="102.0" text="Add author">
+                    <MFXButton fx:id="addAuthorButton" layoutX="14.0" layoutY="10.0" onAction="#loadAuthorView" prefHeight="29.0" prefWidth="102.0" text="Add author">
                         <font>
-                            <Font name="Segoe UI Semilight" size="14.0"/>
+                            <Font name="Segoe UI Semilight" size="14.0" />
                         </font>
                     </MFXButton>
-                    <MFXButton fx:id="addPublisherButton" layoutX="146.0" layoutY="10.0" onAction="#addPublisher"
-                               text="add publisher">
+                    <MFXButton fx:id="addPublisherButton" layoutX="146.0" layoutY="10.0" onAction="#loadPublisherView" text="add publisher">
                         <font>
-                            <Font name="Segoe UI Semilight" size="14.0"/>
+                            <Font name="Segoe UI Semilight" size="14.0" />
                         </font>
                     </MFXButton>
-                    <MFXButton fx:id="addGenresButton" layoutX="285.0" layoutY="10.0" onAction="#addGenres"
-                               text="add genres" textAlignment="CENTER">
+                    <MFXButton fx:id="addGenresButton" layoutX="285.0" layoutY="10.0" onAction="#loadGenresView" text="add genres" textAlignment="CENTER">
                         <font>
-                            <Font name="Segoe UI Semilight" size="14.0"/>
+                            <Font name="Segoe UI Semilight" size="14.0" />
                         </font>
                     </MFXButton>
                 </Pane>
             </HBox>
             <Pane prefHeight="470.0" prefWidth="993.0">
-                <HBox layoutX="359.0" layoutY="411.0" prefHeight="14.0" prefWidth="200.0"/>
-                <MFXTextField fx:id="title" layoutX="143.0" prefHeight="25.0" prefWidth="315.0"/>
+                <HBox layoutX="359.0" layoutY="411.0" prefHeight="14.0" prefWidth="200.0" />
+                <MFXTextField fx:id="title" layoutX="143.0" prefHeight="25.0" prefWidth="315.0" />
                 <Label layoutX="95.0" layoutY="18.0" prefHeight="27.0" prefWidth="38.0" text="Title">
                     <font>
-                        <Font name="Segoe UI Semilight" size="18.0"/>
+                        <Font name="Segoe UI Semilight" size="18.0" />
                     </font>
                 </Label>
-                <MFXTextField fx:id="isbn" layoutX="143.0" layoutY="38.0" prefHeight="25.0" prefWidth="315.0"/>
+                <MFXTextField fx:id="isbn" layoutX="143.0" layoutY="38.0" prefHeight="25.0" prefWidth="315.0" />
                 <Label layoutX="93.0" layoutY="56.0" prefHeight="27.0" prefWidth="50.0" text="ISBN">
                     <font>
-                        <Font name="Segoe UI Semilight" size="18.0"/>
+                        <Font name="Segoe UI Semilight" size="18.0" />
                     </font>
                 </Label>
-                <MFXTextField fx:id="edition" layoutX="143.0" layoutY="76.0" prefHeight="25.0" prefWidth="315.0"/>
+                <MFXTextField fx:id="edition" layoutX="143.0" layoutY="76.0" prefHeight="25.0" prefWidth="315.0" />
                 <Label layoutX="76.0" layoutY="94.0" prefHeight="27.0" prefWidth="67.0" text="Edition">
                     <font>
-                        <Font name="Segoe UI Semilight" size="18.0"/>
+                        <Font name="Segoe UI Semilight" size="18.0" />
                     </font>
                 </Label>
-                <MFXTextField fx:id="quantity" layoutX="143.0" layoutY="114.0" prefHeight="25.0" prefWidth="315.0"/>
+                <MFXTextField fx:id="quantity" layoutX="143.0" layoutY="114.0" prefHeight="25.0" prefWidth="315.0" />
                 <Label layoutX="62.0" layoutY="132.0" prefHeight="27.0" prefWidth="81.0" text="Quantity">
                     <font>
-                        <Font name="Segoe UI Semilight" size="18.0"/>
+                        <Font name="Segoe UI Semilight" size="18.0" />
                     </font>
                 </Label>
-                <MFXTextField fx:id="description" layoutX="143.0" layoutY="152.0" prefHeight="25.0" prefWidth="315.0"/>
+                <MFXTextField fx:id="description" layoutX="143.0" layoutY="152.0" prefHeight="25.0" prefWidth="315.0" />
                 <Label layoutX="43.0" layoutY="170.0" prefHeight="27.0" prefWidth="100.0" text="Description">
                     <font>
-                        <Font name="Segoe UI Semilight" size="18.0"/>
+                        <Font name="Segoe UI Semilight" size="18.0" />
                     </font>
                 </Label>
-                <MFXTextField fx:id="tableOfContent" layoutX="143.0" layoutY="191.0" prefHeight="25.0"
-                              prefWidth="315.0"/>
+                <MFXTextField fx:id="tableOfContent" layoutX="143.0" layoutY="191.0" prefHeight="25.0" prefWidth="315.0" />
                 <Label layoutX="7.0" layoutY="209.0" prefHeight="27.0" prefWidth="136.0" text="Table of content">
                     <font>
-                        <Font name="Segoe UI Semilight" size="18.0"/>
+                        <Font name="Segoe UI Semilight" size="18.0" />
                     </font>
                 </Label>
-                <CheckBox fx:id="availability" layoutX="377.0" layoutY="245.0" mnemonicParsing="false" prefHeight="36.0"
-                          prefWidth="81.0" text="Availability">
+                <CheckBox fx:id="availability" layoutX="389.0" layoutY="245.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="70.0" text="Available">
                     <font>
-                        <Font name="Segoe UI Semilight" size="12.0"/>
+                        <Font name="Segoe UI Semilight" size="12.0" />
                     </font>
                 </CheckBox>
-                <ComboBox fx:id="coverType" layoutX="143.0" layoutY="250.0" prefWidth="150.0"/>
+                <ComboBox fx:id="coverType" layoutX="143.0" layoutY="250.0" prefWidth="150.0" />
                 <Label layoutX="43.0" layoutY="249.0" prefHeight="27.0" prefWidth="100.0" text="Cover type">
                     <font>
-                        <Font name="Segoe UI Semilight" size="18.0"/>
+                        <Font name="Segoe UI Semilight" size="18.0" />
                     </font>
                 </Label>
 
-                <ComboBox fx:id="authorSelection" layoutX="143.0" layoutY="286.0" prefWidth="150.0"/>
+                <ComboBox fx:id="authorSelection" layoutX="143.0" layoutY="286.0" prefWidth="150.0" />
                 <Label layoutX="43.0" layoutY="285.0" prefHeight="27.0" prefWidth="100.0" text="Author">
                     <font>
-                        <Font name="Segoe UI Semilight" size="18.0"/>
+                        <Font name="Segoe UI Semilight" size="18.0" />
                     </font>
                 </Label>
-                <ComboBox fx:id="publisherSelection" layoutX="143.0" layoutY="322.0" prefWidth="150.0"/>
+                <ComboBox fx:id="publisherSelection" layoutX="143.0" layoutY="322.0" prefWidth="150.0" />
                 <Label layoutX="43.0" layoutY="321.0" prefHeight="27.0" prefWidth="100.0" text="Publisher">
                     <font>
-                        <Font name="Segoe UI Semilight" size="18.0"/>
+                        <Font name="Segoe UI Semilight" size="18.0" />
                     </font>
                 </Label>
-                <ComboBox fx:id="genresSelection" layoutX="143.0" layoutY="358.0" prefWidth="150.0"/>
+                <ComboBox fx:id="genresSelection" layoutX="143.0" layoutY="358.0" prefWidth="150.0" />
                 <Label layoutX="43.0" layoutY="357.0" prefHeight="27.0" prefWidth="100.0" text="Gengre(s)">
                     <font>
-                        <Font name="Segoe UI Semilight" size="18.0"/>
+                        <Font name="Segoe UI Semilight" size="18.0" />
                     </font>
                 </Label>
 
-                <MFXButton fx:id="cancel" layoutX="158.0" layoutY="423.0" onAction="#cancel" prefHeight="25.0"
-                           prefWidth="103.0" style="-fx-background-radius: 0;" text="Cancel">
+                <MFXButton fx:id="cancel" layoutX="158.0" layoutY="423.0" onAction="#cancel" prefHeight="25.0" prefWidth="103.0" style="-fx-background-radius: 0;" text="Cancel">
                     <font>
-                        <Font name="Segoe UI Semilight" size="18.0"/>
+                        <Font name="Segoe UI Semilight" size="18.0" />
                     </font>
                 </MFXButton>
-                <MFXButton fx:id="save" layoutX="281.0" layoutY="424.0" onAction="#save" prefHeight="25.0"
-                           prefWidth="103.0" style="-fx-background-radius: 0;" text="Save">
+                <MFXButton fx:id="save" layoutX="281.0" layoutY="424.0" onAction="#save" prefHeight="25.0" prefWidth="103.0" style="-fx-background-radius: 0;" text="Save">
                     <font>
-                        <Font name="Segoe UI Semilight" size="18.0"/>
+                        <Font name="Segoe UI Semilight" size="18.0" />
                     </font>
                 </MFXButton>
-                <BorderPane fx:id="helperView" layoutX="458.0" layoutY="-1.0" prefHeight="470.0" prefWidth="535.0"/>
+                <BorderPane fx:id="helperView" layoutX="458.0" layoutY="-1.0" prefHeight="470.0" prefWidth="535.0" />
 
             </Pane>
         </VBox>

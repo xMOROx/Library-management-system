@@ -3,13 +3,15 @@ package pl.edu.agh.managementlibrarysystem.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Setter
 @Getter
-@Entity(name = "books")
 @Builder
+@Entity(name = "books")
 @AllArgsConstructor
+@NoArgsConstructor
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -28,10 +30,17 @@ public class Book {
     private Set<IssuedBook> issued_books;
     @OneToMany(mappedBy = "books", cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Notification.class)
     private Set<Notification> notification;
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, targetEntity = Genre.class)
+    @JoinTable(
+            name = "books_genres",
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "genre_id")
+    )
+    private Set<Genre> genres;
 
     @Column(name = "title", nullable = false, columnDefinition = "varchar(255) default 'Unknown'")
     private String title;
-    @Column(name = "isbn", nullable = false, unique = true, length = 13, columnDefinition = "varchar(13)")
+    @Column(name = "isbn", nullable = false, unique = true, length = 255, columnDefinition = "varchar(255)")
     private String isbn;
     @Column(name = "edition", columnDefinition = "int default 1")
     private int edition;
@@ -50,18 +59,7 @@ public class Book {
     @Column(name = "table_of_content", columnDefinition = "varchar(255)")
     private String tableOfContent;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Genre.class)
-    @JoinTable(
-            name = "books_genres",
-            joinColumns = @JoinColumn(name = "book_id"),
-            inverseJoinColumns = @JoinColumn(name = "genre_id")
-    )
-    private Set<Genre> genres;
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, targetEntity = Publisher.class)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = Publisher.class)
     @JoinColumn(name = "publisher_id", referencedColumnName = "id")
     private Publisher publisher;
-
-
-    public Book() {
-    }
 }

@@ -20,7 +20,10 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
 import pl.edu.agh.managementlibrarysystem.controller.abstraction.BaseController;
+import pl.edu.agh.managementlibrarysystem.enums.BorderpaneFields;
 import pl.edu.agh.managementlibrarysystem.event.BorderPaneReadyEvent;
+import pl.edu.agh.managementlibrarysystem.event.SetItemToBorderPaneEvent;
+import pl.edu.agh.managementlibrarysystem.event.fxml.LeavingBorderPaneEvent;
 import pl.edu.agh.managementlibrarysystem.model.Book;
 import pl.edu.agh.managementlibrarysystem.service.BookService;
 
@@ -58,7 +61,12 @@ public class BookController extends BaseController implements Initializable {
     @FXML
     private TextField searchTextField;
     @FXML
-    private CheckBox checkAll;
+    private ImageView arrow;
+    @FXML
+    private CheckBox checkAllCheckbox;
+    @FXML
+    private Hyperlink delete;
+
     @FXML
     private TableView<Book> tableView;
     @FXML
@@ -84,7 +92,6 @@ public class BookController extends BaseController implements Initializable {
 
     @FXML
     private HBox controlBox;
-    public static HBox box;
 
 
     @Autowired
@@ -95,7 +102,6 @@ public class BookController extends BaseController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        box = controlBox;
         this.tooltipInitializer();
 
         Tooltip fullScreen = new Tooltip("fullscreen");
@@ -115,6 +121,15 @@ public class BookController extends BaseController implements Initializable {
         fullscreen.setGraphic(new ImageView(fullscreenImage));
         Image minimizeImage = new Image("/images/minimize.png");
         minimize.setGraphic(new ImageView(minimizeImage));
+
+
+        this.borderpane.addEventHandler(
+                LeavingBorderPaneEvent.LEAVING,
+                event -> {
+                    this.applicationContext.publishEvent(new SetItemToBorderPaneEvent<>(this.tableView, this.borderpane, BorderpaneFields.CENTER));
+                    this.changeFieldsVisibility(true);
+                }
+        );
     }
 
     @FXML
@@ -167,6 +182,9 @@ public class BookController extends BaseController implements Initializable {
         this.remainingBooksAmount.setVisible(visible);
         this.searchIcon.setVisible(visible);
         this.loadDataEntryButton.setVisible(visible);
+        this.arrow.setVisible(visible);
+        this.checkAllCheckbox.setVisible(visible);
+        this.delete.setVisible(visible);
     }
 
 }
