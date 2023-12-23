@@ -172,11 +172,13 @@ public class BookDataEntryController extends BaseDataEntryController<ActionEvent
         }
 
 
+        int bookQuantity = Integer.parseInt(this.quantity.getText());
         Book book = Book.builder()
                 .title(this.title.getText())
                 .isbn(this.isbn.getText())
                 .edition(!this.edition.getText().isEmpty() ? Integer.parseInt(this.edition.getText()) : 1)
-                .quantity(Integer.parseInt(this.quantity.getText()))
+                .quantity(bookQuantity)
+                .remainingBooks(bookQuantity)
                 .description(!this.description.getText().isEmpty() ? this.description.getText() : null)
                 .availability(this.availability.isSelected() ? "available" : "unavailable")
                 .cover(this.coverType.getValue())

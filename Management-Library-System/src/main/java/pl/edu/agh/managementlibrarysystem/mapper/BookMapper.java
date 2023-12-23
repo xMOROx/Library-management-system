@@ -4,7 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import pl.edu.agh.managementlibrarysystem.DTO.BookDTO;
 import pl.edu.agh.managementlibrarysystem.enums.BookAvailability;
+import pl.edu.agh.managementlibrarysystem.model.Author;
 import pl.edu.agh.managementlibrarysystem.model.Book;
+import pl.edu.agh.managementlibrarysystem.model.Genre;
+import pl.edu.agh.managementlibrarysystem.model.Publisher;
+
+import java.util.List;
+import java.util.Set;
 
 @Component
 @RequiredArgsConstructor
@@ -17,16 +23,20 @@ public class BookMapper implements Mapper<Book, BookDTO> {
 
     @Override
     public BookDTO mapToDto(Book book) {
+        Publisher publisher = book.getPublisher();
+        String authors = this.getAuthors(book);
+        List<Genre> mainGenres = this.getMainGenres(book);
+
         return BookDTO.builder()
-                .title(book.getTitle())
                 .isbn(book.getIsbn())
-                .publisher(book.getPublisher().getName())
-                .author(this.getAuthors(book))
-                .mainGenre(this.getGenre(book))
+                .title(book.getTitle())
+                .publisher(publisher == null ? "---" : publisher.getName())
+                .author(authors == null ? "---" : authors)
+                .mainGenre(mainGenres.isEmpty() ? "---" : mainGenres.get(0).getGenre())
                 .edition(book.getEdition())
                 .quantity(book.getQuantity())
-//                .remainingBooks(book.getRemainingBooks()) //TODO: implement when repository will be able to count it
-                .availability(getAvailability(book))
+                .remainingBooks(book.getRemainingBooks())
+                .availability(book.getAvailability())
                 .build();
     }
 
@@ -35,21 +45,25 @@ public class BookMapper implements Mapper<Book, BookDTO> {
     }
 
     private String getAuthors(Book book) {
-        return book.getAuthors()
+        Set<Author> bookAuthors = book.getAuthors();
+
+        if (bookAuthors.isEmpty()) {
+            return null;
+        }
+
+        return bookAuthors
                 .stream()
-                .limit(1)
-                .map(author -> (long) book.getAuthors().size() > 1 ?
-                        author.getFirstname() + " " + author.getLastname() + "..." : author.getFirstname() + " " + author.getLastname())
-                .toString();
+                .reduce("", (authors, author) -> authors + author.getFirstname() + " " + author.getLastname() + (bookAuthors.size() > 1 ? ", " : ""), String::concat);
     }
 
-    private String getGenre(Book book) {
+    private List<Genre> getMainGenres(Book book) {
+        if (book.getGenres().isEmpty()) {
+            return List.of();
+        }
         return book.getGenres()
                 .stream()
                 .filter(genre -> genre.getParentGenre() == null)
-                .toList()
-                .get(0)
-                .getGenre();
+                .toList();
 
     }
 }

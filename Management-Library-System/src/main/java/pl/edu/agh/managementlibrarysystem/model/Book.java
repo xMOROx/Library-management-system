@@ -3,7 +3,6 @@ package pl.edu.agh.managementlibrarysystem.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.HashSet;
 import java.util.Set;
 
 @Setter
@@ -17,18 +16,18 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Author.class)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, targetEntity = Author.class)
     @JoinTable(
             name = "books_authors",
             joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "author_id")
     )
     private Set<Author> authors;
-    @OneToMany(mappedBy = "books", cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = ReadBook.class)
+    @OneToMany(mappedBy = "books", cascade = CascadeType.ALL, fetch = FetchType.EAGER, targetEntity = ReadBook.class)
     private Set<ReadBook> read_books;
-    @OneToMany(mappedBy = "books", cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = IssuedBook.class)
+    @OneToMany(mappedBy = "books", cascade = CascadeType.ALL, fetch = FetchType.EAGER, targetEntity = IssuedBook.class)
     private Set<IssuedBook> issued_books;
-    @OneToMany(mappedBy = "books", cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Notification.class)
+    @OneToMany(mappedBy = "books", cascade = CascadeType.ALL, fetch = FetchType.EAGER, targetEntity = Notification.class)
     private Set<Notification> notification;
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, targetEntity = Genre.class)
     @JoinTable(
@@ -47,7 +46,7 @@ public class Book {
     @Column(name = "quantity", columnDefinition = "int default 1", nullable = false)
     private int quantity;
     @Column(name = "remaining_books", columnDefinition = "int default 1", nullable = false)
-    private int remaining_books;
+    private int remainingBooks;
     @Column(name = "availability", columnDefinition = "varchar(255) default 'available'", nullable = false)
     private String availability;
     @Column(name = "cover", columnDefinition = "varchar(255) default 'hard'")
@@ -62,4 +61,5 @@ public class Book {
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = Publisher.class)
     @JoinColumn(name = "publisher_id", referencedColumnName = "id")
     private Publisher publisher;
+
 }

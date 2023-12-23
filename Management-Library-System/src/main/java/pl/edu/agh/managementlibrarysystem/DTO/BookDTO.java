@@ -6,13 +6,13 @@ import lombok.Data;
 @Data
 @Builder
 public class BookDTO {
-    private String title;
     private String isbn;
-    private String publisher;
+    private String title;
     private String author;
+    private String publisher;
     private String mainGenre;
     private Integer edition;
     private Integer quantity;
     private Integer remainingBooks;
-    private Boolean availability;
+    private String availability;
 }

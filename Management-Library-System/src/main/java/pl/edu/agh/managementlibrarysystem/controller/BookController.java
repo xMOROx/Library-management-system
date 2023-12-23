@@ -1,17 +1,22 @@
 package pl.edu.agh.managementlibrarysystem.controller;
 
 import io.github.palexdev.materialfx.controls.MFXButton;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import lombok.RequiredArgsConstructor;
 import org.kordamp.ikonli.javafx.FontIcon;
@@ -19,15 +24,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
+import pl.edu.agh.managementlibrarysystem.DTO.BookDTO;
 import pl.edu.agh.managementlibrarysystem.controller.abstraction.BaseController;
 import pl.edu.agh.managementlibrarysystem.enums.BorderpaneFields;
 import pl.edu.agh.managementlibrarysystem.event.BorderPaneReadyEvent;
 import pl.edu.agh.managementlibrarysystem.event.SetItemToBorderPaneEvent;
 import pl.edu.agh.managementlibrarysystem.event.fxml.LeavingBorderPaneEvent;
-import pl.edu.agh.managementlibrarysystem.model.Book;
 import pl.edu.agh.managementlibrarysystem.service.BookService;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 @Controller
@@ -68,31 +74,30 @@ public class BookController extends BaseController implements Initializable {
     private Hyperlink delete;
 
     @FXML
-    private TableView<Book> tableView;
+    private TableView<BookDTO> tableView;
     @FXML
-    private TableColumn<Book, String> bookISBN;
+    private TableColumn<BookDTO, String> bookISBN;
     @FXML
-    private TableColumn<Book, String> bookTitle;
+    private TableColumn<BookDTO, String> bookTitle;
     @FXML
-    private TableColumn<Book, String> bookAuthor; //TODO: concatenate name and surname
+    private TableColumn<BookDTO, String> bookAuthor;
     @FXML
-    private TableColumn<Book, String> bookPublisher;
+    private TableColumn<BookDTO, String> bookPublisher;
     @FXML
-    private TableColumn<Book, String> mainGenre;
+    private TableColumn<BookDTO, String> mainGenre;
     @FXML
-    private TableColumn<Book, Integer> edition;
+    private TableColumn<BookDTO, Integer> edition;
     @FXML
-    private TableColumn<Book, Integer> quantity;
+    private TableColumn<BookDTO, Integer> quantity;
     @FXML
-    private TableColumn<Book, Integer> remainingBooks;
+    private TableColumn<BookDTO, Integer> remainingBooks;
     @FXML
-    private TableColumn<Book, String> sectionCol;
-    @FXML
-    private TableColumn<Book, String> availability;
+    private TableColumn<BookDTO, String> availability;
 
     @FXML
     private HBox controlBox;
 
+    private List<BookDTO> books;
 
     @Autowired
     public BookController(ApplicationContext applicationContext, BookService bookService) {
@@ -122,7 +127,6 @@ public class BookController extends BaseController implements Initializable {
         Image minimizeImage = new Image("/images/minimize.png");
         minimize.setGraphic(new ImageView(minimizeImage));
 
-
         this.borderpane.addEventHandler(
                 LeavingBorderPaneEvent.LEAVING,
                 event -> {
@@ -130,6 +134,74 @@ public class BookController extends BaseController implements Initializable {
                     this.changeFieldsVisibility(true);
                 }
         );
+
+        searchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.isEmpty()) {
+                this.tableView.getItems().setAll(books);
+            }
+        });
+
+        this.initializeColumns();
+        this.createNewTask(50, 20);
+
+        this.tableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+
+        this.checkAllCheckbox.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+                this.tableView.getSelectionModel().selectAll();
+            } else {
+                this.tableView.getSelectionModel().clearSelection();
+            }
+        });
+    }
+
+    private void initializeColumns() {
+        bookISBN.setCellValueFactory(new PropertyValueFactory<>("isbn"));
+        bookTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
+        bookAuthor.setCellValueFactory(new PropertyValueFactory<>("author"));
+        bookPublisher.setCellValueFactory(new PropertyValueFactory<>("publisher"));
+        mainGenre.setCellValueFactory(new PropertyValueFactory<>("mainGenre"));
+        edition.setCellValueFactory(new PropertyValueFactory<>("edition"));
+        quantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        remainingBooks.setCellValueFactory(new PropertyValueFactory<>("remainingBooks"));
+        availability.setCellValueFactory(new PropertyValueFactory<>("availability"));
+    }
+
+    private void createNewTask(int maxIterations, int sleepTime) {
+        Task<Integer> task = new Task<>() {
+            @Override
+            protected Integer call() throws Exception {
+                for (int i = 0; i <= maxIterations; i++) {
+                    if (isCancelled()) {
+                        break;
+                    }
+                    updateProgress(i, maxIterations);
+                    Thread.sleep(sleepTime);
+                }
+                return maxIterations;
+            }
+        };
+
+        progressBar.progressProperty().bind(task.progressProperty());
+        task.setOnSucceeded(event -> {
+            spinner.setVisible(false);
+            this.loadData();
+            this.allBooksAndRemainingBooks();
+        });
+        Thread thread = new Thread(task);
+        thread.setDaemon(true);
+        thread.start();
+    }
+
+    private void allBooksAndRemainingBooks() {
+        this.booksAmount.setText(String.valueOf(this.bookService.getSumOfAllBooks()));
+        this.remainingBooksAmount.setText(String.valueOf(this.bookService.getSumOfAllRemainingBooks()));
+    }
+
+    private void loadData() {
+        books = this.bookService.getBooks();
+        this.tableView.getItems().clear();
+        this.tableView.getItems().addAll(books);
     }
 
     @FXML
@@ -150,6 +222,44 @@ public class BookController extends BaseController implements Initializable {
 
     @FXML
     private void searchBook(KeyEvent keyEvent) {
+        FilteredList<BookDTO> filteredList = new FilteredList<>(this.tableView.getItems(), p -> true);
+
+        searchTextField.textProperty().addListener(
+                (ObservableValue, oldValue, newValue) -> {
+                    filteredList.setPredicate(book -> {
+                        if (newValue == null || newValue.isEmpty()) {
+                            return true;
+                        }
+                        String lowerCaseFilter = newValue.toLowerCase();
+
+                        if (book.getIsbn().toLowerCase().contains(lowerCaseFilter)) {
+                            return true;
+                        } else if (book.getTitle().toLowerCase().contains(lowerCaseFilter)) {
+                            return true;
+                        } else if (book.getAuthor().toLowerCase().contains(lowerCaseFilter)) {
+                            return true;
+                        } else if (book.getPublisher().toLowerCase().contains(lowerCaseFilter)) {
+                            return true;
+                        } else if (book.getMainGenre().toLowerCase().contains(lowerCaseFilter)) {
+                            return true;
+                        } else if (book.getEdition().toString().toLowerCase().contains(lowerCaseFilter)) {
+                            return true;
+                        } else if (book.getQuantity().toString().toLowerCase().contains(lowerCaseFilter)) {
+                            return true;
+                        } else if (book.getRemainingBooks().toString().toLowerCase().contains(lowerCaseFilter)) {
+                            return true;
+                        } else if (book.getAvailability().toLowerCase().contains(lowerCaseFilter)) {
+                            return true;
+                        }
+                        tableView.setPlaceholder(new Text("No record match your search"));
+                        return false;
+                    });
+                    SortedList<BookDTO> sortedList = new SortedList<>(filteredList);
+                    sortedList.comparatorProperty().bind(tableView.comparatorProperty());
+                    tableView.getItems().setAll(sortedList);
+
+                }
+        );
 
     }
 
