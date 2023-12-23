@@ -14,8 +14,8 @@ public class AuthorService {
     private final AuthorRepository authorRepository;
 
     public boolean saveAuthor(Author author) {
-        String firstName = author.getFirstName();
-        String lastName = author.getLastName();
+        String firstName = author.getFirstname();
+        String lastName = author.getLastname();
 
         if (this.authorRepository.findByNameAndLastname(firstName, lastName).isEmpty()) {
             authorRepository.save(author);
@@ -30,7 +30,7 @@ public class AuthorService {
         return FXCollections.observableList(
                 this.authorRepository.findAll()
                         .stream()
-                        .map(author -> author.getFirstName() + " " + author.getLastName())
+                        .map(author -> author.getFirstname() + " " + author.getLastname())
                         .toList()
         );
 

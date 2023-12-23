@@ -17,9 +17,9 @@ public class Author {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @Column(name = "first_name", nullable = false)
-    private String firstName;
+    private String firstname;
     @Column(name = "last_name")
-    private String lastName;
+    private String lastname;
 
     @ManyToMany(mappedBy = "authors", fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = Book.class)
     private Set<Book> books = new HashSet<>();

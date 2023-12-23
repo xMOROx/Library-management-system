@@ -10,6 +10,6 @@ import java.util.Optional;
 
 @Repository
 public interface AuthorRepository extends JpaRepository<Author,Long> {
-    @Query("SELECT a FROM authors a WHERE a.firstName = ?1 AND a.lastName = ?2")
+    @Query("SELECT a FROM authors a WHERE a.firstname = ?1 AND a.lastname = ?2")
     Optional<Author> findByNameAndLastname(@Param("firstName") String firstName, @Param("lastName") String lastName);
 }

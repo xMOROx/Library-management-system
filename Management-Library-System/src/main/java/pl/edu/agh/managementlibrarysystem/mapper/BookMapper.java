@@ -39,7 +39,7 @@ public class BookMapper implements Mapper<Book, BookDTO> {
                 .stream()
                 .limit(1)
                 .map(author -> (long) book.getAuthors().size() > 1 ?
-                        author.getFirstName() + " " + author.getLastName() + "..." : author.getFirstName() + " " + author.getLastName())
+                        author.getFirstname() + " " + author.getLastname() + "..." : author.getFirstname() + " " + author.getLastname())
                 .toString();
     }
 

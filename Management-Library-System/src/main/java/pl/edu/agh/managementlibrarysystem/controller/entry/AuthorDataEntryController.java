@@ -52,8 +52,8 @@ public class AuthorDataEntryController extends BaseDataEntryController<ActionEve
 
         if (authorService.saveAuthor(
                 Author.builder()
-                        .firstName(Character.toUpperCase(authorName.charAt(0)) + authorName.substring(1).toLowerCase())
-                        .lastName(Character.toUpperCase(authorLastname.charAt(0)) + authorLastname.substring(1).toLowerCase())
+                        .firstname(Character.toUpperCase(authorName.charAt(0)) + authorName.substring(1).toLowerCase())
+                        .lastname(Character.toUpperCase(authorLastname.charAt(0)) + authorLastname.substring(1).toLowerCase())
                         .build()
         )) {
             this.root.fireEvent(new NewItemAddedEvent(NewItemAddedEvent.NEW_AUTHOR));
