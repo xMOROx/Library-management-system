@@ -31,8 +31,8 @@ public class BookMapper implements Mapper<Book, BookDTO> {
                 .tableOfContent(book.getTableOfContent())
                 .genres(new HashSet<>())
                 .authors(new HashSet<>())
-                .read_books(new HashSet<>())
-                .issued_books(new HashSet<>())
+                .readBooks(new HashSet<>())
+                .issuedBooks(new HashSet<>())
                 .notification(new HashSet<>())
                 .build();
     }

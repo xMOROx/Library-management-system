@@ -24,9 +24,9 @@ public class Book {
     )
     private Set<Author> authors;
     @OneToMany(mappedBy = "books", cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = ReadBook.class)
-    private Set<ReadBook> read_books;
+    private Set<ReadBook> readBooks;
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = IssuedBook.class)
-    private Set<IssuedBook> issued_books;
+    private Set<IssuedBook> issuedBooks;
     @OneToMany(mappedBy = "books", cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Notification.class)
     private Set<Notification> notification;
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Genre.class)

@@ -10,11 +10,10 @@ import javafx.stage.Stage;
 import lombok.Setter;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
-
-@Controller
+@Component
 public abstract class BaseController {
-    @Setter
     protected ApplicationContext applicationContext;
     @FXML
     protected Label close;

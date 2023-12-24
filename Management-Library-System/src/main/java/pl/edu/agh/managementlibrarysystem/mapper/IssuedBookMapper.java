@@ -11,7 +11,6 @@ import pl.edu.agh.managementlibrarysystem.model.keys.IssuedBooksKey;
 @Component
 @RequiredArgsConstructor
 public class IssuedBookMapper implements Mapper<IssuedBook, IssuedBookDTO> {
-    private Session session;
 
     @Override
     public IssuedBook mapToEntity(IssuedBookDTO object) {
