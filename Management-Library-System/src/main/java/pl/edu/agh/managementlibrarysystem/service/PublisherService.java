@@ -1,5 +1,6 @@
 package pl.edu.agh.managementlibrarysystem.service;
 
+import jakarta.transaction.Transactional;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,7 @@ import pl.edu.agh.managementlibrarysystem.utils.Alerts;
 public class PublisherService {
     private final PublisherRepository publisherRepository;
 
+    @Transactional
     public boolean savePublisher(Publisher publisher) {
         String publisherName = publisher.getName();
 
@@ -25,6 +27,7 @@ public class PublisherService {
         return false;
     }
 
+    @Transactional
     public ObservableList<String> getAllPublishers() {
         return FXCollections.observableList(
                 this.publisherRepository.findAll()

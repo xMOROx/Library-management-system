@@ -20,4 +20,9 @@ public class Alerts extends Alert {
         Alert alert = new Alerts(AlertType.ERROR, title, null, content);
         alert.showAndWait();
     }
+
+    public static void showInformationAlert(String title, String s) {
+        Alert alert = new Alerts(AlertType.INFORMATION, title, null, s);
+        alert.showAndWait();
+    }
 }

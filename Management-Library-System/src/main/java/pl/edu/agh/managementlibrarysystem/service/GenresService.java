@@ -1,5 +1,6 @@
 package pl.edu.agh.managementlibrarysystem.service;
 
+import jakarta.transaction.Transactional;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import java.util.Optional;
 public class GenresService {
     private final GenresRepository genreRepository;
 
+    @Transactional
     public ObservableList<String> getAllGenres() {
         return FXCollections.observableList(
                 this.genreRepository.findAll()
@@ -24,6 +26,7 @@ public class GenresService {
         );
     }
 
+    @Transactional
     public ObservableList<String> getMainGenres() {
         return FXCollections.observableList(
                 this.genreRepository.findAllMainGenres()
@@ -32,6 +35,8 @@ public class GenresService {
                         .toList()
         );
     }
+
+    @Transactional
     public boolean saveGenre(Genre genre) {
         String genreType = genre.getGenre();
 
@@ -42,8 +47,8 @@ public class GenresService {
 
         if (genre.getParentGenre() != null) {
             Optional<Genre> parentGenre = this.genreRepository.findByType(genre.getParentGenre().getGenre());
-            if(parentGenre.isPresent()) {
-                genre =  parentGenre.get().addSubGenre(genre);
+            if (parentGenre.isPresent()) {
+                genre = parentGenre.get().addSubGenre(genre);
                 this.genreRepository.save(parentGenre.get());
                 return true;
             }
@@ -53,12 +58,12 @@ public class GenresService {
         }
 
 
-
         this.genreRepository.save(genre);
         return true;
 
     }
 
+    @Transactional
     public Genre getGenreByType(String value) {
         return this.genreRepository.findByType(value).orElse(null);
     }

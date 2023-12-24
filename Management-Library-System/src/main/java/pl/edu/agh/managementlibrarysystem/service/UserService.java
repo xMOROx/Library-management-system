@@ -3,6 +3,8 @@ package pl.edu.agh.managementlibrarysystem.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.edu.agh.managementlibrarysystem.DTO.UserDTO;
+import pl.edu.agh.managementlibrarysystem.mapper.Mapper;
 import pl.edu.agh.managementlibrarysystem.model.User;
 import pl.edu.agh.managementlibrarysystem.model.util.Permission;
 import pl.edu.agh.managementlibrarysystem.repository.IssuedBooksRepository;
@@ -17,10 +19,16 @@ public class UserService {
     private final UserRepository repository;
     private final IssuedBooksRepository issuedBooksRepository;
     private final ReadBooksRepository readBooksRepository;
+    private final Mapper<User, UserDTO> userMapper;
+
     @Transactional
     public Optional<User> addUser(String name, String surname, String email, String password) {
 
-        User u = new User(name,surname,email,password, Permission.NORMAL_USER);
+        User u = new User(name, surname, email, password, Permission.NORMAL_USER);
         return Optional.of(repository.save(u));
+    }
+    @Transactional
+    public UserDTO findById(long l) {
+        return repository.findById(l).map(this.userMapper::mapToDto).orElse(null);
     }
 }
