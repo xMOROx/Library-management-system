@@ -15,6 +15,7 @@ import javafx.scene.layout.BorderPane;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
+import pl.edu.agh.managementlibrarysystem.DTO.BookDTO;
 import pl.edu.agh.managementlibrarysystem.controller.abstraction.BaseDataEntryController;
 import pl.edu.agh.managementlibrarysystem.enums.CoverType;
 import pl.edu.agh.managementlibrarysystem.event.BorderPaneReadyEvent;
@@ -173,7 +174,7 @@ public class BookDataEntryController extends BaseDataEntryController<ActionEvent
 
 
         int bookQuantity = Integer.parseInt(this.quantity.getText());
-        Book book = Book.builder()
+        BookDTO book = BookDTO.builder()
                 .title(this.title.getText())
                 .isbn(this.isbn.getText())
                 .edition(!this.edition.getText().isEmpty() ? Integer.parseInt(this.edition.getText()) : 1)
@@ -183,11 +184,6 @@ public class BookDataEntryController extends BaseDataEntryController<ActionEvent
                 .availability(this.availability.isSelected() ? "available" : "unavailable")
                 .cover(this.coverType.getValue())
                 .tableOfContent(!this.tableOfContent.getText().isEmpty() ? this.tableOfContent.getText() : null)
-                .genres(new HashSet<>())
-                .authors(new HashSet<>())
-                .read_books(new HashSet<>())
-                .issued_books(new HashSet<>())
-                .notification(new HashSet<>())
                 .build();
 
         String authorName = this.authorSelection.getValue().split(" ")[0];
@@ -207,6 +203,7 @@ public class BookDataEntryController extends BaseDataEntryController<ActionEvent
     @FXML
     @Override
     protected void cancel(ActionEvent actionEvent) {
+        this.root.fireEvent(new LeavingBorderPaneEvent(LeavingBorderPaneEvent.LEAVING));
         this.clearFields();
     }
 

@@ -6,4 +6,5 @@ import pl.edu.agh.managementlibrarysystem.model.IssuedBook;
 import pl.edu.agh.managementlibrarysystem.model.keys.IssuedBooksKey;
 @Repository
 public interface IssuedBooksRepository extends JpaRepository<IssuedBook, IssuedBooksKey> {
+    void updateFee();
 }

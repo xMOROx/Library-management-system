@@ -9,6 +9,7 @@ import pl.edu.agh.managementlibrarysystem.model.Book;
 import pl.edu.agh.managementlibrarysystem.model.Genre;
 import pl.edu.agh.managementlibrarysystem.model.Publisher;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -17,8 +18,23 @@ import java.util.Set;
 public class BookMapper implements Mapper<Book, BookDTO> {
 
     @Override
-    public Book mapToEntity(BookDTO object) {
-        return null; // TODO - implement
+    public Book mapToEntity(BookDTO book) {
+        return Book.builder()
+                .isbn(book.getIsbn())
+                .title(book.getTitle())
+                .edition(book.getEdition())
+                .quantity(book.getQuantity())
+                .remainingBooks(book.getRemainingBooks())
+                .description(book.getDescription())
+                .availability(book.getAvailability())
+                .cover(book.getCover())
+                .tableOfContent(book.getTableOfContent())
+                .genres(new HashSet<>())
+                .authors(new HashSet<>())
+                .read_books(new HashSet<>())
+                .issued_books(new HashSet<>())
+                .notification(new HashSet<>())
+                .build();
     }
 
     @Override

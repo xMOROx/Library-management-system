@@ -24,10 +24,10 @@ public class Genre {
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = Genre.class)
     private Genre parentGenre;
 
-    @OneToMany(mappedBy = "parentGenre", fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = Genre.class)
+    @OneToMany(mappedBy = "parentGenre", fetch = FetchType.LAZY, cascade = CascadeType.ALL, targetEntity = Genre.class)
     private Set<Genre> subGenres = new HashSet<>();
 
-    @ManyToMany(mappedBy = "genres", fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = Book.class)
+    @ManyToMany(mappedBy = "genres", fetch = FetchType.LAZY, cascade = CascadeType.ALL, targetEntity = Book.class)
     private Set<Book> books = new HashSet<>();
 
     public Genre addSubGenre(Genre subGenre) {

@@ -7,17 +7,12 @@ import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 import lombok.RequiredArgsConstructor;
 import org.kordamp.ikonli.javafx.FontIcon;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,20 +20,20 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
 import pl.edu.agh.managementlibrarysystem.DTO.BookDTO;
-import pl.edu.agh.managementlibrarysystem.controller.abstraction.BaseController;
+import pl.edu.agh.managementlibrarysystem.controller.abstraction.ControllerWithTableView;
 import pl.edu.agh.managementlibrarysystem.enums.BorderpaneFields;
 import pl.edu.agh.managementlibrarysystem.event.BorderPaneReadyEvent;
 import pl.edu.agh.managementlibrarysystem.event.SetItemToBorderPaneEvent;
 import pl.edu.agh.managementlibrarysystem.event.fxml.LeavingBorderPaneEvent;
 import pl.edu.agh.managementlibrarysystem.service.BookService;
+import pl.edu.agh.managementlibrarysystem.utils.TaskFactory;
 
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
 
 @Controller
 @RequiredArgsConstructor
-public class BookController extends BaseController implements Initializable {
+public class BookController extends ControllerWithTableView<BookDTO> implements Initializable {
 
     private final BookService bookService;
 
@@ -47,15 +42,7 @@ public class BookController extends BaseController implements Initializable {
     @FXML
     private BorderPane borderpane;
     @FXML
-    private ProgressBar progressBar;
-    @FXML
     private MFXButton loadDataEntryButton;
-    @FXML
-    private Label fullscreen;
-    @FXML
-    private Label unfullscreen;
-    @FXML
-    private ImageView spinner;
     @FXML
     private Label booksAmount;
     @FXML
@@ -65,16 +52,12 @@ public class BookController extends BaseController implements Initializable {
     @FXML
     private Label remainingBooksLabel;
     @FXML
-    private TextField searchTextField;
-    @FXML
     private ImageView arrow;
     @FXML
     private CheckBox checkAllCheckbox;
     @FXML
     private Hyperlink delete;
 
-    @FXML
-    private TableView<BookDTO> tableView;
     @FXML
     private TableColumn<BookDTO, String> bookISBN;
     @FXML
@@ -94,10 +77,6 @@ public class BookController extends BaseController implements Initializable {
     @FXML
     private TableColumn<BookDTO, String> availability;
 
-    @FXML
-    private HBox controlBox;
-
-    private List<BookDTO> books;
 
     @Autowired
     public BookController(ApplicationContext applicationContext, BookService bookService) {
@@ -107,42 +86,20 @@ public class BookController extends BaseController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        this.tooltipInitializer();
+        super.initialize(location, resources);
+        this.createNewTask(50, 20);
+        this.loadDataEntryButton.disableProperty().setValue(true);
 
-        Tooltip fullScreen = new Tooltip("fullscreen");
-        fullScreen.setStyle("-fx-font-size:11");
-        fullScreen.setMinSize(20, 20);
-        fullscreen.setTooltip(fullScreen);
-
-        Tooltip exitFullScreen = new Tooltip("Exit full screen");
-        exitFullScreen.setStyle("-fx-font-size:11");
-        exitFullScreen.setMinSize(20, 20);
-        unfullscreen.setTooltip(exitFullScreen);
-        Image closeImage = new Image("/images/close.png");
-        close.setGraphic(new ImageView(closeImage));
-        Image unfullscreenImage = new Image("/images/unfullscreen.png");
-        unfullscreen.setGraphic(new ImageView(unfullscreenImage));
-        Image fullscreenImage = new Image("/images/fullscreen.png");
-        fullscreen.setGraphic(new ImageView(fullscreenImage));
-        Image minimizeImage = new Image("/images/minimize.png");
-        minimize.setGraphic(new ImageView(minimizeImage));
 
         this.borderpane.addEventHandler(
                 LeavingBorderPaneEvent.LEAVING,
                 event -> {
                     this.applicationContext.publishEvent(new SetItemToBorderPaneEvent<>(this.tableView, this.borderpane, BorderpaneFields.CENTER));
+                    this.loadData();
                     this.changeFieldsVisibility(true);
                 }
         );
 
-        searchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue.isEmpty()) {
-                this.tableView.getItems().setAll(books);
-            }
-        });
-
-        this.initializeColumns();
-        this.createNewTask(50, 20);
 
         this.tableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
@@ -155,7 +112,8 @@ public class BookController extends BaseController implements Initializable {
         });
     }
 
-    private void initializeColumns() {
+    @Override
+    protected void initializeColumns() {
         bookISBN.setCellValueFactory(new PropertyValueFactory<>("isbn"));
         bookTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
         bookAuthor.setCellValueFactory(new PropertyValueFactory<>("author"));
@@ -167,27 +125,17 @@ public class BookController extends BaseController implements Initializable {
         availability.setCellValueFactory(new PropertyValueFactory<>("availability"));
     }
 
-    private void createNewTask(int maxIterations, int sleepTime) {
-        Task<Integer> task = new Task<>() {
-            @Override
-            protected Integer call() throws Exception {
-                for (int i = 0; i <= maxIterations; i++) {
-                    if (isCancelled()) {
-                        break;
-                    }
-                    updateProgress(i, maxIterations);
-                    Thread.sleep(sleepTime);
-                }
-                return maxIterations;
-            }
-        };
+    @Override
+    protected void createNewTask(int maxIterations, int sleepTime) {
+        Task<Integer> task = TaskFactory.countingTaskForProgressBar(maxIterations, sleepTime, progressBar);
 
-        progressBar.progressProperty().bind(task.progressProperty());
         task.setOnSucceeded(event -> {
             spinner.setVisible(false);
             this.loadData();
             this.allBooksAndRemainingBooks();
+            this.loadDataEntryButton.disableProperty().setValue(false);
         });
+
         Thread thread = new Thread(task);
         thread.setDaemon(true);
         thread.start();
@@ -198,30 +146,15 @@ public class BookController extends BaseController implements Initializable {
         this.remainingBooksAmount.setText(String.valueOf(this.bookService.getSumOfAllRemainingBooks()));
     }
 
-    private void loadData() {
-        books = this.bookService.getBooks();
+    @Override
+    protected void loadData() {
+        data = this.bookService.getBooks();
         this.tableView.getItems().clear();
-        this.tableView.getItems().addAll(books);
+        this.tableView.getItems().addAll(data);
     }
 
-    @FXML
-    private void fullscreen(MouseEvent mouseEvent) {
-        Stage stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
-        if (!stage.isFullScreen()) {
-            stage.setFullScreen(true);
-        }
-    }
-
-    @FXML
-    private void unfullscreen(MouseEvent mouseEvent) {
-        Stage stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
-        if (stage.isFullScreen()) {
-            stage.setFullScreen(false);
-        }
-    }
-
-    @FXML
-    private void searchBook(KeyEvent keyEvent) {
+    @Override
+    protected void searchData(KeyEvent keyEvent) {
         FilteredList<BookDTO> filteredList = new FilteredList<>(this.tableView.getItems(), p -> true);
 
         searchTextField.textProperty().addListener(
@@ -257,10 +190,8 @@ public class BookController extends BaseController implements Initializable {
                     SortedList<BookDTO> sortedList = new SortedList<>(filteredList);
                     sortedList.comparatorProperty().bind(tableView.comparatorProperty());
                     tableView.getItems().setAll(sortedList);
-
                 }
         );
-
     }
 
     @FXML

@@ -18,7 +18,7 @@ public class Publisher {
     private Long id;
     @Column(name = "name", nullable = false, columnDefinition = "varchar(255)")
     private String name;
-    @OneToMany(mappedBy = "publisher", fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = Book.class)
+    @OneToMany(mappedBy = "publisher", fetch = FetchType.LAZY, cascade = CascadeType.ALL, targetEntity = Book.class)
     private Set<Book> books = new HashSet<>();
 
 }

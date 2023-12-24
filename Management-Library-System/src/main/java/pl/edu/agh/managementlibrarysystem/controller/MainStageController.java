@@ -20,9 +20,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
+import pl.edu.agh.managementlibrarysystem.controller.abstraction.BaseController;
 import pl.edu.agh.managementlibrarysystem.event.BorderPaneReadyEvent;
 import pl.edu.agh.managementlibrarysystem.event.OpenWindowEvent;
-import pl.edu.agh.managementlibrarysystem.controller.abstraction.BaseController;
 
 import java.io.IOException;
 import java.net.URL;
@@ -115,7 +115,7 @@ public class MainStageController extends BaseController implements Initializable
 
     @FXML
     private void viewAllIssuedBooks(ActionEvent actionEvent) {
-
+        applicationContext.publishEvent(new BorderPaneReadyEvent(pane, new ClassPathResource("fxml/issuedBooks.fxml")));
     }
 
     @FXML

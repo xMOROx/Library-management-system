@@ -15,4 +15,7 @@ public class BookDTO {
     private Integer quantity;
     private Integer remainingBooks;
     private String availability;
+    private String description;
+    private String cover;
+    private String tableOfContent;
 }

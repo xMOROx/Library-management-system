@@ -16,10 +16,6 @@ public enum BookAvailability {
         return availability == AVAILABLE ? "Available" : "Unavailable";
     }
 
-    public static BookAvailability fromString(String availability) {
-        return availability.equals("Available") ? AVAILABLE : UNAVAILABLE;
-    }
-
     public static Boolean fromStringToBoolean(String availability) {
         return availability.equals("Available");
     }

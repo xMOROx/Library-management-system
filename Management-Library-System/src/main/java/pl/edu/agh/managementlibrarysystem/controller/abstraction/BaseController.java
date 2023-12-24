@@ -17,9 +17,9 @@ public abstract class BaseController {
     @Setter
     protected ApplicationContext applicationContext;
     @FXML
-    public Label close;
+    protected Label close;
     @FXML
-    public Label minimize;
+    protected Label minimize;
 
     protected void tooltipInitializer() {
         Tooltip closeApp = new Tooltip("Close");

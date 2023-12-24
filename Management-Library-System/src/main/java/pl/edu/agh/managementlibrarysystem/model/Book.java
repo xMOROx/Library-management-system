@@ -16,20 +16,20 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, targetEntity = Author.class)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Author.class)
     @JoinTable(
             name = "books_authors",
             joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "author_id")
     )
     private Set<Author> authors;
-    @OneToMany(mappedBy = "books", cascade = CascadeType.ALL, fetch = FetchType.EAGER, targetEntity = ReadBook.class)
+    @OneToMany(mappedBy = "books", cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = ReadBook.class)
     private Set<ReadBook> read_books;
-    @OneToMany(mappedBy = "books", cascade = CascadeType.ALL, fetch = FetchType.EAGER, targetEntity = IssuedBook.class)
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = IssuedBook.class)
     private Set<IssuedBook> issued_books;
-    @OneToMany(mappedBy = "books", cascade = CascadeType.ALL, fetch = FetchType.EAGER, targetEntity = Notification.class)
+    @OneToMany(mappedBy = "books", cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Notification.class)
     private Set<Notification> notification;
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, targetEntity = Genre.class)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Genre.class)
     @JoinTable(
             name = "books_genres",
             joinColumns = @JoinColumn(name = "book_id"),
@@ -58,7 +58,7 @@ public class Book {
     @Column(name = "table_of_content", columnDefinition = "varchar(255)")
     private String tableOfContent;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = Publisher.class)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, targetEntity = Publisher.class)
     @JoinColumn(name = "publisher_id", referencedColumnName = "id")
     private Publisher publisher;
 

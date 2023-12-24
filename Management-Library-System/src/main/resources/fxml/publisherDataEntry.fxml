@@ -21,8 +21,7 @@
                           prefWidth="315.0"/>
 
             <MFXButton fx:id="cancel" layoutX="188.0" layoutY="119.0" onAction="#cancel" prefHeight="25.0"
-                       prefWidth="103.0" style="-fx-background-radius: 0;" text="Cancel"
-                       xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+                       prefWidth="103.0" style="-fx-background-radius: 0;" text="Cancel">
                 <font>
                     <Font name="Segoe UI Semilight" size="18.0"/>
                 </font>

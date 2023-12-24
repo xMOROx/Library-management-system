@@ -23,9 +23,9 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @Column(name = "first_name", length = 100, nullable = false, columnDefinition = "VARCHAR(100)")
-    private String firstName;
+    private String firstname;
     @Column(name = "last_name", length = 100, nullable = false, columnDefinition = "VARCHAR(100)")
-    private String lastName;
+    private String lastname;
     @Column(name = "email", nullable = false, columnDefinition = "VARCHAR(255)")
     private String email;
     @Column(name = "password", nullable = false, columnDefinition = "VARCHAR(255)")
@@ -37,8 +37,8 @@ public class User {
     }
 
     public User(String first_name, String last_name, String email, String password, Permission permission) {
-        this.firstName = first_name;
-        this.lastName = last_name;
+        this.firstname = first_name;
+        this.lastname = last_name;
         this.email = email;
         this.password = password;
         this.permission = permission;

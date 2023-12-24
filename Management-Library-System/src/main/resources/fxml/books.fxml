@@ -98,7 +98,7 @@
                                     <Insets bottom="6.0" />
                                 </VBox.margin>
                                 <FontIcon fx:id="searchIcon" fill="#2b579a" iconLiteral="fas-search" iconSize="26" />
-                                <TextField fx:id="searchTextField" onKeyTyped="#searchBook" prefHeight="26.0" prefWidth="230.0" promptText="Search book" style="-fx-background-radius: 0;">
+                                <TextField fx:id="searchTextField" onKeyTyped="#searchData" prefHeight="26.0" prefWidth="230.0" promptText="Search book" style="-fx-background-radius: 0;">
                                     <HBox.margin>
                                         <Insets />
                                     </HBox.margin>

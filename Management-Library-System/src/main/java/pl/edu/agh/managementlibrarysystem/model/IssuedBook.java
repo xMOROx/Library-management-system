@@ -1,20 +1,22 @@
 package pl.edu.agh.managementlibrarysystem.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import pl.edu.agh.managementlibrarysystem.model.keys.IssuedBooksKey;
 
 import java.sql.Date;
 
 @Getter
 @Setter
+@Builder
 @Entity(name = "issued_books")
+@AllArgsConstructor
+@NoArgsConstructor
 public class IssuedBook {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @MapsId("book_id")
     @JoinColumn(name = "book_id")
-    private Book books;
+    private Book book;
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @MapsId("user_id")
     @JoinColumn(name = "user_id")
@@ -30,17 +32,5 @@ public class IssuedBook {
     private Date issuedDate;
     @Column(name = "returned_date", nullable = false, columnDefinition = "DATE")
     private Date returnedDate;
-
-    public IssuedBook(Book books, User user, int days, double fee, Date issued_date, Date returned_date) {
-        this.books = books;
-        this.user = user;
-        this.days = days;
-        this.fee = fee;
-        this.issuedDate = issued_date;
-        this.returnedDate = returned_date;
-    }
-
-    public IssuedBook() {
-    }
 
 }
