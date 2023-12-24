@@ -8,7 +8,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -46,7 +45,7 @@ public class MainStageController extends BaseController implements Initializable
     @FXML
     private MFXButton books;
     @FXML
-    private MFXButton students;
+    private MFXButton users;
     @FXML
     private MFXButton issuedBooks;
     @FXML
@@ -58,7 +57,7 @@ public class MainStageController extends BaseController implements Initializable
     @FXML
     private MFXButton closeButton;
     @FXML
-    private Label testLabel;
+    private MFXButton settings;
 
     @Autowired
     public MainStageController(ApplicationContext applicationContext) {
@@ -95,17 +94,15 @@ public class MainStageController extends BaseController implements Initializable
     @FXML
     private void loadBooksPanel(ActionEvent actionEvent) throws IOException {
         applicationContext.publishEvent(new BorderPaneReadyEvent(pane, new ClassPathResource("fxml/books.fxml")));
-
     }
 
     @FXML
-    private void loadStudentPanel(ActionEvent actionEvent) {
-
+    private void loadUserPanel(ActionEvent actionEvent) {
     }
 
     @FXML
     private void loadIssueBooksPanel(ActionEvent actionEvent) {
-
+        applicationContext.publishEvent(new BorderPaneReadyEvent(pane, new ClassPathResource("fxml/issueBook.fxml")));
     }
 
     @FXML

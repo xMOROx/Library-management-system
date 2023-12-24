@@ -41,8 +41,8 @@
                     <Insets left="1.0" right="1.0"/>
                 </VBox.margin>
             </MFXButton>
-            <MFXButton fx:id="students" alignment="CENTER" layoutX="10.0" layoutY="87.0" onAction="#loadStudentPanel"
-                       prefHeight="40.0" prefWidth="150.0" text="Students" textFill="WHITE">
+            <MFXButton fx:id="users" alignment="CENTER" layoutX="10.0" layoutY="87.0" onAction="#loadUserPanel"
+                       prefHeight="40.0" prefWidth="150.0" text="Users" textFill="WHITE">
                 <font>
                     <Font size="16.0"/>
                 </font>
