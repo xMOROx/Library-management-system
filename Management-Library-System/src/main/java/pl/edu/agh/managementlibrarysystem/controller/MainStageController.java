@@ -8,6 +8,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Control;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -22,6 +23,10 @@ import org.springframework.stereotype.Controller;
 import pl.edu.agh.managementlibrarysystem.controller.abstraction.BaseController;
 import pl.edu.agh.managementlibrarysystem.event.BorderPaneReadyEvent;
 import pl.edu.agh.managementlibrarysystem.event.OpenWindowEvent;
+import pl.edu.agh.managementlibrarysystem.model.User;
+import pl.edu.agh.managementlibrarysystem.model.util.Permission;
+import pl.edu.agh.managementlibrarysystem.service.UserService;
+import pl.edu.agh.managementlibrarysystem.session.UserSession;
 
 import java.io.IOException;
 import java.net.URL;
@@ -33,6 +38,7 @@ import java.util.ResourceBundle;
 public class MainStageController extends BaseController implements Initializable {
 
     public BorderPane pane;
+    public UserSession session;
 
     @FXML
     private BorderPane borderpane;
@@ -58,17 +64,46 @@ public class MainStageController extends BaseController implements Initializable
     private MFXButton closeButton;
     @FXML
     private MFXButton settings;
+    @FXML
+    private MFXButton addUser;
 
     @Autowired
-    public MainStageController(ApplicationContext applicationContext) {
+    public MainStageController(ApplicationContext applicationContext, UserSession session) {
         this.applicationContext = applicationContext;
+        this.session = session;
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         pane = borderpane;
+        initializeStageOptions();
         back.setTooltip(new Tooltip("Logout"));
+
     }
+    private void initializeStageOptions(){
+        if(session.getLoggedUser()==null){
+            return;
+        }
+        User u = session.getLoggedUser();
+        System.out.println("lol");
+        System.out.println(u.getPermission() == Permission.NORMAL_USER);
+        if(u.getPermission() == Permission.NORMAL_USER){
+            hideControl(users);
+            hideControl(issuedBooks);
+            hideControl(returnBooks);
+            hideControl(addUser);
+
+        }
+    }
+    private void hideControl(Control control){
+        control.managedProperty().set(false);
+        control.visibleProperty().set(false);
+    }
+    private void showControl(Control control){
+        control.managedProperty().set(true);
+        control.visibleProperty().set(true);
+    }
+
 
     @FXML
     private void stageDragged(MouseEvent mouseEvent) {
@@ -139,4 +174,7 @@ public class MainStageController extends BaseController implements Initializable
     }
 
 
+    public void addUserPanel(ActionEvent actionEvent) {
+        applicationContext.publishEvent(new BorderPaneReadyEvent(pane, new ClassPathResource("fxml/addOtherUser.fxml")));
+    }
 }

@@ -13,6 +13,7 @@ import pl.edu.agh.managementlibrarysystem.model.util.Permission;
 import pl.edu.agh.managementlibrarysystem.repository.IssuedBooksRepository;
 import pl.edu.agh.managementlibrarysystem.repository.ReadBooksRepository;
 import pl.edu.agh.managementlibrarysystem.repository.UserRepository;
+import pl.edu.agh.managementlibrarysystem.session.UserSession;
 import pl.edu.agh.managementlibrarysystem.utils.Alerts;
 
 import java.util.Optional;
@@ -27,13 +28,19 @@ public class UserService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
-    @Getter
-    private User loggedUser;
+    @Autowired
+    private UserSession session;
 
     @Transactional
-    public Optional<User> addNormalUser(String name, String surname, String email, String password) {
+    public Optional<User> addUser(String name, String surname, String email, String password, Permission permission) {
+        Optional<User> potentialDuplicate = repository.findByEmail(email);
+        if(potentialDuplicate.isPresent()){
+            Alerts.showErrorAlert("Incorrect Email.","User with email "+email+" is already signed up");
+            return Optional.empty();
+        }
         String encodedPassword = passwordEncoder.encode(password);
-        User u = new User(name, surname, email, encodedPassword, Permission.NORMAL_USER);
+        User u = new User(name, surname, email, encodedPassword, permission);
+        Alerts.showInformationAlert("User added.","User added succsesfully");
         return Optional.of(repository.save(u));
     }
     @Transactional
@@ -52,6 +59,7 @@ public class UserService {
             Alerts.showErrorAlert("Password incorrect.","Password incorrect");
             return Optional.empty();
         }
+        session.setLoggedUser(userOptional.get());
         return userOptional;
 
     }
