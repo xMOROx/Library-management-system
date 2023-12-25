@@ -27,6 +27,7 @@ import pl.edu.agh.managementlibrarysystem.model.User;
 import pl.edu.agh.managementlibrarysystem.model.util.Permission;
 import pl.edu.agh.managementlibrarysystem.service.UserService;
 import pl.edu.agh.managementlibrarysystem.session.UserSession;
+import pl.edu.agh.managementlibrarysystem.utils.ControlsUtils;
 
 import java.io.IOException;
 import java.net.URL;
@@ -85,23 +86,10 @@ public class MainStageController extends BaseController implements Initializable
             return;
         }
         User u = session.getLoggedUser();
-        System.out.println("lol");
-        System.out.println(u.getPermission() == Permission.NORMAL_USER);
         if(u.getPermission() == Permission.NORMAL_USER){
-            hideControl(users);
-            hideControl(issuedBooks);
-            hideControl(returnBooks);
-            hideControl(addUser);
-
+            users.setText("Profile");
+            ControlsUtils.changeControlVisibility(addUser,false);
         }
-    }
-    private void hideControl(Control control){
-        control.managedProperty().set(false);
-        control.visibleProperty().set(false);
-    }
-    private void showControl(Control control){
-        control.managedProperty().set(true);
-        control.visibleProperty().set(true);
     }
 
 
@@ -116,6 +104,7 @@ public class MainStageController extends BaseController implements Initializable
 
     @FXML
     private void logout(ActionEvent actionEvent) {
+        session.setLoggedUser(null);
         applicationContext
                 .publishEvent(new OpenWindowEvent((Stage) ((Node) actionEvent.getSource()).getScene().getWindow(),
                         new ClassPathResource("fxml/login.fxml")));

@@ -50,6 +50,7 @@ public class BookService {
                 .toList();
     }
 
+
     @Transactional
     public Integer getSumOfAllBooks() {
         return this.bookRepository.sumOfAllBooks();
@@ -68,6 +69,15 @@ public class BookService {
                 .map(this.issuedBookMapper::mapToDto)
                 .toList();
     }
+    @Transactional
+    public List<IssuedBookDTO> getIssuedBooksByUserId(Long id) {
+        List<IssuedBook> issuedBooks = this.issuedBooksRepository.findByUserId(id);
+        return issuedBooks
+                .stream()
+                .map(this.issuedBookMapper::mapToDto)
+                .toList();
+    }
+
 
     @Transactional
     public void updateFee() {

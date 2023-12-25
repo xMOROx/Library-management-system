@@ -5,11 +5,13 @@ import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
@@ -25,7 +27,11 @@ import pl.edu.agh.managementlibrarysystem.enums.BorderpaneFields;
 import pl.edu.agh.managementlibrarysystem.event.BorderPaneReadyEvent;
 import pl.edu.agh.managementlibrarysystem.event.SetItemToBorderPaneEvent;
 import pl.edu.agh.managementlibrarysystem.event.fxml.LeavingBorderPaneEvent;
+import pl.edu.agh.managementlibrarysystem.model.User;
+import pl.edu.agh.managementlibrarysystem.model.util.Permission;
 import pl.edu.agh.managementlibrarysystem.service.BookService;
+import pl.edu.agh.managementlibrarysystem.session.UserSession;
+import pl.edu.agh.managementlibrarysystem.utils.ControlsUtils;
 import pl.edu.agh.managementlibrarysystem.utils.TaskFactory;
 
 import java.net.URL;
@@ -36,6 +42,7 @@ import java.util.ResourceBundle;
 public class BookController extends ControllerWithTableView<BookDTO> implements Initializable {
 
     private final BookService bookService;
+    private final UserSession session;
 
     @FXML
     private FontIcon searchIcon;
@@ -79,14 +86,16 @@ public class BookController extends ControllerWithTableView<BookDTO> implements 
 
 
     @Autowired
-    public BookController(ApplicationContext applicationContext, BookService bookService) {
+    public BookController(ApplicationContext applicationContext, BookService bookService, UserSession session) {
         this.applicationContext = applicationContext;
         this.bookService = bookService;
+        this.session = session;
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         super.initialize(location, resources);
+        initializeStageOptions();
         this.createNewTask(50, 20);
         this.loadDataEntryButton.disableProperty().setValue(true);
 
@@ -111,7 +120,16 @@ public class BookController extends ControllerWithTableView<BookDTO> implements 
             }
         });
     }
-
+    private void initializeStageOptions(){
+        if(session.getLoggedUser()==null){
+            return;
+        }
+        User u = session.getLoggedUser();
+        if(u.getPermission() == Permission.NORMAL_USER){
+            ControlsUtils.changeControlVisibility(loadDataEntryButton,false);
+            tableView.addEventFilter(ContextMenuEvent.CONTEXT_MENU_REQUESTED, Event::consume);
+        }
+    }
     @Override
     protected void initializeColumns() {
         bookISBN.setCellValueFactory(new PropertyValueFactory<>("isbn"));
