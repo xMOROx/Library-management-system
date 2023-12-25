@@ -38,7 +38,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-mail'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+
     implementation 'org.openjfx:javafx:16'
     implementation group: 'io.github.palexdev', name: 'materialfx', version: '11.17.0'
     implementation 'org.kordamp.ikonli:ikonli-javafx:12.3.1'

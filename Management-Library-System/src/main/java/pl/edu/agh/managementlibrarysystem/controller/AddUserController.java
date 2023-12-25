@@ -78,7 +78,7 @@ public class AddUserController extends BaseController implements Initializable {
 
     @FXML
     public void addClicked(MouseEvent mouseEvent) {
-        this.userService.addUser(name.getText(), surname.getText(), email.getText(), password.getText());
+        this.userService.addNormalUser(name.getText(), surname.getText(), email.getText(), password.getText());
         clearFields();
         Alert alert = new Alert(Alert.AlertType.NONE, "User added successfully", ButtonType.OK);
         alert.showAndWait()
