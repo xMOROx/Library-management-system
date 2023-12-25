@@ -12,11 +12,11 @@ public class ReadBook {
     @EmbeddedId
     private readBooksKey id;
     @ManyToOne
-    @MapsId("book_id")
+    @MapsId("bookId")
     @JoinColumn(name = "book_id")
     private Book books;
     @ManyToOne
-    @MapsId("user_id")
+    @MapsId("userId")
     @JoinColumn(name = "user_id")
     private User user;
     @Column(name = "review", length = 1000, columnDefinition = "TEXT")

@@ -15,11 +15,11 @@ public class Notification {
     @EmbeddedId
     private notificationKey id;
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @MapsId("book_id")
+    @MapsId("bookId")
     @JoinColumn(name = "book_id")
     private Book books;
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @MapsId("user_id")
+    @MapsId("userId")
     @JoinColumn(name = "user_id")
     private User user;
     @Column(name = "sending_date", nullable = false, columnDefinition = "DATE")

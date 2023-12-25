@@ -1,6 +1,5 @@
 package pl.edu.agh.managementlibrarysystem.controller.abstraction;
 
-import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ProgressBar;
@@ -9,6 +8,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import java.net.URL;
@@ -32,6 +32,10 @@ public abstract class ControllerWithTableView<T> extends ResizeableBaseControlle
     protected TableView<T> tableView;
 
     protected List<T> data;
+
+    public ControllerWithTableView(ApplicationContext applicationContext) {
+        super(applicationContext);
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

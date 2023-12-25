@@ -12,11 +12,11 @@ import pl.edu.agh.managementlibrarysystem.utils.Alerts;
 import java.util.Optional;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class GenresService {
     private final GenresRepository genreRepository;
 
-    @Transactional
     public ObservableList<String> getAllGenres() {
         return FXCollections.observableList(
                 this.genreRepository.findAll()
@@ -26,7 +26,6 @@ public class GenresService {
         );
     }
 
-    @Transactional
     public ObservableList<String> getMainGenres() {
         return FXCollections.observableList(
                 this.genreRepository.findAllMainGenres()
@@ -36,7 +35,6 @@ public class GenresService {
         );
     }
 
-    @Transactional
     public boolean saveGenre(Genre genre) {
         String genreType = genre.getGenre();
 
@@ -63,7 +61,6 @@ public class GenresService {
 
     }
 
-    @Transactional
     public Genre getGenreByType(String value) {
         return this.genreRepository.findByType(value).orElse(null);
     }

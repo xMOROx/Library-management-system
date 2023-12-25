@@ -15,7 +15,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 import lombok.RequiredArgsConstructor;
 import org.kordamp.ikonli.javafx.FontIcon;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
@@ -32,7 +31,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 @Controller
-@RequiredArgsConstructor
 public class BookController extends ControllerWithTableView<BookDTO> implements Initializable {
 
     private final BookService bookService;
@@ -78,9 +76,8 @@ public class BookController extends ControllerWithTableView<BookDTO> implements 
     private TableColumn<BookDTO, String> availability;
 
 
-    @Autowired
     public BookController(ApplicationContext applicationContext, BookService bookService) {
-        this.applicationContext = applicationContext;
+        super(applicationContext);
         this.bookService = bookService;
     }
 

@@ -9,7 +9,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import pl.edu.agh.managementlibrarysystem.DTO.IssuedBookDTO;
 import pl.edu.agh.managementlibrarysystem.controller.abstraction.ControllerWithTableView;
@@ -20,7 +21,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 @Controller
-@RequiredArgsConstructor
 public class IssuedBookController extends ControllerWithTableView<IssuedBookDTO> implements Initializable {
 
     private final BookService bookService;
@@ -43,6 +43,12 @@ public class IssuedBookController extends ControllerWithTableView<IssuedBookDTO>
     private TableColumn<IssuedBookDTO, Integer> days;
     @FXML
     private TableColumn<IssuedBookDTO, Integer> fee;
+
+    @Autowired
+    public IssuedBookController(ApplicationContext applicationContext, BookService bookService) {
+        super(applicationContext);
+        this.bookService = bookService;
+    }
 
 
     @Override

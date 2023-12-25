@@ -17,9 +17,9 @@ public class notificationKey implements Serializable {
     private static final long serialVersionUID = 151313298798L;
 
     @Column(name = "book_id")
-    private Long book_id;
+    private Long bookId;
     @Column(name = "user_id")
-    private Long user_id;
+    private Long userId;
 
     public notificationKey() {
     }
@@ -29,11 +29,11 @@ public class notificationKey implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         notificationKey that = (notificationKey) o;
-        return Objects.equals(book_id, that.book_id) && Objects.equals(user_id, that.user_id);
+        return Objects.equals(bookId, that.bookId) && Objects.equals(userId, that.userId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(book_id, user_id);
+        return Objects.hash(bookId, userId);
     }
 }

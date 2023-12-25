@@ -7,7 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
-import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import pl.edu.agh.managementlibrarysystem.DTO.BookDTO;
 import pl.edu.agh.managementlibrarysystem.DTO.UserDTO;
@@ -20,7 +20,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 @Controller
-@RequiredArgsConstructor
 public class IssueBookController extends ResizeableBaseController implements Initializable {
     private final BookService bookService;
     private final UserService userService;
@@ -48,6 +47,12 @@ public class IssueBookController extends ResizeableBaseController implements Ini
 
     private BookDTO book;
     private UserDTO user;
+
+    public IssueBookController(ApplicationContext applicationContext, BookService bookService, UserService userService) {
+        super(applicationContext);
+        this.bookService = bookService;
+        this.userService = userService;
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -135,7 +140,7 @@ public class IssueBookController extends ResizeableBaseController implements Ini
 
     @FXML
     private void issueBook(ActionEvent actionEvent) {
-        if (this.bookService.checkIfUserHasBook(user)) {
+        if (this.bookService.checkIfUserHasGivenBook(user, book)) {
             Alerts.showErrorAlert("User already has book", "User with given id " + user.getId() + " already has book");
             return;
         }

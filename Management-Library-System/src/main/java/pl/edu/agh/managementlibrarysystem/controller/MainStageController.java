@@ -13,8 +13,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.io.ClassPathResource;
@@ -29,7 +27,6 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 @Controller
-@RequiredArgsConstructor
 public class MainStageController extends BaseController implements Initializable {
 
     public BorderPane pane;
@@ -59,9 +56,8 @@ public class MainStageController extends BaseController implements Initializable
     @FXML
     private MFXButton settings;
 
-    @Autowired
     public MainStageController(ApplicationContext applicationContext) {
-        this.applicationContext = applicationContext;
+        super(applicationContext);
     }
 
     @Override
@@ -107,7 +103,7 @@ public class MainStageController extends BaseController implements Initializable
 
     @FXML
     private void loadReturnBooksPanel(ActionEvent actionEvent) {
-
+        applicationContext.publishEvent(new BorderPaneReadyEvent(pane, new ClassPathResource("fxml/returnBook.fxml")));
     }
 
     @FXML

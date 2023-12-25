@@ -13,9 +13,9 @@ import pl.edu.agh.managementlibrarysystem.repository.*;
 import pl.edu.agh.managementlibrarysystem.utils.Alerts;
 
 import java.util.List;
-import java.util.Objects;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class BookService {
     private final BookRepository bookRepository;
@@ -27,7 +27,6 @@ public class BookService {
     private final Mapper<Book, BookDTO> bookMapper;
     private final Mapper<IssuedBook, IssuedBookDTO> issuedBookMapper;
 
-    @Transactional
     public boolean saveBook(BookDTO bookDTO, String authorName, String authorLastname, String publisherName, String genreType) {
         String isbn = bookDTO.getIsbn();
         Book book = this.bookMapper.mapToEntity(bookDTO);
@@ -41,7 +40,6 @@ public class BookService {
         return this.bookRepository.saveNewBookWithGivenParams(book, authorName, authorLastname, publisherName, genreType).isPresent();
     }
 
-    @Transactional
     public List<BookDTO> getBooks() {
         List<Book> books = this.bookRepository.findAll();
         return books
@@ -50,46 +48,62 @@ public class BookService {
                 .toList();
     }
 
-    @Transactional
     public Integer getSumOfAllBooks() {
         return this.bookRepository.sumOfAllBooks();
     }
 
-    @Transactional
     public Integer getSumOfAllRemainingBooks() {
         return this.bookRepository.sumOfAllRemainingBooks();
     }
 
-    @Transactional
     public List<IssuedBookDTO> getIssuedBooks() {
-        List<IssuedBook> issuedBooks = this.issuedBooksRepository.findAll();
+        List<IssuedBook> issuedBooks = this.issuedBooksRepository.findAllUpToDate();
         return issuedBooks
                 .stream()
                 .map(this.issuedBookMapper::mapToDto)
                 .toList();
     }
 
-    @Transactional
     public void updateFee() {
         this.issuedBooksRepository.updateFee();
     }
 
-    @Transactional
     public BookDTO findByISBN(String bookISBN) {
         return this.bookRepository.findByIsbn(bookISBN)
                 .map(this.bookMapper::mapToDto)
                 .orElse(null);
     }
 
-    @Transactional
-    public boolean checkIfUserHasBook(UserDTO user) {
-        return this.issuedBooksRepository.findByUserId(user.getId())
-                .stream()
-                .anyMatch(Objects::nonNull);
+    public boolean checkIfUserHasGivenBook(UserDTO user, BookDTO book) {
+        return this.issuedBooksRepository.findByUserIdAndBookIsbn(user.getId(), book.getIsbn()).isPresent();
     }
 
-    @Transactional
     public void issueBook(BookDTO book, UserDTO user, Integer days) {
         this.issuedBooksRepository.issueBook(book.getIsbn(), user.getId(), days);
+    }
+
+    public IssuedBookDTO getIssuedBookById(Long bookId, Long userId) {
+
+        return this.issuedBooksRepository.findByBookIdAndUserId(bookId, userId)
+                .map(this.issuedBookMapper::mapToDto)
+                .orElse(null);
+    }
+
+    public boolean renewBook(Long bookId, Long userId, int numberOfDaysToRenew) {
+        try {
+            this.issuedBooksRepository.renewBook(bookId, userId, numberOfDaysToRenew);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public boolean returnBook(Long bookId, Long userId) {
+        try {
+            this.issuedBooksRepository.returnBook(bookId, userId);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 }

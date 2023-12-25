@@ -14,6 +14,7 @@ import pl.edu.agh.managementlibrarysystem.repository.UserRepository;
 import java.util.Optional;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository repository;
@@ -21,13 +22,12 @@ public class UserService {
     private final ReadBooksRepository readBooksRepository;
     private final Mapper<User, UserDTO> userMapper;
 
-    @Transactional
     public Optional<User> addUser(String name, String surname, String email, String password) {
 
         User u = new User(name, surname, email, password, Permission.NORMAL_USER);
         return Optional.of(repository.save(u));
     }
-    @Transactional
+
     public UserDTO findById(long l) {
         return repository.findById(l).map(this.userMapper::mapToDto).orElse(null);
     }

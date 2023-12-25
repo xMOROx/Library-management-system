@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import pl.edu.agh.managementlibrarysystem.repository.SettingsRepository;
 
+import java.util.Date;
+
 @Component
 @RequiredArgsConstructor
 public class IssuedBooksRepositoryImpl {
@@ -28,8 +30,35 @@ public class IssuedBooksRepositoryImpl {
         double feePerDay = Double.parseDouble(settingsRepository.getSettingValueWithGivenName("fee_per_day"));
 
         String query = "INSERT INTO issued_books (days, fee, user_id, book_id, issued_date, returned_date) " +
-                "VALUES (" + days + "," + feePerDay + " ," + id + ", (SELECT id FROM books WHERE isbn = '" + isbn + "'), CURRENT_DATE, CURRENT_DATE + INTERVAL " + days + " DAY)";
+                "VALUES (" + days + "," + feePerDay + " ," + id + ", (SELECT id FROM books WHERE isbn = '" + isbn + "'), CURRENT_DATE, NULL)";
 
         entityManager.createNativeQuery(query).executeUpdate();
     }
+
+    @Transactional
+    public void renewBook(Long bookId, Long userId, int numberOfDaysToRenew) {
+        String query = "UPDATE issued_books ib SET ib.days = ib.days + ?1 WHERE ib.book_id = ?2 AND ib.user_id = ?3";
+        entityManager.createNativeQuery(query)
+                .setParameter(1, numberOfDaysToRenew)
+                .setParameter(2, bookId)
+                .setParameter(3, userId)
+                .executeUpdate();
+    }
+
+    @Transactional
+    public void returnBook(Long bookId, Long userId) {
+        Date issuedDate = (Date) entityManager.createNativeQuery("SELECT ib.issued_date FROM issued_books ib WHERE ib.book_id = ?1 AND ib.user_id = ?2")
+                .setParameter(1, bookId)
+                .setParameter(2, userId)
+                .getSingleResult();
+
+        int numberOfTotalIssuedDays = (int) ((new Date().getTime() - issuedDate.getTime()) / (1000 * 60 * 60 * 24));
+
+        String query = "UPDATE issued_books ib SET ib.returned_date = CURRENT_DATE, ib.days = " + numberOfTotalIssuedDays + " WHERE ib.book_id = ?1 AND ib.user_id = ?2";
+        entityManager.createNativeQuery(query)
+                .setParameter(1, bookId)
+                .setParameter(2, userId)
+                .executeUpdate();
+    }
+
 }

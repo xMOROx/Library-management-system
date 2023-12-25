@@ -25,4 +25,9 @@ public class Alerts extends Alert {
         Alert alert = new Alerts(AlertType.INFORMATION, title, null, s);
         alert.showAndWait();
     }
+
+    public static void showSuccessAlert(String title, String content) {
+        Alert alert = new Alerts(AlertType.INFORMATION, title, null, content);
+        alert.showAndWait();
+    }
 }

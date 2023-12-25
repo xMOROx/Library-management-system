@@ -17,8 +17,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Controller;
-import pl.edu.agh.managementlibrarysystem.event.OpenWindowEvent;
 import pl.edu.agh.managementlibrarysystem.controller.abstraction.BaseController;
+import pl.edu.agh.managementlibrarysystem.event.OpenWindowEvent;
 import pl.edu.agh.managementlibrarysystem.service.UserService;
 
 import java.net.URL;
@@ -28,10 +28,8 @@ import java.util.regex.Pattern;
 
 
 @Controller
-
 public class AddUserController extends BaseController implements Initializable {
 
-    private final ApplicationContext applicationContext;
     private final UserService userService;
     private final Resource backWindow;
     private final Pattern patternEmail;
@@ -63,7 +61,7 @@ public class AddUserController extends BaseController implements Initializable {
 
     public AddUserController(@Value("classpath:/fxml/login.fxml") Resource backWindow,
                              ApplicationContext applicationContext, UserService userService) {
-        this.applicationContext = applicationContext;
+        super(applicationContext);
         this.backWindow = backWindow;
         this.patternEmail = Pattern.compile(".+@.+\\..+", Pattern.CASE_INSENSITIVE);
         this.userService = userService;

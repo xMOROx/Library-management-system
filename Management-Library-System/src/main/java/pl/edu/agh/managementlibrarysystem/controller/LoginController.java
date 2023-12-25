@@ -21,9 +21,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Controller;
+import pl.edu.agh.managementlibrarysystem.controller.abstraction.BaseController;
 import pl.edu.agh.managementlibrarysystem.event.MainAppReadyEvent;
 import pl.edu.agh.managementlibrarysystem.event.OpenWindowEvent;
-import pl.edu.agh.managementlibrarysystem.controller.abstraction.BaseController;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -52,7 +52,7 @@ public class LoginController extends BaseController implements Initializable {
 
     public LoginController(@Value("classpath:/fxml/create-user.fxml") Resource createUserFxml,
                            ApplicationContext applicationContext) {
-        this.applicationContext = applicationContext;
+        super(applicationContext);
         this.createUserFxml = createUserFxml;
     }
 
