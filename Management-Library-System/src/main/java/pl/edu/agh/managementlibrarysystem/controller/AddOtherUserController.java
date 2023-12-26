@@ -12,13 +12,9 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.stage.Stage;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Controller;
 import pl.edu.agh.managementlibrarysystem.controller.abstraction.BaseController;
-import pl.edu.agh.managementlibrarysystem.event.OpenWindowEvent;
 import pl.edu.agh.managementlibrarysystem.model.util.Permission;
 import pl.edu.agh.managementlibrarysystem.service.UserService;
 
@@ -28,11 +24,16 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Controller
-public class AddUserController extends BaseController implements Initializable {
+public class AddOtherUserController extends BaseController implements Initializable {
 
+    private final ApplicationContext applicationContext;
     private final UserService userService;
-    private final Resource backWindow;
     private final Pattern patternEmail;
+
+    @FXML
+    public MFXButton addLibrarian;
+    @FXML
+    public MFXButton  addAdmin;
 
     @FXML
     private TextField name;
@@ -59,10 +60,8 @@ public class AddUserController extends BaseController implements Initializable {
     private BooleanProperty passwordBool;
     private BooleanProperty repeatPasswordBool;
 
-    public AddUserController(@Value("classpath:/fxml/login.fxml") Resource backWindow,
-            ApplicationContext applicationContext, UserService userService) {
-        super(applicationContext);
-        this.backWindow = backWindow;
+    public AddOtherUserController(ApplicationContext applicationContext, UserService userService) {
+        this.applicationContext = applicationContext;
         this.patternEmail = Pattern.compile(".+@.+\\..+", Pattern.CASE_INSENSITIVE);
         this.userService = userService;
     }
@@ -75,15 +74,21 @@ public class AddUserController extends BaseController implements Initializable {
     }
 
     @FXML
-    public void addClicked(MouseEvent mouseEvent) {
-        this.userService.addUser(name.getText(), surname.getText(), email.getText(), password.getText(),
-                Permission.NORMAL_USER);
+    public void addUserClicked(MouseEvent mouseEvent) {
+        this.userService.addUser(name.getText(), surname.getText(), email.getText(), password.getText(),Permission.NORMAL_USER);
         clearFields();
-        Alert alert = new Alert(Alert.AlertType.NONE, "User added successfully", ButtonType.OK);
-        alert.showAndWait()
-                .filter(response -> response == ButtonType.OK)
-                .ifPresent(response -> applicationContext.publishEvent(new OpenWindowEvent(
-                        (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow(), backWindow)));
+//        alert.showAndWait()
+//                .filter(response -> response == ButtonType.OK)
+//                .ifPresent(response -> applicationContext.publishEvent(new OpenWindowEvent((Stage) ((Node) mouseEvent.getSource()).getScene().getWindow(), backWindow)));
+    }
+    public void addAdminClicked(MouseEvent mouseEvent){
+        this.userService.addUser(name.getText(), surname.getText(), email.getText(), password.getText(),Permission.ADMIN);
+        clearFields();
+
+    }
+    public void addLibrarianClicked(MouseEvent mouseEvent){
+        this.userService.addUser(name.getText(), surname.getText(), email.getText(), password.getText(), Permission.LIBRARIAN);
+        clearFields();
     }
 
     private void clearFields() {
@@ -94,11 +99,7 @@ public class AddUserController extends BaseController implements Initializable {
         repeatPassword.clear();
     }
 
-    @FXML
-    public void cancelClicked(MouseEvent mouseEvent) {
-        applicationContext.publishEvent(
-                new OpenWindowEvent((Stage) ((Node) mouseEvent.getSource()).getScene().getWindow(), backWindow));
-    }
+
 
     @FXML
     public void keyTyped() {
@@ -136,11 +137,12 @@ public class AddUserController extends BaseController implements Initializable {
         this.passwordBool = new SimpleBooleanProperty(false);
         this.repeatPasswordBool = new SimpleBooleanProperty(false);
 
-        this.addUser.disableProperty()
-                .bind(Bindings.createBooleanBinding(
-                        () -> !(nameBool.get() && surnameBool.get() && emailBool.get() && passwordBool.get()
-                                && repeatPasswordBool.get()),
-                        nameBool, surnameBool, emailBool, passwordBool, repeatPasswordBool));
+        this.addUser.disableProperty().bind(Bindings.createBooleanBinding(() -> !(nameBool.get() && surnameBool.get() && emailBool.get() && passwordBool.get() && repeatPasswordBool.get())
+                , nameBool, surnameBool, emailBool, passwordBool, repeatPasswordBool));
+        this.addLibrarian.disableProperty().bind(Bindings.createBooleanBinding(() -> !(nameBool.get() && surnameBool.get() && emailBool.get() && passwordBool.get() && repeatPasswordBool.get())
+                , nameBool, surnameBool, emailBool, passwordBool, repeatPasswordBool));
+        this.addAdmin.disableProperty().bind(Bindings.createBooleanBinding(() -> !(nameBool.get() && surnameBool.get() && emailBool.get() && passwordBool.get() && repeatPasswordBool.get())
+                , nameBool, surnameBool, emailBool, passwordBool, repeatPasswordBool));
 
         validateName(nameBool, name);
 
@@ -164,22 +166,25 @@ public class AddUserController extends BaseController implements Initializable {
             String text = name.textProperty().get();
             if (text.length() < 2) {
                 return false;
-            } else
-                return text.toUpperCase().charAt(0) == text.charAt(0);
+            } else return text.toUpperCase().charAt(0) == text.charAt(0);
 
         }, name.textProperty()));
     }
 
     private void validatePassword() {
-        passwordBool
-                .bind(Bindings.createBooleanBinding(() -> password.getText().length() >= 8, password.textProperty()));
+        passwordBool.bind(Bindings.createBooleanBinding(() -> password.getText().length() >= 8, password.textProperty()));
 
-        repeatPasswordBool.bind(Bindings.createBooleanBinding(() -> password.getText().equals(repeatPassword.getText()),
-                repeatPassword.textProperty(), password.textProperty()));
+        repeatPasswordBool.bind(Bindings.createBooleanBinding(() -> password.getText().equals(repeatPassword.getText()), repeatPassword.textProperty(), password.textProperty()));
         name.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue) {
 
             }
         });
+    }
+
+    public void fullscreen(MouseEvent mouseEvent) {
+    }
+
+    public void unfullscreen(MouseEvent mouseEvent) {
     }
 }

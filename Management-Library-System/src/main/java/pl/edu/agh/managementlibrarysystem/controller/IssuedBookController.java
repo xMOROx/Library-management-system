@@ -14,7 +14,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import pl.edu.agh.managementlibrarysystem.DTO.IssuedBookDTO;
 import pl.edu.agh.managementlibrarysystem.controller.abstraction.ControllerWithTableView;
+import pl.edu.agh.managementlibrarysystem.model.util.Permission;
 import pl.edu.agh.managementlibrarysystem.service.BookService;
+import pl.edu.agh.managementlibrarysystem.session.UserSession;
 import pl.edu.agh.managementlibrarysystem.utils.TaskFactory;
 
 import java.net.URL;
@@ -24,6 +26,7 @@ import java.util.ResourceBundle;
 public class IssuedBookController extends ControllerWithTableView<IssuedBookDTO> implements Initializable {
 
     private final BookService bookService;
+    private final UserSession session;
 
     @FXML
     private TableColumn<IssuedBookDTO, String> issuedID;
@@ -125,7 +128,13 @@ public class IssuedBookController extends ControllerWithTableView<IssuedBookDTO>
 
     @Override
     protected void loadData() {
-        data = this.bookService.getIssuedBooks();
+        if(session.getLoggedUser().getPermission() == Permission.NORMAL_USER){
+            data = this.bookService.getIssuedBooksByUserId(session.getLoggedUser().getId());
+        }
+        else{
+            data = this.bookService.getIssuedBooks();
+        }
+
         this.tableView.getItems().clear();
         this.tableView.getItems().addAll(data);
     }

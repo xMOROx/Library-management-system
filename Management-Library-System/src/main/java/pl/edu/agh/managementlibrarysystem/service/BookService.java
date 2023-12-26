@@ -27,17 +27,18 @@ public class BookService {
     private final Mapper<Book, BookDTO> bookMapper;
     private final Mapper<IssuedBook, IssuedBookDTO> issuedBookMapper;
 
-    public boolean saveBook(BookDTO bookDTO, String authorName, String authorLastname, String publisherName, String genreType) {
+    public boolean saveBook(BookDTO bookDTO, String authorName, String authorLastname, String publisherName,
+            String genreType) {
         String isbn = bookDTO.getIsbn();
         Book book = this.bookMapper.mapToEntity(bookDTO);
-
 
         if (this.bookRepository.findByIsbn(isbn).isPresent()) {
             Alerts.showErrorAlert("Book already exist", "Book with given isbn " + isbn + " already exists");
             return false;
         }
 
-        return this.bookRepository.saveNewBookWithGivenParams(book, authorName, authorLastname, publisherName, genreType).isPresent();
+        return this.bookRepository
+                .saveNewBookWithGivenParams(book, authorName, authorLastname, publisherName, genreType).isPresent();
     }
 
     public List<BookDTO> getBooks() {
@@ -48,6 +49,7 @@ public class BookService {
                 .toList();
     }
 
+    @Transactional
     public Integer getSumOfAllBooks() {
         return this.bookRepository.sumOfAllBooks();
     }
@@ -58,6 +60,15 @@ public class BookService {
 
     public List<IssuedBookDTO> getIssuedBooks() {
         List<IssuedBook> issuedBooks = this.issuedBooksRepository.findAllUpToDate();
+        return issuedBooks
+                .stream()
+                .map(this.issuedBookMapper::mapToDto)
+                .toList();
+    }
+
+    @Transactional
+    public List<IssuedBookDTO> getIssuedBooksByUserId(Long id) {
+        List<IssuedBook> issuedBooks = this.issuedBooksRepository.findByUserId(id);
         return issuedBooks
                 .stream()
                 .map(this.issuedBookMapper::mapToDto)
