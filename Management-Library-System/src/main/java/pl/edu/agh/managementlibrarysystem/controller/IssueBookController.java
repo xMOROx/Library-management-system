@@ -101,7 +101,6 @@ public class IssueBookController extends ResizeableBaseController implements Ini
         String bookISBN = bookSearchField.getText();
         if (bookISBN.isEmpty()) {
             errorISBNMessage.setValue("Book ISBN field is empty!");
-//            Alerts.showInformationAlert("Field validation", "Book ISBN field is empty!");
             return;
         }
 
@@ -109,13 +108,11 @@ public class IssueBookController extends ResizeableBaseController implements Ini
 
         if (book == null) {
             errorISBNMessage.setValue("Book with given ISBN does not exist!");
-//            Alerts.showErrorAlert("Book not found", "Book with given ISBN does not exist!");
             return;
         }
 
         if (book.getAvailability().equals("Not available")) {
             errorISBNMessage.setValue("Book with given ISBN is not available!");
-//            Alerts.showErrorAlert("Book not available", "Book with given ISBN is not available!");
             return;
         }
         errorISBNMessage.setValue("");
@@ -141,15 +138,13 @@ public class IssueBookController extends ResizeableBaseController implements Ini
         String userId = userSearchTextField.getText();
         if (userId.isEmpty()) {
             errorUserMessage.setValue("User ID field is empty!");
-//            Alerts.showInformationAlert("Field validation", "User ID field is empty!");
             return;
         }
         this.userId = Long.parseLong(userId);
         user = userService.findById(this.userId);
-//        System.out.println(user.getId());
+
         if (user == null) {
             errorUserMessage.setValue("User with given ID does not exist!");
-//            Alerts.showErrorAlert("User not found", "User with given ID does not exist!");
             return;
         }
         setUserControls(user);
@@ -161,7 +156,6 @@ public class IssueBookController extends ResizeableBaseController implements Ini
         String numberOfDays = numberOfDaysTextField.getText();
         if (numberOfDays.isEmpty()) {
             errorUserMessage.setValue("Number of days field is empty!");
-//            Alerts.showInformationAlert("Field validation", "Number of days field is empty!");
             return;
         }
 
@@ -169,7 +163,6 @@ public class IssueBookController extends ResizeableBaseController implements Ini
             Integer.parseInt(numberOfDays);
         } catch (NumberFormatException e) {
             errorUserMessage.setValue("Number of days field must be a number!");
-//            Alerts.showErrorAlert("Field validation", "Number of days field must be a number!");
         }
 
         if (book != null && user != null) {
