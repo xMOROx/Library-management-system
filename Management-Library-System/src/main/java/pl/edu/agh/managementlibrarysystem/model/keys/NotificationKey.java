@@ -12,7 +12,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @Embeddable
-public class notificationKey implements Serializable {
+public class NotificationKey implements Serializable {
     @Serial
     private static final long serialVersionUID = 151313298798L;
 
@@ -21,14 +21,14 @@ public class notificationKey implements Serializable {
     @Column(name = "user_id")
     private Long user_id;
 
-    public notificationKey() {
+    public NotificationKey() {
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        notificationKey that = (notificationKey) o;
+        NotificationKey that = (NotificationKey) o;
         return Objects.equals(book_id, that.book_id) && Objects.equals(user_id, that.user_id);
     }
 

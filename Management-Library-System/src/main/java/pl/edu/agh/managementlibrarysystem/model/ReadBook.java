@@ -3,14 +3,14 @@ package pl.edu.agh.managementlibrarysystem.model;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import pl.edu.agh.managementlibrarysystem.model.keys.readBooksKey;
+import pl.edu.agh.managementlibrarysystem.model.keys.ReadBooksKey;
 
 @Getter
 @Setter
 @Entity(name = "read_books")
 public class ReadBook {
     @EmbeddedId
-    private readBooksKey id;
+    private ReadBooksKey id;
     @ManyToOne
     @MapsId("book_id")
     @JoinColumn(name = "book_id")

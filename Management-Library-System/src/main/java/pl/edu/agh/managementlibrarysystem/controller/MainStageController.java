@@ -78,6 +78,7 @@ public class MainStageController extends BaseController implements Initializable
         pane = borderpane;
         initializeStageOptions();
         back.setTooltip(new Tooltip("Logout"));
+        applicationContext.publishEvent(new BorderPaneReadyEvent(pane, new ClassPathResource("fxml/home.fxml")));
 
     }
     private void initializeStageOptions(){
@@ -123,7 +124,7 @@ public class MainStageController extends BaseController implements Initializable
 
     @FXML
     private void loadHomePanel(ActionEvent actionEvent) {
-
+        applicationContext.publishEvent(new BorderPaneReadyEvent(pane, new ClassPathResource("fxml/home.fxml")));
     }
 
     @FXML
@@ -152,7 +153,7 @@ public class MainStageController extends BaseController implements Initializable
 
     @FXML
     private void loadSendAnnouncementsPanel(ActionEvent actionEvent) {
-
+        applicationContext.publishEvent(new BorderPaneReadyEvent(pane, new ClassPathResource("fxml/notificationAll.fxml")));
     }
 
     @FXML

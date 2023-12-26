@@ -3,7 +3,7 @@ package pl.edu.agh.managementlibrarysystem.model;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import pl.edu.agh.managementlibrarysystem.model.keys.notificationKey;
+import pl.edu.agh.managementlibrarysystem.model.keys.NotificationKey;
 import pl.edu.agh.managementlibrarysystem.model.util.Type;
 
 import java.sql.Date;
@@ -13,7 +13,7 @@ import java.sql.Date;
 @Entity(name = "notifications")
 public class Notification {
     @EmbeddedId
-    private notificationKey id;
+    private NotificationKey id;
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @MapsId("book_id")
     @JoinColumn(name = "book_id")
