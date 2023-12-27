@@ -6,16 +6,14 @@ import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.weaver.ast.Not;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.ClassPathResource;
@@ -26,10 +24,10 @@ import pl.edu.agh.managementlibrarysystem.enums.BorderpaneFields;
 import pl.edu.agh.managementlibrarysystem.event.BorderPaneReadyEvent;
 import pl.edu.agh.managementlibrarysystem.event.SetItemToBorderPaneEvent;
 import pl.edu.agh.managementlibrarysystem.event.fxml.LeavingBorderPaneEvent;
-import pl.edu.agh.managementlibrarysystem.model.Notification;
 import pl.edu.agh.managementlibrarysystem.model.User;
 import pl.edu.agh.managementlibrarysystem.service.NotificationService;
 import pl.edu.agh.managementlibrarysystem.session.UserSession;
+import pl.edu.agh.managementlibrarysystem.utils.Alerts;
 import pl.edu.agh.managementlibrarysystem.utils.TaskFactory;
 
 import java.net.URL;
@@ -37,7 +35,11 @@ import java.sql.Date;
 import java.util.ResourceBundle;
 @Controller
 @RequiredArgsConstructor
-public class UserNotificationController extends ControllerWithTableView<NotificationDTO> implements Initializable {
+public class NotificationsController extends ControllerWithTableView<NotificationDTO> implements Initializable {
+    @FXML
+    private MFXCheckbox ignoreResolved;
+    @FXML
+    private ContextMenu contextMenu;
     @FXML
     private HBox toKill1;
     @FXML
@@ -50,8 +52,7 @@ public class UserNotificationController extends ControllerWithTableView<Notifica
     private BorderPane borderPane;
     @FXML
     private User currUser;
-    @FXML
-    private MFXCheckbox resolvedCheckbox;
+
     @FXML
     private MFXButton addNotification;
     @FXML
@@ -69,7 +70,7 @@ public class UserNotificationController extends ControllerWithTableView<Notifica
 
 
     @Autowired
-    public UserNotificationController(UserSession userSession, NotificationService notificationService, ApplicationContext applicationContext) {
+    public NotificationsController(UserSession userSession, NotificationService notificationService, ApplicationContext applicationContext) {
         this.userSession = userSession;
         this.notificationService = notificationService;
         this.applicationContext = applicationContext;
@@ -78,6 +79,9 @@ public class UserNotificationController extends ControllerWithTableView<Notifica
     @Override
     public void initialize(URL location, ResourceBundle resources){
         currUser = userSession.getLoggedUser();
+        if(currUser.getPermission().toString().equalsIgnoreCase("normal_user")){
+            addNotification.setVisible(false);
+        }
         this.tooltipInitializer();
         this.initializeColumns();
         this.createNewTask(50, 20);
@@ -120,17 +124,36 @@ public class UserNotificationController extends ControllerWithTableView<Notifica
 
     @Override
     protected void loadData() {
-        data = this.notificationService.getNotifications(currUser);
+        data = this.notificationService.getNotifications(currUser,ignoreResolved.isSelected());
         this.tableView.getItems().clear();
         this.tableView.getItems().addAll(data);
     }
     @FXML
     private void addNotification(ActionEvent actionEvent) {
         setVisibility(false);
-        this.applicationContext.publishEvent(new BorderPaneReadyEvent(this.borderPane, new ClassPathResource("fxml/notificationAdmin.fxml")));
+        this.applicationContext.publishEvent(new BorderPaneReadyEvent(this.borderPane, new ClassPathResource("fxml/addNotification.fxml")));
     }
     private void setVisibility(boolean visibility){
         toKill1.setVisible(visibility);
         toKill2.setVisible(visibility);
+        ignoreResolved.setVisible(visibility);
+    }
+    @FXML
+    private void deleteNotification(ActionEvent actionEvent) {
+        NotificationDTO notificationDTO = tableView.getSelectionModel().getSelectedItem();
+        String msg = notificationService.deleteNotification(notificationDTO);
+        Alerts.showInformationAlert("Notification notification",msg);
+        loadData();
+    }
+    @FXML
+    private void resolveNotification(ActionEvent actionEvent) {
+        NotificationDTO notificationDTO = tableView.getSelectionModel().getSelectedItem();
+        String msg = notificationService.resolveNotifications(notificationDTO);
+        Alerts.showInformationAlert("Notification notification",msg);
+        loadData();
+    }
+    @FXML
+    private void ignoreResolved(ActionEvent actionEvent) {
+        this.ignoreResolved.setSelected(!ignoreResolved.isSelected());
     }
 }

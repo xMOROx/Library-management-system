@@ -13,7 +13,7 @@
 <?import javafx.scene.text.Text?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<BorderPane fx:id="root" prefHeight="651.0" prefWidth="1000.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.agh.managementlibrarysystem.controller.AdminNotificationController">
+<BorderPane fx:id="root" prefHeight="651.0" prefWidth="1000.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.agh.managementlibrarysystem.controller.AddNotificationController">
     <center>
         <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
             <BorderPane.margin>
@@ -83,11 +83,6 @@
                             <Font size="14.0" />
                         </font>
                     </MFXTextField>
-               <MFXTextField fx:id="numberOfDaysTextField" floatMode="ABOVE" maxWidth="360.0" minWidth="360.0" onKeyPressed="#enterNumberOfDays" prefHeight="31.0" prefWidth="360.0" promptText="Enter numer of days">
-                  <font>
-                     <Font size="14.0" />
-                  </font>
-               </MFXTextField>
                 </VBox>
                 <VBox alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="160.0" prefWidth="478.5" spacing="10.0">
                     <Text fx:id="userFullName" strokeType="OUTSIDE" strokeWidth="0.0" text="User Full Name">
@@ -109,12 +104,12 @@
                      <Font size="14.0" />
                   </font>
                </MFXTextField>
-               <ComboBox prefHeight="25.0" prefWidth="150.0" promptText="Choose Type" visibleRowCount="2" />
-               <CheckBox mnemonicParsing="false" text="Resolved" />
+               <ComboBox fx:id="type" prefHeight="25.0" prefWidth="150.0" promptText="Choose Type" visibleRowCount="2" />
+               <CheckBox fx:id="isResolved" mnemonicParsing="false" text="Resolved" />
             </children>
          </VBox>
             <HBox alignment="CENTER" prefHeight="75.0" prefWidth="949.0" spacing="10.0">
-                <MFXButton layoutX="401.0" layoutY="55.0" onAction="#cancel" prefHeight="31.0" prefWidth="167.0" text="Cancel">
+                <MFXButton fx:id="cancel" layoutX="401.0" layoutY="55.0" onAction="#cancel" prefHeight="31.0" prefWidth="167.0" text="Cancel">
                     <font>
                         <Font name="Segoe UI Semilight" size="15.0" />
                     </font>

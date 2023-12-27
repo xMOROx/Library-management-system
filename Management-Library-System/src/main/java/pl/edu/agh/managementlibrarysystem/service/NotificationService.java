@@ -3,10 +3,7 @@ package pl.edu.agh.managementlibrarysystem.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.edu.agh.managementlibrarysystem.DTO.IssuedBookDTO;
 import pl.edu.agh.managementlibrarysystem.DTO.NotificationDTO;
-import pl.edu.agh.managementlibrarysystem.DTO.UserDTO;
-import pl.edu.agh.managementlibrarysystem.mapper.Mapper;
 import pl.edu.agh.managementlibrarysystem.mapper.NotificationMapper;
 import pl.edu.agh.managementlibrarysystem.model.Book;
 import pl.edu.agh.managementlibrarysystem.model.IssuedBook;
@@ -17,10 +14,8 @@ import pl.edu.agh.managementlibrarysystem.repository.BookRepository;
 import pl.edu.agh.managementlibrarysystem.repository.IssuedBooksRepository;
 import pl.edu.agh.managementlibrarysystem.repository.NotificationRepository;
 import pl.edu.agh.managementlibrarysystem.repository.UserRepository;
-import pl.edu.agh.managementlibrarysystem.session.UserSession;
 
 import java.sql.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,7 +28,7 @@ public class NotificationService {
     private final IssuedBooksRepository issuedBooksRepository;
     private final NotificationMapper notificationMapper;
 
-    @Transactional //returns a string that answers whether a notification was made
+    @Transactional //returns a string that answers whether a notification
     public String makeNewNotification( String isbn, String email, Date sendingDate, Type type, boolean accepted ){
         String msg = "";
         Optional<Book> book = bookRepository.findByIsbn(isbn);
@@ -42,9 +37,14 @@ public class NotificationService {
             List<IssuedBook> issuedBookList = issuedBooksRepository.findByUserId(user.get().getId());
             for (IssuedBook issuedBook : issuedBookList) {
                 if (issuedBook.getBook().equals(book.get())) {
-                    Notification notification = new Notification(book.get(), user.get(), sendingDate, type, accepted);
+                    Notification notification = new Notification();
+                    notification.setUser(user.get());
+                    notification.setBooks(book.get());
+                    notification.setSendingDate(sendingDate);
+                    notification.setType(type);
+                    notification.setAccepted(accepted);
                     notificationRepository.save(notification);
-                    msg = "Notification added succesfully!";
+                    msg = "Notification added successfully!";
                     break;
                 }
             }
@@ -60,16 +60,39 @@ public class NotificationService {
         }
         return msg;
     }
+    @Transactional
+    public String resolveNotifications(NotificationDTO notificationDTO){
+        String msg = "";
+        String bookISBN = notificationDTO.getBookISBN();
+        Long userId = notificationDTO.getUserID();
+        List<Notification> notifications = notificationRepository.findAll();
+        for(Notification notification : notifications){
+            if(notification.getUser().getId().equals(userId)){
+                if(notification.getBooks().getIsbn().equals(bookISBN)){
+                    notification.setAccepted(true);
+                    notificationRepository.save(notification);
+                    msg="Notification(s) resolved!";
+                }
+            }
+        }
+        if(msg.equals("")){
+            msg="No such notifications exit";
+        }
+        return msg;
+    }
 
     @Transactional
     public Integer getAmount(String email){
         return notificationRepository.sumAllByUserEmail(email);
     }
-    public List<Notification> getNotificationsOfUserByEmail(String email){
-        return notificationRepository.findALLByUserEmail(email);
+    public List<NotificationDTO> getNotificationsOfUserByEmail(String email){
+        return notificationRepository.findALLByUserEmail(email)
+                .stream()
+                .map(this.notificationMapper::mapToDto)
+                .toList();
     }
     @Transactional
-    public List<NotificationDTO> getNotifications(User user) {
+    public List<NotificationDTO> getNotifications(User user, boolean ignoreUnresolved) {
         List <Notification> notifications;
         if(user.getPermission().toString().equalsIgnoreCase("normal_user")){
             notifications=this.notificationRepository.findALLByUserEmail(user.getEmail());
@@ -79,7 +102,21 @@ public class NotificationService {
         }
         return notifications
                 .stream()
+                .filter(notification -> ignoreUnresolved ? notification.getAccepted() : true )
                 .map(this.notificationMapper::mapToDto)
                 .toList();
+    }
+    @Transactional
+    public String deleteNotification(NotificationDTO notificationDTO){
+        Long id =notificationDTO.getNotificationID();
+        String msg = "";
+        if(notificationRepository.findById(id).isPresent()){
+            notificationRepository.deleteById(id);
+            msg = "deleted successfully!";
+        }
+        else{
+            msg="couldn't delete notification";
+        }
+        return msg;
     }
 }

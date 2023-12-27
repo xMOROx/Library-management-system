@@ -25,7 +25,6 @@ import pl.edu.agh.managementlibrarysystem.event.BorderPaneReadyEvent;
 import pl.edu.agh.managementlibrarysystem.event.OpenWindowEvent;
 import pl.edu.agh.managementlibrarysystem.model.User;
 import pl.edu.agh.managementlibrarysystem.model.util.Permission;
-import pl.edu.agh.managementlibrarysystem.service.UserService;
 import pl.edu.agh.managementlibrarysystem.session.UserSession;
 
 import java.io.IOException;
@@ -153,7 +152,7 @@ public class MainStageController extends BaseController implements Initializable
 
     @FXML
     private void loadSendAnnouncementsPanel(ActionEvent actionEvent) {
-        applicationContext.publishEvent(new BorderPaneReadyEvent(pane, new ClassPathResource("fxml/notificationAll.fxml")));
+        applicationContext.publishEvent(new BorderPaneReadyEvent(pane, new ClassPathResource("fxml/notifications.fxml")));
     }
 
     @FXML

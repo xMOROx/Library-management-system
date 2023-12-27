@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
-<?import io.github.palexdev.materialfx.controls.MFXCheckbox?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ContextMenu?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -15,7 +16,8 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="borderPane" prefHeight="651.0" prefWidth="1000.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.agh.managementlibrarysystem.controller.UserNotificationController">
+<?import io.github.palexdev.materialfx.controls.MFXCheckbox?>
+<BorderPane fx:id="borderPane" prefHeight="651.0" prefWidth="1000.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.agh.managementlibrarysystem.controller.NotificationsController">
     <top>
         <VBox prefHeight="123.0" prefWidth="953.0" BorderPane.alignment="CENTER">
             <BorderPane maxHeight="67.0" prefHeight="67.0" prefWidth="957.0" style="-fx-background-color: white;">
@@ -53,7 +55,7 @@
                     </ImageView>
                <HBox fx:id="toKill1" alignment="CENTER_RIGHT" prefHeight="84.0" prefWidth="587.0">
                   <children>
-                     <MFXCheckbox fx:id="resolvedCheckbox" alignment="CENTER_RIGHT" contentDisplay="RIGHT" text="view resolved" />
+                     <MFXCheckbox fx:id="ignoreResolved" onAction="#ignoreResolved" text="Ignore Resolved" />
                      <Region prefHeight="84.0" prefWidth="72.0" />
                      <MFXButton fx:id="addNotification" alignment="CENTER_RIGHT" contentDisplay="RIGHT" onAction="#addNotification" text="Add Notifications" />
                   </children>
@@ -82,6 +84,14 @@
             <BorderPane.margin>
                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
             </BorderPane.margin>
+            <contextMenu>
+                <ContextMenu fx:id="contextMenu">
+                    <items>
+                        <MenuItem mnemonicParsing="false" onAction="#resolveNotification" text="Resolve Notification" />
+                        <MenuItem mnemonicParsing="false" onAction="#deleteNotification" text="Delete Notification" />
+                    </items>
+                </ContextMenu>
+            </contextMenu>
             <columnResizePolicy>
                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
             </columnResizePolicy>

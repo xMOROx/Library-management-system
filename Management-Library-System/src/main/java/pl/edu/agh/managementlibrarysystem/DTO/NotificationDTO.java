@@ -7,6 +7,7 @@ import java.sql.Date;
 @Data
 @Builder
 public class NotificationDTO {
+        private Long notificationID;
         private Long userID;
         private String bookISBN;
         private String bookTitle;
