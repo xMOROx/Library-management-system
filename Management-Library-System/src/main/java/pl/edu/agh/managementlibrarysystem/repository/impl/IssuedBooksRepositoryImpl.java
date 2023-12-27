@@ -27,11 +27,11 @@ public class IssuedBooksRepositoryImpl {
     }
 
     @Transactional
-    public void issueBook(String isbn, Long id, Integer days) {
+    public void issueBook(String isbn, Long id, Integer days, boolean isTaken) {
         double feePerDay = Double.parseDouble(settingsRepository.getSettingValueWithGivenName("fee_per_day"));
 
-        String query = "INSERT INTO issued_books (days, fee, user_id, book_id, issued_date, returned_date) " +
-                "VALUES (" + days + "," + feePerDay + " ," + id + ", (SELECT id FROM books WHERE isbn = '" + isbn + "'), CURRENT_DATE, NULL)";
+        String query = "INSERT INTO issued_books (days, fee, user_id, book_id, issued_date, returned_date, is_taken) " +
+                "VALUES (" + days + "," + feePerDay + " ," + id + ", (SELECT id FROM books WHERE isbn = '" + isbn + "'), CURRENT_DATE, NULL, " + isTaken + ")";
 
         entityManager.createNativeQuery(query).executeUpdate();
     }

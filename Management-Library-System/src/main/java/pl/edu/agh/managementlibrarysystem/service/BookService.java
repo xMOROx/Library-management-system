@@ -89,8 +89,8 @@ public class BookService {
         return this.issuedBooksRepository.findIssuedBookByUserIdAndBookIsbn(user.getId(), book.getIsbn()).isPresent();
     }
 
-    public void issueBook(BookDTO book, UserDTO user, Integer days) {
-        this.issuedBooksRepository.issueBook(book.getIsbn(), user.getId(), days);
+    public void issueBook(BookDTO book, UserDTO user, Integer days, boolean isTaken) {
+        this.issuedBooksRepository.issueBook(book.getIsbn(), user.getId(), days, isTaken);
     }
 
     public IssuedBookDTO getIssuedBookById(Long bookId, Long userId) {

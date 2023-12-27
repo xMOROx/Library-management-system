@@ -1,8 +1,8 @@
 package pl.edu.agh.managementlibrarysystem.model.keys;
 
-import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
+import lombok.*;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -10,7 +10,10 @@ import java.util.Objects;
 
 @Getter
 @Setter
+@Builder
 @Embeddable
+@NoArgsConstructor
+@AllArgsConstructor
 public class IssuedBooksKey implements Serializable {
 
     @Serial
@@ -19,9 +22,6 @@ public class IssuedBooksKey implements Serializable {
     private Long bookId;
     @Column(name = "user_id")
     private Long userId;
-
-    public IssuedBooksKey() {
-    }
 
     @Override
     public boolean equals(Object o) {

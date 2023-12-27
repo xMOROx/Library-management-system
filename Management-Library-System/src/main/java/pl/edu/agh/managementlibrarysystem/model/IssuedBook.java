@@ -33,4 +33,7 @@ public class IssuedBook {
     @Column(name = "returned_date", nullable = true, columnDefinition = "DATE default null ")
     private Date returnedDate;
 
+    @Column(name = "is_taken", nullable = false, columnDefinition = "boolean default false")
+    private boolean isTaken;
+
 }

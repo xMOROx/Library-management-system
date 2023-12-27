@@ -1,9 +1,10 @@
 package pl.edu.agh.managementlibrarysystem.DTO;
 
 import lombok.Builder;
+import lombok.Data;
 import lombok.Value;
 
-@Value
+@Data
 @Builder
 public class IssuedBookDTO {
     String issuedID;
@@ -16,4 +17,5 @@ public class IssuedBookDTO {
     String returnedDate;
     Integer days;
     Double fee;
+    String isTaken;
 }

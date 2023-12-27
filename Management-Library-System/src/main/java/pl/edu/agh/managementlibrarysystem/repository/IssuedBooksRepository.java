@@ -35,7 +35,7 @@ public interface IssuedBooksRepository extends JpaRepository<IssuedBook, IssuedB
 
     void updateFee();
 
-    void issueBook(String isbn, Long id, Integer days);
+    void issueBook(String isbn, Long id, Integer days, boolean isTaken);
 
     void returnBook(Long bookId, Long userId);
 
