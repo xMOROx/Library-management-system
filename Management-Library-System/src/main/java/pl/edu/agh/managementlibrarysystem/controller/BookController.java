@@ -5,17 +5,13 @@ import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
-import lombok.RequiredArgsConstructor;
 import org.kordamp.ikonli.javafx.FontIcon;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.ClassPathResource;
@@ -41,7 +37,8 @@ public class BookController extends ControllerWithTableView<BookDTO> {
 
     private final BookService bookService;
     private final UserSession session;
-
+    @FXML
+    public ContextMenu contextMenu;
     @FXML
     private FontIcon searchIcon;
     @FXML
@@ -113,6 +110,11 @@ public class BookController extends ControllerWithTableView<BookDTO> {
                 this.tableView.getSelectionModel().clearSelection();
             }
         });
+
+        if (this.session.getLoggedUser().getPermission() == Permission.NORMAL_USER) {
+            this.delete.setVisible(false);
+            this.availability.setVisible(false);
+        }
     }
 
     private void initializeStageOptions() {
@@ -122,7 +124,7 @@ public class BookController extends ControllerWithTableView<BookDTO> {
         User u = session.getLoggedUser();
         if (u.getPermission() == Permission.NORMAL_USER) {
             ControlsUtils.changeControlVisibility(loadDataEntryButton, false);
-            tableView.addEventFilter(ContextMenuEvent.CONTEXT_MENU_REQUESTED, Event::consume);
+            this.contextMenu.getItems().remove(1);
         }
     }
 
@@ -156,13 +158,18 @@ public class BookController extends ControllerWithTableView<BookDTO> {
     }
 
     private void allBooksAndRemainingBooks() {
-        this.booksAmount.setText(String.valueOf(this.bookService.getSumOfAllBooks()));
-        this.remainingBooksAmount.setText(String.valueOf(this.bookService.getSumOfAllRemainingBooks()));
+        int amountOfAllBooks = this.session.getLoggedUser().getPermission() == Permission.NORMAL_USER ?
+                this.bookService.getSumOfAllAvailableBooks() : this.bookService.getSumOfAllBooks();
+        int amountOfAllRemainingBooks = this.session.getLoggedUser().getPermission() == Permission.NORMAL_USER ?
+                this.bookService.getSumOfAllRemainingAvailableBooks() : this.bookService.getSumOfAllRemainingBooks();
+        this.booksAmount.setText(String.valueOf(amountOfAllBooks));
+        this.remainingBooksAmount.setText(String.valueOf(amountOfAllRemainingBooks));
     }
 
     @Override
     protected void loadData() {
-        data = this.bookService.getBooks();
+        data = this.session.getLoggedUser().getPermission() == Permission.NORMAL_USER ?
+                this.bookService.getAllAvailableBooks() : this.bookService.getAllBooks();
         this.tableView.getItems().clear();
         this.tableView.getItems().addAll(data);
     }
@@ -208,13 +215,20 @@ public class BookController extends ControllerWithTableView<BookDTO> {
     }
 
     @FXML
-    private void loadUpdateBook(ActionEvent actionEvent) {
-
+    private void refreshList(ActionEvent actionEvent) {
+        this.loadData();
+        this.allBooksAndRemainingBooks();
     }
 
     @FXML
     private void deleteBook(ActionEvent actionEvent) {
-
+        BookDTO bookDTO = this.tableView.getSelectionModel().getSelectedItem();
+        if (bookDTO == null) {
+            return;
+        }
+        this.bookService.deleteBook(bookDTO);
+        this.loadData();
+        this.allBooksAndRemainingBooks();
     }
 
     @FXML

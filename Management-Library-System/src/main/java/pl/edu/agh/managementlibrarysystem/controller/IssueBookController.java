@@ -199,6 +199,11 @@ public class IssueBookController extends ResizeableBaseController implements Ini
             Alerts.showErrorAlert("User already has book", "User with given id " + user.getId() + " already has book");
             return;
         }
+        if(!this.bookService.checkIfBookIsAvailable(book)){
+            Alerts.showErrorAlert("Book is not available", "Book with given ISBN is not available");
+            return;
+        }
+
 
         Integer days = Integer.parseInt(numberOfDaysTextField.getText());
         this.bookService.issueBook(book, user, days, !logged);

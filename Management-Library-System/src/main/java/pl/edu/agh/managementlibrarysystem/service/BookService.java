@@ -41,7 +41,7 @@ public class BookService {
                 .saveNewBookWithGivenParams(book, authorName, authorLastname, publisherName, genreType).isPresent();
     }
 
-    public List<BookDTO> getBooks() {
+    public List<BookDTO> getAllBooks() {
         List<Book> books = this.bookRepository.findAll();
         return books
                 .stream()
@@ -49,13 +49,27 @@ public class BookService {
                 .toList();
     }
 
-    @Transactional
-    public Integer getSumOfAllBooks() {
+    public List<BookDTO> getAllAvailableBooks() {
+        return this.bookRepository.findAllAvailableBooks()
+                .stream()
+                .map(this.bookMapper::mapToDto)
+                .toList();
+    }
+
+    public int getSumOfAllBooks() {
         return this.bookRepository.sumOfAllBooks();
     }
 
-    public Integer getSumOfAllRemainingBooks() {
+    public int getSumOfAllAvailableBooks() {
+        return this.bookRepository.sumOfAllAvailableBooks();
+    }
+
+    public int getSumOfAllRemainingBooks() {
         return this.bookRepository.sumOfAllRemainingBooks();
+    }
+
+    public int getSumOfAllRemainingAvailableBooks() {
+        return this.bookRepository.sumOfAllAvailableRemainingBooks();
     }
 
     public List<IssuedBookDTO> getIssuedBooks() {
@@ -66,7 +80,6 @@ public class BookService {
                 .toList();
     }
 
-    @Transactional
     public List<IssuedBookDTO> getIssuedBooksByUserId(Long id) {
         List<IssuedBook> issuedBooks = this.issuedBooksRepository.findAllUpToDateByUserId(id);
         return issuedBooks
@@ -110,12 +123,7 @@ public class BookService {
     }
 
     public boolean returnBook(Long bookId, Long userId) {
-        try {
-            this.issuedBooksRepository.returnBook(bookId, userId);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
+        return this.issuedBooksRepository.returnBook(bookId, userId);
     }
 
     public boolean deleteIssuedBook(Long bookId, Long userId) {
@@ -130,5 +138,14 @@ public class BookService {
     public void issueBookToUser(IssuedBookDTO issuedBookDTO) {
         this.issuedBooksRepository.save(this.issuedBookMapper.mapToEntity(issuedBookDTO));
 
+    }
+
+    public void deleteBook(BookDTO bookDTO) {
+        this.bookRepository.delete(this.bookMapper.mapToEntity(bookDTO));
+    }
+
+
+    public boolean checkIfBookIsAvailable(BookDTO book) {
+        return this.bookRepository.checkIfBookIsAvailable(book.getIsbn()).equalsIgnoreCase("available");
     }
 }

@@ -134,6 +134,7 @@ public class ReturnBookController extends ResizeableBaseController implements In
         data.add("Book Title              : " + issuedBookDTO.getBookTitle());
         data.add("Issued Time           : " + issuedBookDTO.getIssuedDate());
         data.add("Return Time          : " + issuedBookDTO.getReturnedDate());
+        data.add("Taken                 : " + issuedBookDTO.getIsTaken());
         data.add("\nUSER INFORMATION");
         data.add("User ID                 : " + issuedBookDTO.getUserID());
         data.add("User full name       : " + issuedBookDTO.getUserFullName());
@@ -184,7 +185,7 @@ public class ReturnBookController extends ResizeableBaseController implements In
     @FXML
     private void submitBook(ActionEvent actionEvent) {
         if (!bookService.returnBook(this.bookId, this.userId)) {
-            Alerts.showErrorAlert("Book not returned", "Book has not been returned");
+            Alerts.showErrorAlert("Book not returned", "Book has not been taken yet");
             return;
         }
 

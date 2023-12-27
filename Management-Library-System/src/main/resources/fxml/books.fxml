@@ -153,9 +153,9 @@
                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
             </BorderPane.margin>
             <contextMenu>
-                <ContextMenu>
+                <ContextMenu fx:id="contextMenu">
                     <items>
-                        <MenuItem mnemonicParsing="false" onAction="#loadUpdateBook" text="Update Book" />
+                        <MenuItem mnemonicParsing="false" onAction="#refreshList" text="Refresh list" />
                         <MenuItem mnemonicParsing="false" onAction="#deleteBook" text="Delete Book" />
                     </items>
                 </ContextMenu>
