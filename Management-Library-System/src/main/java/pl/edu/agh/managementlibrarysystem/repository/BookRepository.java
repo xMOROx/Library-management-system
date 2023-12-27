@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import pl.edu.agh.managementlibrarysystem.DTO.BookDTO;
 import pl.edu.agh.managementlibrarysystem.model.Book;
 
 import java.util.Optional;
@@ -22,5 +23,5 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     @Query(SUM_OF_ALL_REMAINING_BOOKS)
     Integer sumOfAllRemainingBooks();
     Optional<Book> saveNewBookWithGivenParams(Book book, String authorName, String authorLastname, String publisherName, String genreType);
-
+    public Optional<Book> updateBookWithGivenParams(Long bookId, BookDTO bookDTO, String authorName, String authorLastname, String publisherName, String genreType);
 }

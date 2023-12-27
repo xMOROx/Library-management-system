@@ -13,6 +13,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 import lombok.RequiredArgsConstructor;
@@ -242,4 +243,14 @@ public class BookController extends ControllerWithTableView<BookDTO> {
         this.delete.setVisible(visible);
     }
 
+    public void selectBook(MouseEvent mouseEvent) {
+        BookDTO bookDTO = tableView.getSelectionModel().getSelectedItem();
+        if(bookDTO == null){
+            return;
+        }
+        session.setSelectedBook(bookDTO);
+        changeFieldsVisibility(false);
+        this.applicationContext.publishEvent(
+                new BorderPaneReadyEvent(this.borderpane, new ClassPathResource("fxml/bookDataEntry.fxml")));
+    }
 }

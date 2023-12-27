@@ -26,6 +26,7 @@ import pl.edu.agh.managementlibrarysystem.service.AuthorService;
 import pl.edu.agh.managementlibrarysystem.service.BookService;
 import pl.edu.agh.managementlibrarysystem.service.GenresService;
 import pl.edu.agh.managementlibrarysystem.service.PublisherService;
+import pl.edu.agh.managementlibrarysystem.session.UserSession;
 import pl.edu.agh.managementlibrarysystem.utils.Alerts;
 
 import java.io.Serial;
@@ -44,7 +45,7 @@ public class BookDataEntryController extends BaseDataEntryController<ActionEvent
     private ObservableList<String> authors;
     private ObservableList<String> publishers;
     private ObservableList<String> genres;
-
+    private UserSession session;
     @FXML
     private MFXTextField title;
     @FXML
@@ -87,13 +88,15 @@ public class BookDataEntryController extends BaseDataEntryController<ActionEvent
                                    BookService bookService,
                                    AuthorService authorService,
                                    PublisherService publisherService,
-                                   GenresService genresService
+                                   GenresService genresService,
+                                   UserSession session
     ) {
         this.applicationContext = applicationContext;
         this.bookService = bookService;
         this.authorService = authorService;
         this.publisherService = publisherService;
         this.genresService = genresService;
+        this.session = session;
 
         this.authors = this.authorService.getAllAuthors();
         this.publishers = this.publisherService.getAllPublishers();
@@ -157,7 +160,9 @@ public class BookDataEntryController extends BaseDataEntryController<ActionEvent
                         .or(this.quantity.textProperty().isEmpty())
                         .or(this.coverType.valueProperty().isNull())
         );
-
+        if(session.getSelectedBook()!=null){
+            setFields(session.getSelectedBook());
+        }
     }
 
     @FXML
@@ -191,8 +196,16 @@ public class BookDataEntryController extends BaseDataEntryController<ActionEvent
         String publisherName = this.publisherSelection.getValue();
         String genreType = this.genresSelection.getValue();
 
+        if(this.session.getSelectedBook()!=null){
+            if(this.bookService.updateBook(book, authorName, authorLastname, publisherName, genreType)){
+                Alerts.showAddingAlert("Book modified", "Book has been modified successfully", this.title.getText());
+                this.clearFields();
+                this.session.setSelectedBook(null);
+                this.cancel(actionEvent);
 
-        if (this.bookService.saveBook(book, authorName, authorLastname, publisherName, genreType)) {
+            }
+        }
+        else if (this.bookService.saveBook(book, authorName, authorLastname, publisherName, genreType)) {
             Alerts.showAddingAlert("Book added", "Book has been added successfully", this.title.getText());
             this.clearFields();
             this.cancel(actionEvent);
@@ -221,6 +234,20 @@ public class BookDataEntryController extends BaseDataEntryController<ActionEvent
         this.publisherSelection.setValue("Select publisher");
         this.genresSelection.setValue("Select genres");
 
+    }
+
+    protected void setFields(BookDTO bookDTO) {
+        this.title.setText(bookDTO.getTitle());
+        this.isbn.setText(bookDTO.getIsbn());
+        this.edition.setText(bookDTO.getEdition().toString());
+        this.quantity.setText(bookDTO.getQuantity().toString());
+        this.description.setText(bookDTO.getDescription());
+        this.tableOfContent.setText(bookDTO.getTableOfContent());
+        this.availability.setSelected(Boolean.parseBoolean(bookDTO.getAvailability()));
+        this.coverType.setValue(bookDTO.getCover());
+        this.authorSelection.setValue(bookDTO.getAuthor());
+        this.publisherSelection.setValue(bookDTO.getPublisher());
+        this.genresSelection.setValue(bookDTO.getMainGenre());
     }
 
     private boolean verifyData() {

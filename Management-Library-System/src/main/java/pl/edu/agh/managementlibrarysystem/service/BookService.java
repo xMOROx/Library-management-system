@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import pl.edu.agh.managementlibrarysystem.DTO.BookDTO;
 import pl.edu.agh.managementlibrarysystem.DTO.IssuedBookDTO;
 import pl.edu.agh.managementlibrarysystem.DTO.UserDTO;
+import pl.edu.agh.managementlibrarysystem.mapper.BookMapper;
 import pl.edu.agh.managementlibrarysystem.mapper.Mapper;
 import pl.edu.agh.managementlibrarysystem.model.Book;
 import pl.edu.agh.managementlibrarysystem.model.IssuedBook;
@@ -13,6 +14,7 @@ import pl.edu.agh.managementlibrarysystem.repository.*;
 import pl.edu.agh.managementlibrarysystem.utils.Alerts;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -75,6 +77,11 @@ public class BookService {
                 .toList();
     }
 
+    public boolean updateBook(BookDTO bookDTO, String authorName, String authorLastname, String publisherName,
+                           String genreType){
+        Optional<Book> b = bookRepository.findByIsbn(bookDTO.getIsbn());
+        return bookRepository.updateBookWithGivenParams(b.get().getId(),bookDTO,authorName,authorLastname,publisherName,genreType).isPresent();
+    }
     public void updateFee() {
         this.issuedBooksRepository.updateFee();
     }
