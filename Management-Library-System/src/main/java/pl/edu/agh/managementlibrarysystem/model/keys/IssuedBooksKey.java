@@ -1,7 +1,6 @@
 package pl.edu.agh.managementlibrarysystem.model.keys;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 

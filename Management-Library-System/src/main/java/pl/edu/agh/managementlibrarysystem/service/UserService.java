@@ -1,9 +1,7 @@
 package pl.edu.agh.managementlibrarysystem.service;
 
 import jakarta.transaction.Transactional;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.edu.agh.managementlibrarysystem.DTO.UserDTO;
@@ -26,11 +24,9 @@ public class UserService {
     private final IssuedBooksRepository issuedBooksRepository;
     private final ReadBooksRepository readBooksRepository;
     private final Mapper<User, UserDTO> userMapper;
+    private final PasswordEncoder passwordEncoder;
+    private final UserSession session;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-    @Autowired
-    private UserSession session;
 
     @Transactional
     public Optional<User> addUser(String name, String surname, String email, String password, Permission permission) {

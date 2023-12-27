@@ -5,6 +5,7 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import pl.edu.agh.managementlibrarysystem.repository.ReturnedBookRepository;
 import pl.edu.agh.managementlibrarysystem.repository.SettingsRepository;
 
 import java.util.Date;
@@ -14,8 +15,8 @@ import java.util.Date;
 public class IssuedBooksRepositoryImpl {
     @PersistenceContext
     private final EntityManager entityManager;
-
     private final SettingsRepository settingsRepository;
+    private final ReturnedBookRepository returnedBookRepository;
 
     @Transactional
     public void updateFee() {
@@ -52,12 +53,18 @@ public class IssuedBooksRepositoryImpl {
                 .setParameter(2, userId)
                 .getSingleResult();
 
-        int numberOfTotalIssuedDays = (int) ((new Date().getTime() - issuedDate.getTime()) / (1000 * 60 * 60 * 24));
+        int numberOfTotalIssuedDays = (int) ((new Date().getTime() - issuedDate.getTime()) / (1000 * 60 * 60 * 24)) + 1;
+        double feePerDay = Double.parseDouble(settingsRepository.getSettingValueWithGivenName("fee_per_day"));
 
-        String query = "UPDATE issued_books ib SET ib.returned_date = CURRENT_DATE, ib.days = " + numberOfTotalIssuedDays + " WHERE ib.book_id = ?1 AND ib.user_id = ?2";
-        entityManager.createNativeQuery(query)
-                .setParameter(1, bookId)
-                .setParameter(2, userId)
+        String insertQuery = "INSERT INTO returned_books (user_id, book_id, returned_date, issued_date, days, fee) VALUES (?1, ?2, CURRENT_DATE, ?3, ?4, ?5)";
+
+
+        entityManager.createNativeQuery(insertQuery)
+                .setParameter(1, userId)
+                .setParameter(2, bookId)
+                .setParameter(3, issuedDate)
+                .setParameter(4, numberOfTotalIssuedDays)
+                .setParameter(5, numberOfTotalIssuedDays * feePerDay)
                 .executeUpdate();
     }
 

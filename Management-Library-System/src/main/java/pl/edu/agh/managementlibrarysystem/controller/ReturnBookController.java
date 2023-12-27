@@ -70,7 +70,17 @@ public class ReturnBookController extends ResizeableBaseController implements In
 
     @FXML
     private void loadIssuedBookDetails(KeyEvent keyEvent) {
+        if (keyEvent.isControlDown() || keyEvent.isShiftDown() || keyEvent.isAltDown() || keyEvent.isMetaDown() ||
+                keyEvent.getCode().isArrowKey() || keyEvent.getCode().isFunctionKey() || keyEvent.getCode().isMediaKey() ||
+                keyEvent.getCode().isModifierKey() || keyEvent.getCode().isNavigationKey() || keyEvent.getCode().isKeypadKey() ||
+                keyEvent.getCode().isLetterKey() || keyEvent.getCode().isDigitKey()) {
+            return;
+        }
+
+
         String text = issuedIdInput.getText();
+        String bookIdString;
+        String userIdString;
         data.clear();
 
         if (text.isEmpty()) {
@@ -83,9 +93,14 @@ public class ReturnBookController extends ResizeableBaseController implements In
             return;
         }
 
-        String[] split = text.split("-");
-        String bookIdString = split[1];
-        String userIdString = split[2];
+        try {
+            String[] split = text.split("-");
+            bookIdString = split[1];
+            userIdString = split[2];
+        } catch (ArrayIndexOutOfBoundsException e) {
+            Alerts.showErrorAlert("Invalid issued id", "Issued id should be in format ISSUED-<bookId>-<userId>");
+            return;
+        }
 
 
         try {
@@ -168,12 +183,17 @@ public class ReturnBookController extends ResizeableBaseController implements In
 
     @FXML
     private void submitBook(ActionEvent actionEvent) {
-        if (bookService.returnBook(this.bookId, this.userId)) {
-            Alerts.showSuccessAlert("Book returned", "Book has been returned successfully");
-            this.clearInputs();
+        if (!bookService.returnBook(this.bookId, this.userId)) {
+            Alerts.showErrorAlert("Book not returned", "Book has not been returned");
             return;
         }
-        Alerts.showErrorAlert("Book not returned", "Book has not been returned");
+
+        if (!bookService.deleteIssuedBook(this.bookId, this.userId)) {
+            Alerts.showErrorAlert("Book not returned", "Book has not been returned");
+            return;
+        }
+        Alerts.showSuccessAlert("Book returned", "Book has been returned successfully");
+        this.clearInputs();
     }
 
     @FXML

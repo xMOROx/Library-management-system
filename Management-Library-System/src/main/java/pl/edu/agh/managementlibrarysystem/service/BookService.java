@@ -28,7 +28,7 @@ public class BookService {
     private final Mapper<IssuedBook, IssuedBookDTO> issuedBookMapper;
 
     public boolean saveBook(BookDTO bookDTO, String authorName, String authorLastname, String publisherName,
-            String genreType) {
+                            String genreType) {
         String isbn = bookDTO.getIsbn();
         Book book = this.bookMapper.mapToEntity(bookDTO);
 
@@ -68,7 +68,7 @@ public class BookService {
 
     @Transactional
     public List<IssuedBookDTO> getIssuedBooksByUserId(Long id) {
-        List<IssuedBook> issuedBooks = this.issuedBooksRepository.findByUserId(id);
+        List<IssuedBook> issuedBooks = this.issuedBooksRepository.findAllUpToDateByUserId(id);
         return issuedBooks
                 .stream()
                 .map(this.issuedBookMapper::mapToDto)
@@ -86,7 +86,7 @@ public class BookService {
     }
 
     public boolean checkIfUserHasGivenBook(UserDTO user, BookDTO book) {
-        return this.issuedBooksRepository.findByUserIdAndBookIsbn(user.getId(), book.getIsbn()).isPresent();
+        return this.issuedBooksRepository.findIssuedBookByUserIdAndBookIsbn(user.getId(), book.getIsbn()).isPresent();
     }
 
     public void issueBook(BookDTO book, UserDTO user, Integer days) {
@@ -112,6 +112,15 @@ public class BookService {
     public boolean returnBook(Long bookId, Long userId) {
         try {
             this.issuedBooksRepository.returnBook(bookId, userId);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public boolean deleteIssuedBook(Long bookId, Long userId) {
+        try {
+            this.issuedBooksRepository.deleteIssuedBookByBookIdAndUserId(bookId, userId);
             return true;
         } catch (Exception e) {
             return false;

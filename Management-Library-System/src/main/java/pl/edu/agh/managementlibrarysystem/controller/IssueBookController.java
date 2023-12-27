@@ -9,7 +9,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
@@ -68,10 +67,11 @@ public class IssueBookController extends ResizeableBaseController implements Ini
     private boolean logged;
 
     public IssueBookController(ApplicationContext applicationContext, BookService bookService,
-            UserService userService) {
+                               UserService userService, UserSession session) {
         super(applicationContext);
         this.bookService = bookService;
         this.userService = userService;
+        this.session = session;
     }
 
     @Override
@@ -103,6 +103,11 @@ public class IssueBookController extends ResizeableBaseController implements Ini
 
     @FXML
     private void searchBook(KeyEvent keyEvent) {
+        if (!keyEvent.getCode().toString().equals("ENTER")) {
+            return;
+        }
+
+
         String bookISBN = bookSearchField.getText();
         if (bookISBN.isEmpty()) {
             errorISBNMessage.setValue("Book ISBN field is empty!");
@@ -171,6 +176,14 @@ public class IssueBookController extends ResizeableBaseController implements Ini
         } catch (NumberFormatException e) {
             errorUserMessage.setValue("Number of days field must be a number!");
         }
+
+        if (Integer.parseInt(numberOfDays) < 0) {
+            errorUserMessage.setValue("Number of days field must be a positive number!");
+            return;
+        }
+
+        errorUserMessage.setValue("");
+
 
         if (book != null && user != null) {
             this.issueBook.setDisable(false);

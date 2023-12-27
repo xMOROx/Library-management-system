@@ -16,21 +16,31 @@ public interface IssuedBooksRepository extends JpaRepository<IssuedBook, IssuedB
 
     String FIND_BY_BOOK_ID_AND_USER_ID = "SELECT ib FROM issued_books ib WHERE ib.id.bookId = ?1 AND ib.id.userId = ?2 AND ib.returnedDate IS NULL";
     String FIND_ALL_UP_TO_DATE = "SELECT ib FROM issued_books ib WHERE ib.returnedDate IS NULL";
+    String FIND_ALL_UP_TO_DATE_BY_USER_ID = "SELECT ib FROM issued_books ib WHERE ib.id.userId = ?1 AND ib.returnedDate IS NULL";
+    String FIND_ISSUED_BOOK_BY_USER_ID_AND_BOOK_ISBN = "SELECT ib FROM issued_books ib WHERE ib.id.userId = ?1 AND ib.book.isbn = ?2 AND ib.returnedDate IS NULL";
 
-    void updateFee();
-
-    Optional<IssuedBook> findByUserIdAndBookIsbn(Long id, String isbn);
-
-    void issueBook(String isbn, Long id, Integer days);
-
-
-    void renewBook(Long bookId, Long userId, int numberOfDaysToRenew);
-
-    void returnBook(Long bookId, Long userId);
+    void deleteIssuedBookByBookIdAndUserId(Long bookId, Long userId);
 
     @Query(FIND_BY_BOOK_ID_AND_USER_ID)
     Optional<IssuedBook> findByBookIdAndUserId(Long bookId, Long userId);
 
+    @Query(FIND_ISSUED_BOOK_BY_USER_ID_AND_BOOK_ISBN)
+    Optional<IssuedBook> findIssuedBookByUserIdAndBookIsbn(Long id, String isbn);
+
+    @Query(FIND_ALL_UP_TO_DATE_BY_USER_ID)
+    List<IssuedBook> findAllUpToDateByUserId(Long id);
+
     @Query(FIND_ALL_UP_TO_DATE)
     List<IssuedBook> findAllUpToDate();
+
+    void updateFee();
+
+    void issueBook(String isbn, Long id, Integer days);
+
+    void returnBook(Long bookId, Long userId);
+
+
+    void renewBook(Long bookId, Long userId, int numberOfDaysToRenew);
+
+
 }

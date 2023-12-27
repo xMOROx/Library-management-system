@@ -17,13 +17,10 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 
     @Query(FIND_BY_ISBN)
     Optional<Book> findByIsbn(String isbn);
-
-    Optional<Book> saveNewBookWithGivenParams(Book book, String authorName, String authorLastname, String publisherName, String genreType);
-
     @Query(SUM_OF_ALL_BOOKS)
     Integer sumOfAllBooks();
-
     @Query(SUM_OF_ALL_REMAINING_BOOKS)
     Integer sumOfAllRemainingBooks();
+    Optional<Book> saveNewBookWithGivenParams(Book book, String authorName, String authorLastname, String publisherName, String genreType);
 
 }

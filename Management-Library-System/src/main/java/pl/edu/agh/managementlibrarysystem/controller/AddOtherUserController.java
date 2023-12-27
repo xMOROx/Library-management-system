@@ -26,7 +26,6 @@ import java.util.regex.Pattern;
 @Controller
 public class AddOtherUserController extends BaseController implements Initializable {
 
-    private final ApplicationContext applicationContext;
     private final UserService userService;
     private final Pattern patternEmail;
 
@@ -61,7 +60,7 @@ public class AddOtherUserController extends BaseController implements Initializa
     private BooleanProperty repeatPasswordBool;
 
     public AddOtherUserController(ApplicationContext applicationContext, UserService userService) {
-        this.applicationContext = applicationContext;
+        super(applicationContext);
         this.patternEmail = Pattern.compile(".+@.+\\..+", Pattern.CASE_INSENSITIVE);
         this.userService = userService;
     }

@@ -48,9 +48,10 @@ public class IssuedBookController extends ControllerWithTableView<IssuedBookDTO>
     private TableColumn<IssuedBookDTO, Integer> fee;
 
     @Autowired
-    public IssuedBookController(ApplicationContext applicationContext, BookService bookService) {
+    public IssuedBookController(ApplicationContext applicationContext, BookService bookService, UserSession session) {
         super(applicationContext);
         this.bookService = bookService;
+        this.session = session;
     }
 
 

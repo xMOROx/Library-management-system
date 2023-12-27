@@ -176,7 +176,7 @@ public class BookDataEntryController extends BaseDataEntryController<ActionEvent
         int bookQuantity = Integer.parseInt(this.quantity.getText());
         BookDTO book = BookDTO.builder()
                 .title(this.title.getText())
-                .isbn(this.isbn.getText())
+                .isbn(this.isbn.getText().trim())
                 .edition(!this.edition.getText().isEmpty() ? Integer.parseInt(this.edition.getText()) : 1)
                 .quantity(bookQuantity)
                 .remainingBooks(bookQuantity)
