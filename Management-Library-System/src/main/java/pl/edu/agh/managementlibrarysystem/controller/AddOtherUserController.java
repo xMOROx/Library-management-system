@@ -76,9 +76,7 @@ public class AddOtherUserController extends BaseController implements Initializa
     public void addUserClicked(MouseEvent mouseEvent) {
         this.userService.addUser(name.getText(), surname.getText(), email.getText(), password.getText(),Permission.NORMAL_USER);
         clearFields();
-//        alert.showAndWait()
-//                .filter(response -> response == ButtonType.OK)
-//                .ifPresent(response -> applicationContext.publishEvent(new OpenWindowEvent((Stage) ((Node) mouseEvent.getSource()).getScene().getWindow(), backWindow)));
+
     }
     public void addAdminClicked(MouseEvent mouseEvent){
         this.userService.addUser(name.getText(), surname.getText(), email.getText(), password.getText(),Permission.ADMIN);

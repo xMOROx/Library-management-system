@@ -126,4 +126,9 @@ public class BookService {
             return false;
         }
     }
+
+    public void issueBookToUser(IssuedBookDTO issuedBookDTO) {
+        this.issuedBooksRepository.save(this.issuedBookMapper.mapToEntity(issuedBookDTO));
+
+    }
 }

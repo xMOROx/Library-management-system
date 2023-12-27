@@ -64,7 +64,7 @@ public class IssueBookController extends ResizeableBaseController implements Ini
     private StringProperty errorUserMessage;
 
     private Long userId;
-    private boolean logged;
+    private boolean logged = false;
 
     public IssueBookController(ApplicationContext applicationContext, BookService bookService,
                                UserService userService, UserSession session) {
@@ -96,8 +96,6 @@ public class IssueBookController extends ResizeableBaseController implements Ini
             user = userService.findById(this.userId);
             logged = true;
             setUserControls(user);
-        } else {
-            logged = false;
         }
     }
 
@@ -203,7 +201,7 @@ public class IssueBookController extends ResizeableBaseController implements Ini
         }
 
         Integer days = Integer.parseInt(numberOfDaysTextField.getText());
-        this.bookService.issueBook(book, user, days);
+        this.bookService.issueBook(book, user, days, !logged);
 
         Alerts.showInformationAlert("Book issued", "Book has been issued successfully!");
         this.clearFields();
