@@ -2,6 +2,7 @@
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ContextMenu?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuItem?>
@@ -16,7 +17,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<?import io.github.palexdev.materialfx.controls.MFXCheckbox?>
 <BorderPane fx:id="borderPane" prefHeight="651.0" prefWidth="1000.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.agh.managementlibrarysystem.controller.NotificationsController">
     <top>
         <VBox prefHeight="123.0" prefWidth="953.0" BorderPane.alignment="CENTER">
@@ -53,13 +53,13 @@
                         </HBox.margin>
                         <Image url="@../images/spinner.gif" />
                     </ImageView>
-               <HBox fx:id="toKill1" alignment="CENTER_RIGHT" prefHeight="84.0" prefWidth="587.0">
-                  <children>
-                     <MFXCheckbox fx:id="ignoreResolved" onAction="#ignoreResolved" text="Ignore Resolved" />
-                     <Region prefHeight="84.0" prefWidth="72.0" />
-                     <MFXButton fx:id="addNotification" alignment="CENTER_RIGHT" contentDisplay="RIGHT" onAction="#addNotification" text="Add Notifications" />
-                  </children>
-               </HBox>
+                    <HBox fx:id="toKill1" alignment="CENTER_RIGHT" prefHeight="84.0" prefWidth="587.0">
+                        <CheckBox fx:id="ignoreResolved" mnemonicParsing="false" onMouseClicked="#ignoreResolved"
+                                  text="Ignore Resolved"/>
+                        <Region prefHeight="84.0" prefWidth="72.0"/>
+                        <MFXButton fx:id="addNotification" alignment="CENTER_RIGHT" contentDisplay="RIGHT"
+                                   onAction="#addNotification" text="Add Notifications"/>
+                    </HBox>
                 </HBox>
                 <HBox fx:id="toKill2" prefHeight="35.0" prefWidth="957.0" style="-fx-background-color: white;">
                     <ProgressBar fx:id="progressBar" prefWidth="10000.0" progress="1.0" scaleY="0.4">

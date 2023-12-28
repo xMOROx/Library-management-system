@@ -1,19 +1,20 @@
 package pl.edu.agh.managementlibrarysystem.controller;
 
 import io.github.palexdev.materialfx.controls.MFXButton;
-import io.github.palexdev.materialfx.controls.MFXCheckbox;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ContextMenu;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.ClassPathResource;
@@ -36,9 +37,7 @@ import java.util.ResourceBundle;
 @Controller
 public class NotificationsController extends ControllerWithTableView<NotificationDTO> implements Initializable {
     @FXML
-    private MFXCheckbox ignoreResolved;
-    @FXML
-    private ContextMenu contextMenu;
+    private CheckBox ignoreResolved;
     @FXML
     private HBox toKill1;
     @FXML
@@ -80,6 +79,7 @@ public class NotificationsController extends ControllerWithTableView<Notificatio
         currUser = userSession.getLoggedUser();
         if(currUser.getPermission().toString().equalsIgnoreCase("normal_user")){
             addNotification.setVisible(false);
+            tableView.addEventFilter(ContextMenuEvent.CONTEXT_MENU_REQUESTED, Event::consume);
         }
         this.tooltipInitializer();
         this.initializeColumns();
@@ -152,7 +152,7 @@ public class NotificationsController extends ControllerWithTableView<Notificatio
         loadData();
     }
     @FXML
-    private void ignoreResolved(ActionEvent actionEvent) {
-        this.ignoreResolved.setSelected(!ignoreResolved.isSelected());
+    private void ignoreResolved(MouseEvent actionEvent) {
+        loadData();
     }
 }

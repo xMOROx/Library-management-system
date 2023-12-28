@@ -90,7 +90,7 @@ public class NotificationService {
                 .toList();
     }
     @Transactional
-    public List<NotificationDTO> getNotifications(User user, boolean ignoreUnresolved) {
+    public List<NotificationDTO> getNotifications(User user, boolean ignoreResolved) {
         List <Notification> notifications;
         if(user.getPermission().toString().equalsIgnoreCase("normal_user")){
             notifications=this.notificationRepository.findALLByUserEmail(user.getEmail());
@@ -100,7 +100,7 @@ public class NotificationService {
         }
         return notifications
                 .stream()
-                .filter(notification -> ignoreUnresolved ? notification.getAccepted() : true )
+                .filter(notification -> !ignoreResolved || !notification.getAccepted())
                 .map(this.notificationMapper::mapToDto)
                 .toList();
     }
@@ -108,9 +108,11 @@ public class NotificationService {
     public String deleteNotification(NotificationDTO notificationDTO){
         Long id =notificationDTO.getNotificationID();
         String msg = "";
+
         if(notificationRepository.findById(id).isPresent()){
             notificationRepository.deleteById(id);
             msg = "deleted successfully!";
+
         }
         else{
             msg="couldn't delete notification";

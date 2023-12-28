@@ -137,6 +137,8 @@ public class AddNotificationController extends BaseDataEntryController<ActionEve
         this.userEmail.setText("Email Address");
         this.type.setValue("Choose Type");
         this.isResolved.setSelected(false);
+        this.searchedBook = null;
+        this.searchedUser = null;
     }
 
     public void close(MouseEvent mouseEvent) {
