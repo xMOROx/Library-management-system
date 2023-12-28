@@ -27,6 +27,7 @@ import pl.edu.agh.managementlibrarysystem.enums.BorderpaneFields;
 import pl.edu.agh.managementlibrarysystem.event.BorderPaneReadyEvent;
 import pl.edu.agh.managementlibrarysystem.event.SetItemToBorderPaneEvent;
 import pl.edu.agh.managementlibrarysystem.event.fxml.LeavingBorderPaneEvent;
+import pl.edu.agh.managementlibrarysystem.mapper.BookMapper;
 import pl.edu.agh.managementlibrarysystem.model.User;
 import pl.edu.agh.managementlibrarysystem.model.util.Permission;
 import pl.edu.agh.managementlibrarysystem.service.BookService;
@@ -123,7 +124,6 @@ public class BookController extends ControllerWithTableView<BookDTO> {
         User u = session.getLoggedUser();
         if (u.getPermission() == Permission.NORMAL_USER) {
             ControlsUtils.changeControlVisibility(loadDataEntryButton, false);
-            tableView.addEventFilter(ContextMenuEvent.CONTEXT_MENU_REQUESTED, Event::consume);
         }
     }
 
@@ -248,6 +248,7 @@ public class BookController extends ControllerWithTableView<BookDTO> {
         if(bookDTO == null){
             return;
         }
+        bookDTO = bookService.findByISBN(bookDTO.getIsbn());
         session.setSelectedBook(bookDTO);
         changeFieldsVisibility(false);
         this.applicationContext.publishEvent(

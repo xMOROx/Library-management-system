@@ -21,13 +21,17 @@ import pl.edu.agh.managementlibrarysystem.enums.CoverType;
 import pl.edu.agh.managementlibrarysystem.event.BorderPaneReadyEvent;
 import pl.edu.agh.managementlibrarysystem.event.fxml.LeavingBorderPaneEvent;
 import pl.edu.agh.managementlibrarysystem.event.fxml.NewItemAddedEvent;
+import pl.edu.agh.managementlibrarysystem.mapper.BookMapper;
 import pl.edu.agh.managementlibrarysystem.model.Book;
+import pl.edu.agh.managementlibrarysystem.model.User;
+import pl.edu.agh.managementlibrarysystem.model.util.Permission;
 import pl.edu.agh.managementlibrarysystem.service.AuthorService;
 import pl.edu.agh.managementlibrarysystem.service.BookService;
 import pl.edu.agh.managementlibrarysystem.service.GenresService;
 import pl.edu.agh.managementlibrarysystem.service.PublisherService;
 import pl.edu.agh.managementlibrarysystem.session.UserSession;
 import pl.edu.agh.managementlibrarysystem.utils.Alerts;
+import pl.edu.agh.managementlibrarysystem.utils.ControlsUtils;
 
 import java.io.Serial;
 import java.net.URL;
@@ -42,6 +46,7 @@ public class BookDataEntryController extends BaseDataEntryController<ActionEvent
     private final PublisherService publisherService;
     private final GenresService genresService;
     private final ObservableList<String> coverTypes = CoverType.getObservableList();
+
     private ObservableList<String> authors;
     private ObservableList<String> publishers;
     private ObservableList<String> genres;
@@ -68,6 +73,8 @@ public class BookDataEntryController extends BaseDataEntryController<ActionEvent
     private ComboBox<String> genresSelection;
     @FXML
     private MFXTextField tableOfContent;
+    @FXML
+    private MFXButton deleteButton;
     @FXML
     private MFXButton selectAuthor;
     @FXML
@@ -110,7 +117,9 @@ public class BookDataEntryController extends BaseDataEntryController<ActionEvent
         save.disabledProperty();
         coverType.setItems(coverTypes);
         clearFields();
-
+        if (session.getSelectedBook() == null){
+            deleteButton.setDisable(true);
+        }
         this.helperView.addEventHandler(EntryHelperEmptyEvent.HELPER_EMPTY, event ->
                 {
                     this.helperView.setCenter(null);
@@ -161,10 +170,37 @@ public class BookDataEntryController extends BaseDataEntryController<ActionEvent
                         .or(this.coverType.valueProperty().isNull())
         );
         if(session.getSelectedBook()!=null){
-            setFields(session.getSelectedBook());
+            BookDTO bookDTO = session.getSelectedBook();
+            setFields(bookDTO);
         }
+        initializeStageOptions();
     }
 
+    private void initializeStageOptions() {
+        if (session.getLoggedUser() == null) {
+            return;
+        }
+        User u = session.getLoggedUser();
+        if (u.getPermission() == Permission.NORMAL_USER) {
+            ControlsUtils.changeControlVisibility(deleteButton,false);
+            ControlsUtils.changeControlVisibility(cancel,false);
+            ControlsUtils.changeControlVisibility(save,false);
+            ControlsUtils.changeControlVisibility(addAuthorButton,false);
+            ControlsUtils.changeControlVisibility(addGenresButton,false);
+            ControlsUtils.changeControlVisibility(addPublisherButton,false);
+            title.setDisable(true);
+            isbn.setDisable(true);
+            edition.setDisable(true);
+            quantity.setDisable(true);
+            description.setDisable(true);
+            tableOfContent.setDisable(true);
+            coverType.setDisable(true);
+            selectAuthor.setDisable(true);
+            selectPublisher.setDisable(true);
+            selectGenres.setDisable(true);
+            availability.setDisable(true);
+        }
+    }
     @FXML
     private void back(ActionEvent actionEvent) {
         this.root.fireEvent(new LeavingBorderPaneEvent(LeavingBorderPaneEvent.LEAVING));
@@ -309,6 +345,10 @@ public class BookDataEntryController extends BaseDataEntryController<ActionEvent
             this.addAuthorButton.setDisable(false);
             this.addPublisherButton.setDisable(false);
         }
+    }
+
+    public void deleteBook(ActionEvent actionEvent) {
+        bookService.deleteByISBN(session.getSelectedBook().getIsbn());
     }
 
     public static class EntryHelperEmptyEvent extends Event {

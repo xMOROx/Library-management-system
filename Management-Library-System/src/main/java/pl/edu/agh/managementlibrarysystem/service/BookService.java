@@ -2,11 +2,11 @@ package pl.edu.agh.managementlibrarysystem.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import pl.edu.agh.managementlibrarysystem.DTO.BookDTO;
 import pl.edu.agh.managementlibrarysystem.DTO.IssuedBookDTO;
 import pl.edu.agh.managementlibrarysystem.DTO.UserDTO;
-import pl.edu.agh.managementlibrarysystem.mapper.BookMapper;
 import pl.edu.agh.managementlibrarysystem.mapper.Mapper;
 import pl.edu.agh.managementlibrarysystem.model.Book;
 import pl.edu.agh.managementlibrarysystem.model.IssuedBook;
@@ -90,6 +90,21 @@ public class BookService {
         return this.bookRepository.findByIsbn(bookISBN)
                 .map(this.bookMapper::mapToDto)
                 .orElse(null);
+    }
+    public Optional<Book> findBookByISBN(String bookISBN) {
+        return this.bookRepository.findByIsbn(bookISBN);
+    }
+
+    public void deleteByISBN(String bookISBN){
+        Optional<Book> toDelete = this.bookRepository.findByIsbn(bookISBN);
+        try{
+            toDelete.ifPresent(book -> this.bookRepository.deleteById(book.getId()));
+        }
+        catch(DataIntegrityViolationException e){
+            Alerts.showErrorAlert("Unable to delete a book.","Book is used by other users");
+        }
+
+
     }
 
     public boolean checkIfUserHasGivenBook(UserDTO user, BookDTO book) {
