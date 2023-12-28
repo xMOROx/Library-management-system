@@ -1,21 +1,21 @@
 package pl.edu.agh.managementlibrarysystem.DTO;
 
 import lombok.Builder;
-import lombok.Data;
+import lombok.Value;
 
-@Data
+@Value
 @Builder
 public class BookDTO {
-    private String isbn;
-    private String title;
-    private String author;
-    private String publisher;
-    private String mainGenre;
-    private Integer edition;
-    private Integer quantity;
-    private Integer remainingBooks;
-    private String availability;
-    private String description;
-    private String cover;
-    private String tableOfContent;
+    String isbn;
+    String title;
+    String author;
+    String publisher;
+    String mainGenre;
+    Integer edition;
+    Integer quantity;
+    Integer remainingBooks;
+    String availability;
+    String description;
+    String cover;
+    String tableOfContent;
 }

@@ -1,9 +1,7 @@
 package pl.edu.agh.managementlibrarysystem.service;
 
 import jakarta.transaction.Transactional;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.edu.agh.managementlibrarysystem.DTO.UserDTO;
@@ -19,44 +17,43 @@ import pl.edu.agh.managementlibrarysystem.utils.Alerts;
 import java.util.Optional;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository repository;
     private final IssuedBooksRepository issuedBooksRepository;
     private final ReadBooksRepository readBooksRepository;
     private final Mapper<User, UserDTO> userMapper;
+    private final PasswordEncoder passwordEncoder;
+    private final UserSession session;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-    @Autowired
-    private UserSession session;
 
     @Transactional
     public Optional<User> addUser(String name, String surname, String email, String password, Permission permission) {
         Optional<User> potentialDuplicate = repository.findByEmail(email);
-        if(potentialDuplicate.isPresent()){
-            Alerts.showErrorAlert("Incorrect Email.","User with email "+email+" is already signed up");
+        if (potentialDuplicate.isPresent()) {
+            Alerts.showErrorAlert("Incorrect Email.", "User with email " + email + " is already signed up");
             return Optional.empty();
         }
         String encodedPassword = passwordEncoder.encode(password);
         User u = new User(name, surname, email, encodedPassword, permission);
-        Alerts.showInformationAlert("User added.","User added succsesfully");
+        Alerts.showInformationAlert("User added.", "User added succsesfully");
         return Optional.of(repository.save(u));
     }
-    @Transactional
+
     public UserDTO findById(long l) {
         return repository.findById(l).map(this.userMapper::mapToDto).orElse(null);
     }
 
     @Transactional
-    public Optional<User> login(String email, String password){
+    public Optional<User> login(String email, String password) {
         Optional<User> userOptional = repository.findByEmail(email);
-        if(userOptional.isEmpty()){
-            Alerts.showErrorAlert("User not found.","Email "+email+" not found");
+        if (userOptional.isEmpty()) {
+            Alerts.showErrorAlert("User not found.", "Email " + email + " not found");
             return userOptional;
         }
-        if(!passwordEncoder.matches(password,userOptional.get().getPassword())){
-            Alerts.showErrorAlert("Password incorrect.","Password incorrect");
+        if (!passwordEncoder.matches(password, userOptional.get().getPassword())) {
+            Alerts.showErrorAlert("Password incorrect.", "Password incorrect");
             return Optional.empty();
         }
         session.setLoggedUser(userOptional.get());

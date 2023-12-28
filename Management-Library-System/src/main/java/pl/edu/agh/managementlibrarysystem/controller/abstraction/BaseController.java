@@ -20,6 +20,10 @@ public abstract class BaseController {
     @FXML
     protected Label minimize;
 
+    public BaseController(ApplicationContext applicationContext) {
+        this.applicationContext = applicationContext;
+    }
+
     protected void tooltipInitializer() {
         Tooltip closeApp = new Tooltip("Close");
         closeApp.setStyle("-fx-font-size:11");

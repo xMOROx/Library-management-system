@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Controller;
+import pl.edu.agh.managementlibrarysystem.controller.abstraction.BaseController;
 import pl.edu.agh.managementlibrarysystem.event.MainAppReadyEvent;
 import pl.edu.agh.managementlibrarysystem.event.OpenWindowEvent;
 import pl.edu.agh.managementlibrarysystem.controller.abstraction.BaseController;
@@ -55,12 +56,11 @@ public class LoginController extends BaseController implements Initializable {
     private AnchorPane parentRoot;
 
     public LoginController(@Value("classpath:/fxml/create-user.fxml") Resource createUserFxml,
-                           ApplicationContext applicationContext, UserService userService) {
+            ApplicationContext applicationContext, UserService userService) {
+        super(applicationContext);
         this.userService = userService;
-        this.applicationContext = applicationContext;
         this.createUserFxml = createUserFxml;
     }
-
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -89,15 +89,18 @@ public class LoginController extends BaseController implements Initializable {
         fadeParentRoot.setFromValue(0);
         fadeParentRoot.setToValue(1);
         ParallelTransition parallelTransition = new ParallelTransition();
-        parallelTransition.getChildren().addAll(fadeParentRoot, translateWelcomeText, translateTransitionUserLogin, translateUsernameLabel, translateUsernameField, translatePasswordLabel, translatePasswordField, translateButton);
+        parallelTransition.getChildren().addAll(fadeParentRoot, translateWelcomeText, translateTransitionUserLogin,
+                translateUsernameLabel, translateUsernameField, translatePasswordLabel, translatePasswordField,
+                translateButton);
         parallelTransition.play();
     }
 
     @FXML
     private void login(ActionEvent actionEvent) {
-        Optional<User> loggedUser = userService.login(usernameTextField.getText(),passwordTextField.getText());
-        if(loggedUser.isPresent()){
-            applicationContext.publishEvent(new MainAppReadyEvent((Stage) ((Node) actionEvent.getSource()).getScene().getWindow()));
+        Optional<User> loggedUser = userService.login(usernameTextField.getText(), passwordTextField.getText());
+        if (loggedUser.isPresent()) {
+            applicationContext.publishEvent(
+                    new MainAppReadyEvent((Stage) ((Node) actionEvent.getSource()).getScene().getWindow()));
         }
     }
 
@@ -113,7 +116,8 @@ public class LoginController extends BaseController implements Initializable {
 
     @FXML
     private void createAccount(MouseEvent mouseEvent) {
-        applicationContext.publishEvent(new OpenWindowEvent((Stage) ((Node) mouseEvent.getSource()).getScene().getWindow(), this.createUserFxml));
+        applicationContext.publishEvent(new OpenWindowEvent(
+                (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow(), this.createUserFxml));
     }
 
     private void requestFocus(TextField field) {

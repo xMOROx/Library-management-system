@@ -14,8 +14,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.io.ClassPathResource;
@@ -26,6 +24,7 @@ import pl.edu.agh.managementlibrarysystem.event.OpenWindowEvent;
 import pl.edu.agh.managementlibrarysystem.model.User;
 import pl.edu.agh.managementlibrarysystem.model.util.Permission;
 import pl.edu.agh.managementlibrarysystem.session.UserSession;
+import pl.edu.agh.managementlibrarysystem.utils.ControlsUtils;
 
 import java.io.IOException;
 import java.net.URL;
@@ -33,7 +32,6 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 @Controller
-@RequiredArgsConstructor
 public class MainStageController extends BaseController implements Initializable {
 
     public BorderPane pane;
@@ -66,9 +64,8 @@ public class MainStageController extends BaseController implements Initializable
     @FXML
     private MFXButton addUser;
 
-    @Autowired
     public MainStageController(ApplicationContext applicationContext, UserSession session) {
-        this.applicationContext = applicationContext;
+        super(applicationContext);
         this.session = session;
     }
 
@@ -80,30 +77,17 @@ public class MainStageController extends BaseController implements Initializable
         applicationContext.publishEvent(new BorderPaneReadyEvent(pane, new ClassPathResource("fxml/home.fxml")));
 
     }
-    private void initializeStageOptions(){
-        if(session.getLoggedUser()==null){
+
+    private void initializeStageOptions() {
+        if (session.getLoggedUser() == null) {
             return;
         }
         User u = session.getLoggedUser();
-        System.out.println("lol");
-        System.out.println(u.getPermission() == Permission.NORMAL_USER);
-        if(u.getPermission() == Permission.NORMAL_USER){
-            hideControl(users);
-            hideControl(issuedBooks);
-            hideControl(returnBooks);
-            hideControl(addUser);
-
+        if (u.getPermission() == Permission.NORMAL_USER) {
+            users.setText("Profile");
+            ControlsUtils.changeControlVisibility(addUser, false);
         }
     }
-    private void hideControl(Control control){
-        control.managedProperty().set(false);
-        control.visibleProperty().set(false);
-    }
-    private void showControl(Control control){
-        control.managedProperty().set(true);
-        control.visibleProperty().set(true);
-    }
-
 
     @FXML
     private void stageDragged(MouseEvent mouseEvent) {
@@ -116,6 +100,7 @@ public class MainStageController extends BaseController implements Initializable
 
     @FXML
     private void logout(ActionEvent actionEvent) {
+        session.setLoggedUser(null);
         applicationContext
                 .publishEvent(new OpenWindowEvent((Stage) ((Node) actionEvent.getSource()).getScene().getWindow(),
                         new ClassPathResource("fxml/login.fxml")));
@@ -142,7 +127,7 @@ public class MainStageController extends BaseController implements Initializable
 
     @FXML
     private void loadReturnBooksPanel(ActionEvent actionEvent) {
-
+        applicationContext.publishEvent(new BorderPaneReadyEvent(pane, new ClassPathResource("fxml/returnBook.fxml")));
     }
 
     @FXML
@@ -173,8 +158,8 @@ public class MainStageController extends BaseController implements Initializable
         }
     }
 
-
     public void addUserPanel(ActionEvent actionEvent) {
-        applicationContext.publishEvent(new BorderPaneReadyEvent(pane, new ClassPathResource("fxml/addOtherUser.fxml")));
+        applicationContext
+                .publishEvent(new BorderPaneReadyEvent(pane, new ClassPathResource("fxml/addOtherUser.fxml")));
     }
 }

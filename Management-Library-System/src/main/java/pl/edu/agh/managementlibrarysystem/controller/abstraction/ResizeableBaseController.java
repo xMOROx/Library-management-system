@@ -8,6 +8,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -17,6 +18,10 @@ public abstract class ResizeableBaseController extends BaseController {
     protected Label fullscreen;
     @FXML
     protected Label unfullscreen;
+
+    public ResizeableBaseController(ApplicationContext applicationContext) {
+        super(applicationContext);
+    }
 
     @Override
     protected void tooltipInitializer() {

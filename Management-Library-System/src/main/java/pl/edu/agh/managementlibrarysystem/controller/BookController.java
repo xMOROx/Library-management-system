@@ -5,17 +5,18 @@ import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 import lombok.RequiredArgsConstructor;
 import org.kordamp.ikonli.javafx.FontIcon;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
@@ -25,17 +26,21 @@ import pl.edu.agh.managementlibrarysystem.enums.BorderpaneFields;
 import pl.edu.agh.managementlibrarysystem.event.BorderPaneReadyEvent;
 import pl.edu.agh.managementlibrarysystem.event.SetItemToBorderPaneEvent;
 import pl.edu.agh.managementlibrarysystem.event.fxml.LeavingBorderPaneEvent;
+import pl.edu.agh.managementlibrarysystem.model.User;
+import pl.edu.agh.managementlibrarysystem.model.util.Permission;
 import pl.edu.agh.managementlibrarysystem.service.BookService;
+import pl.edu.agh.managementlibrarysystem.session.UserSession;
+import pl.edu.agh.managementlibrarysystem.utils.ControlsUtils;
 import pl.edu.agh.managementlibrarysystem.utils.TaskFactory;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 @Controller
-@RequiredArgsConstructor
-public class BookController extends ControllerWithTableView<BookDTO> implements Initializable {
+public class BookController extends ControllerWithTableView<BookDTO> {
 
     private final BookService bookService;
+    private final UserSession session;
 
     @FXML
     private FontIcon searchIcon;
@@ -77,29 +82,27 @@ public class BookController extends ControllerWithTableView<BookDTO> implements 
     @FXML
     private TableColumn<BookDTO, String> availability;
 
-
-    @Autowired
-    public BookController(ApplicationContext applicationContext, BookService bookService) {
-        this.applicationContext = applicationContext;
+    public BookController(ApplicationContext applicationContext, BookService bookService, UserSession session) {
+        super(applicationContext);
         this.bookService = bookService;
+        this.session = session;
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         super.initialize(location, resources);
+        initializeStageOptions();
         this.createNewTask(50, 20);
         this.loadDataEntryButton.disableProperty().setValue(true);
-
 
         this.borderpane.addEventHandler(
                 LeavingBorderPaneEvent.LEAVING,
                 event -> {
-                    this.applicationContext.publishEvent(new SetItemToBorderPaneEvent<>(this.tableView, this.borderpane, BorderpaneFields.CENTER));
+                    this.applicationContext.publishEvent(
+                            new SetItemToBorderPaneEvent<>(this.tableView, this.borderpane, BorderpaneFields.CENTER));
                     this.loadData();
                     this.changeFieldsVisibility(true);
-                }
-        );
-
+                });
 
         this.tableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
@@ -110,6 +113,17 @@ public class BookController extends ControllerWithTableView<BookDTO> implements 
                 this.tableView.getSelectionModel().clearSelection();
             }
         });
+    }
+
+    private void initializeStageOptions() {
+        if (session.getLoggedUser() == null) {
+            return;
+        }
+        User u = session.getLoggedUser();
+        if (u.getPermission() == Permission.NORMAL_USER) {
+            ControlsUtils.changeControlVisibility(loadDataEntryButton, false);
+            tableView.addEventFilter(ContextMenuEvent.CONTEXT_MENU_REQUESTED, Event::consume);
+        }
     }
 
     @Override
@@ -190,8 +204,7 @@ public class BookController extends ControllerWithTableView<BookDTO> implements 
                     SortedList<BookDTO> sortedList = new SortedList<>(filteredList);
                     sortedList.comparatorProperty().bind(tableView.comparatorProperty());
                     tableView.getItems().setAll(sortedList);
-                }
-        );
+                });
     }
 
     @FXML
@@ -212,7 +225,8 @@ public class BookController extends ControllerWithTableView<BookDTO> implements 
     @FXML
     private void loadDataBookEntry(ActionEvent actionEvent) {
         changeFieldsVisibility(false);
-        this.applicationContext.publishEvent(new BorderPaneReadyEvent(this.borderpane, new ClassPathResource("fxml/bookDataEntry.fxml")));
+        this.applicationContext.publishEvent(
+                new BorderPaneReadyEvent(this.borderpane, new ClassPathResource("fxml/bookDataEntry.fxml")));
     }
 
     private void changeFieldsVisibility(Boolean visible) {

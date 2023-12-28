@@ -1,13 +1,13 @@
 package pl.edu.agh.managementlibrarysystem.DTO;
 
 import lombok.Builder;
-import lombok.Data;
+import lombok.Value;
 
-@Data
+@Value
 @Builder
 public class UserDTO {
-    private Long id;
-    private String fullname;
-    private String email;
-    private String permission;
+    Long id;
+    String fullname;
+    String email;
+    String permission;
 }

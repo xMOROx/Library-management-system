@@ -10,11 +10,11 @@ import pl.edu.agh.managementlibrarysystem.repository.AuthorRepository;
 import pl.edu.agh.managementlibrarysystem.utils.Alerts;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class AuthorService {
     private final AuthorRepository authorRepository;
 
-    @Transactional
     public boolean saveAuthor(Author author) {
         String firstName = author.getFirstname();
         String lastName = author.getLastname();
@@ -28,7 +28,6 @@ public class AuthorService {
         return false;
     }
 
-    @Transactional
     public ObservableList<String> getAllAuthors() {
         return FXCollections.observableList(
                 this.authorRepository.findAll()
@@ -39,7 +38,6 @@ public class AuthorService {
 
     }
 
-    @Transactional
     public Author getAuthorByNameAndLastname(String name, String lastname) {
         return this.authorRepository.findByNameAndLastname(
                 name,

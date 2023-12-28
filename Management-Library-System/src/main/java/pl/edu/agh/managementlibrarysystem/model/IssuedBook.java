@@ -13,12 +13,12 @@ import java.sql.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class IssuedBook {
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @MapsId("book_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("bookId")
     @JoinColumn(name = "book_id")
     private Book book;
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @MapsId("user_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("userId")
     @JoinColumn(name = "user_id")
     private User user;
     @EmbeddedId
@@ -30,7 +30,10 @@ public class IssuedBook {
     private double fee;
     @Column(name = "issued_date", nullable = false, columnDefinition = "DATE default CURRENT_DATE")
     private Date issuedDate;
-    @Column(name = "returned_date", nullable = false, columnDefinition = "DATE")
+    @Column(name = "returned_date", nullable = true, columnDefinition = "DATE default null ")
     private Date returnedDate;
+
+    @Column(name = "is_taken", nullable = false, columnDefinition = "boolean default false")
+    private boolean isTaken;
 
 }

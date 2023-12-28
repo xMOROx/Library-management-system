@@ -3,28 +3,36 @@ package pl.edu.agh.managementlibrarysystem.controller;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import pl.edu.agh.managementlibrarysystem.DTO.IssuedBookDTO;
 import pl.edu.agh.managementlibrarysystem.controller.abstraction.ControllerWithTableView;
+import pl.edu.agh.managementlibrarysystem.model.util.Permission;
 import pl.edu.agh.managementlibrarysystem.service.BookService;
+import pl.edu.agh.managementlibrarysystem.session.UserSession;
+import pl.edu.agh.managementlibrarysystem.utils.Alerts;
 import pl.edu.agh.managementlibrarysystem.utils.TaskFactory;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 @Controller
-@RequiredArgsConstructor
 public class IssuedBookController extends ControllerWithTableView<IssuedBookDTO> implements Initializable {
 
     private final BookService bookService;
+    private final UserSession session;
 
+    @FXML
+    private ContextMenu contextMenu;
     @FXML
     private TableColumn<IssuedBookDTO, String> issuedID;
     @FXML
@@ -43,6 +51,15 @@ public class IssuedBookController extends ControllerWithTableView<IssuedBookDTO>
     private TableColumn<IssuedBookDTO, Integer> days;
     @FXML
     private TableColumn<IssuedBookDTO, Integer> fee;
+    @FXML
+    private TableColumn<IssuedBookDTO, Boolean> isTaken;
+
+    @Autowired
+    public IssuedBookController(ApplicationContext applicationContext, BookService bookService, UserSession session) {
+        super(applicationContext);
+        this.bookService = bookService;
+        this.session = session;
+    }
 
 
     @Override
@@ -52,6 +69,9 @@ public class IssuedBookController extends ControllerWithTableView<IssuedBookDTO>
 
         this.tableView.setPlaceholder(new Text("No issued books"));
 
+        if (session.getLoggedUser().getPermission() == Permission.NORMAL_USER) {
+            this.contextMenu.getItems().remove(0);
+        }
     }
 
     private void updateFee() {
@@ -89,6 +109,8 @@ public class IssuedBookController extends ControllerWithTableView<IssuedBookDTO>
                             return true;
                         } else if (book.getIssuedID().toLowerCase().contains(lowerCaseFilter)) {
                             return true;
+                        } else if (book.getIsTaken().toLowerCase().contains(lowerCaseFilter)) {
+                            return true;
                         }
 
                         tableView.setPlaceholder(new Text("No record match your search"));
@@ -119,7 +141,12 @@ public class IssuedBookController extends ControllerWithTableView<IssuedBookDTO>
 
     @Override
     protected void loadData() {
-        data = this.bookService.getIssuedBooks();
+        if (session.getLoggedUser().getPermission() == Permission.NORMAL_USER) {
+            data = this.bookService.getIssuedBooksByUserId(session.getLoggedUser().getId());
+        } else {
+            data = this.bookService.getIssuedBooks();
+        }
+
         this.tableView.getItems().clear();
         this.tableView.getItems().addAll(data);
     }
@@ -135,5 +162,18 @@ public class IssuedBookController extends ControllerWithTableView<IssuedBookDTO>
         returnedDate.setCellValueFactory(new PropertyValueFactory<>("returnedDate"));
         days.setCellValueFactory(new PropertyValueFactory<>("days"));
         fee.setCellValueFactory(new PropertyValueFactory<>("fee"));
+        isTaken.setCellValueFactory(new PropertyValueFactory<>("isTaken"));
+    }
+
+    public void issueBookToUser(ActionEvent actionEvent) {
+        IssuedBookDTO issuedBookDTO = this.tableView.getSelectionModel().getSelectedItem();
+        if (issuedBookDTO.getIsTaken().equalsIgnoreCase("yes")) {
+            Alerts.showAlert("Book already issued", "Book is already issued to user", "Please choose another book");
+            return;
+        }
+
+        issuedBookDTO.setIsTaken("yes");
+        this.bookService.issueBookToUser(issuedBookDTO);
+        this.loadData();
     }
 }

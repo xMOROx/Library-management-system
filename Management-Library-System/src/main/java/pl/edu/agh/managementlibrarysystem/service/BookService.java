@@ -13,9 +13,9 @@ import pl.edu.agh.managementlibrarysystem.repository.*;
 import pl.edu.agh.managementlibrarysystem.utils.Alerts;
 
 import java.util.List;
-import java.util.Objects;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class BookService {
     private final BookRepository bookRepository;
@@ -27,21 +27,20 @@ public class BookService {
     private final Mapper<Book, BookDTO> bookMapper;
     private final Mapper<IssuedBook, IssuedBookDTO> issuedBookMapper;
 
-    @Transactional
-    public boolean saveBook(BookDTO bookDTO, String authorName, String authorLastname, String publisherName, String genreType) {
+    public boolean saveBook(BookDTO bookDTO, String authorName, String authorLastname, String publisherName,
+                            String genreType) {
         String isbn = bookDTO.getIsbn();
         Book book = this.bookMapper.mapToEntity(bookDTO);
-
 
         if (this.bookRepository.findByIsbn(isbn).isPresent()) {
             Alerts.showErrorAlert("Book already exist", "Book with given isbn " + isbn + " already exists");
             return false;
         }
 
-        return this.bookRepository.saveNewBookWithGivenParams(book, authorName, authorLastname, publisherName, genreType).isPresent();
+        return this.bookRepository
+                .saveNewBookWithGivenParams(book, authorName, authorLastname, publisherName, genreType).isPresent();
     }
 
-    @Transactional
     public List<BookDTO> getBooks() {
         List<Book> books = this.bookRepository.findAll();
         return books
@@ -55,14 +54,12 @@ public class BookService {
         return this.bookRepository.sumOfAllBooks();
     }
 
-    @Transactional
     public Integer getSumOfAllRemainingBooks() {
         return this.bookRepository.sumOfAllRemainingBooks();
     }
 
-    @Transactional
     public List<IssuedBookDTO> getIssuedBooks() {
-        List<IssuedBook> issuedBooks = this.issuedBooksRepository.findAll();
+        List<IssuedBook> issuedBooks = this.issuedBooksRepository.findAllUpToDate();
         return issuedBooks
                 .stream()
                 .map(this.issuedBookMapper::mapToDto)
@@ -70,26 +67,68 @@ public class BookService {
     }
 
     @Transactional
+    public List<IssuedBookDTO> getIssuedBooksByUserId(Long id) {
+        List<IssuedBook> issuedBooks = this.issuedBooksRepository.findAllUpToDateByUserId(id);
+        return issuedBooks
+                .stream()
+                .map(this.issuedBookMapper::mapToDto)
+                .toList();
+    }
+
     public void updateFee() {
         this.issuedBooksRepository.updateFee();
     }
 
-    @Transactional
     public BookDTO findByISBN(String bookISBN) {
         return this.bookRepository.findByIsbn(bookISBN)
                 .map(this.bookMapper::mapToDto)
                 .orElse(null);
     }
 
-    @Transactional
-    public boolean checkIfUserHasBook(UserDTO user) {
-        return this.issuedBooksRepository.findByUserId(user.getId())
-                .stream()
-                .anyMatch(Objects::nonNull);
+    public boolean checkIfUserHasGivenBook(UserDTO user, BookDTO book) {
+        return this.issuedBooksRepository.findIssuedBookByUserIdAndBookIsbn(user.getId(), book.getIsbn()).isPresent();
     }
 
-    @Transactional
-    public void issueBook(BookDTO book, UserDTO user, Integer days) {
-        this.issuedBooksRepository.issueBook(book.getIsbn(), user.getId(), days);
+    public void issueBook(BookDTO book, UserDTO user, Integer days, boolean isTaken) {
+        this.issuedBooksRepository.issueBook(book.getIsbn(), user.getId(), days, isTaken);
+    }
+
+    public IssuedBookDTO getIssuedBookById(Long bookId, Long userId) {
+
+        return this.issuedBooksRepository.findByBookIdAndUserId(bookId, userId)
+                .map(this.issuedBookMapper::mapToDto)
+                .orElse(null);
+    }
+
+    public boolean renewBook(Long bookId, Long userId, int numberOfDaysToRenew) {
+        try {
+            this.issuedBooksRepository.renewBook(bookId, userId, numberOfDaysToRenew);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public boolean returnBook(Long bookId, Long userId) {
+        try {
+            this.issuedBooksRepository.returnBook(bookId, userId);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public boolean deleteIssuedBook(Long bookId, Long userId) {
+        try {
+            this.issuedBooksRepository.deleteIssuedBookByBookIdAndUserId(bookId, userId);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public void issueBookToUser(IssuedBookDTO issuedBookDTO) {
+        this.issuedBooksRepository.save(this.issuedBookMapper.mapToEntity(issuedBookDTO));
+
     }
 }

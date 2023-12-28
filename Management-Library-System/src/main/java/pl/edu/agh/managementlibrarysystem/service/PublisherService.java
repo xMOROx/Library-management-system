@@ -10,11 +10,11 @@ import pl.edu.agh.managementlibrarysystem.repository.PublisherRepository;
 import pl.edu.agh.managementlibrarysystem.utils.Alerts;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class PublisherService {
     private final PublisherRepository publisherRepository;
 
-    @Transactional
     public boolean savePublisher(Publisher publisher) {
         String publisherName = publisher.getName();
 
@@ -27,7 +27,6 @@ public class PublisherService {
         return false;
     }
 
-    @Transactional
     public ObservableList<String> getAllPublishers() {
         return FXCollections.observableList(
                 this.publisherRepository.findAll()

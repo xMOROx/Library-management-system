@@ -1,0 +1,30 @@
+.mfx-button {
+    -fx-background-color: #2b579a;
+    -fx-text-fill: white;
+    -fx-background-radius: 0;
+}
+
+.mfx-button:hover {
+    -fx-background-color: #219297;
+    -fx-text-fill: white;
+}
+
+.mfx-button:focused {
+    -fx-background-color: #2b579a;
+}
+
+#close:hover {
+    -fx-background-color: #F44336;
+}
+
+#fullscreen:hover {
+    -fx-background-image: url('/images/fullscreen-hover.png');
+}
+
+#unfullscreen:hover {
+    -fx-background-image: url('/images/unfullscreen-hover.png');
+}
+
+#minimise:hover {
+    -fx-background-image: url('/images/minimize-hover.png');
+}
