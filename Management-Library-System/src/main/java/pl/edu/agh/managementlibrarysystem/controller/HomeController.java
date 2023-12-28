@@ -18,16 +18,15 @@ import java.util.ResourceBundle;
 
 
 @Controller
-@RequiredArgsConstructor
 public class HomeController extends ResizeableBaseController implements Initializable {
     private final UserSession userSession;
     private final NotificationService notificationService;
 
     @Autowired
     public HomeController(UserSession userSession, NotificationService notificationService, ApplicationContext applicationContext) {
+        super(applicationContext);
         this.userSession = userSession;
         this.notificationService = notificationService;
-        this.applicationContext = applicationContext;
     }
 
     @FXML

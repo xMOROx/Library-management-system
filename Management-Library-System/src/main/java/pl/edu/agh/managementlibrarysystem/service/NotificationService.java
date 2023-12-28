@@ -35,19 +35,16 @@ public class NotificationService {
         Optional<Book> book = bookRepository.findByIsbn(isbn);
         Optional<User> user = userRepository.findByEmail(email);
         if(book.isPresent() && user.isPresent()){
-            List<IssuedBook> issuedBookList = issuedBooksRepository.findByUserId(user.get().getId());
-            for (IssuedBook issuedBook : issuedBookList) {
-                if (issuedBook.getBook().equals(book.get())) {
-                    Notification notification = new Notification();
-                    notification.setUser(user.get());
-                    notification.setBooks(book.get());
-                    notification.setSendingDate(sendingDate);
-                    notification.setType(type);
-                    notification.setAccepted(accepted);
-                    notificationRepository.save(notification);
-                    msg = "Notification added successfully!";
-                    break;
-                }
+            Optional<IssuedBook> issuedBook = issuedBooksRepository.findIssuedBookByUserIdAndBookIsbn(user.get().getId(),book.get().getIsbn());
+            if (issuedBook.isPresent() && issuedBook.get().getBook().equals(book.get())) {
+                Notification notification = new Notification();
+                notification.setUser(user.get());
+                notification.setBooks(book.get());
+                notification.setSendingDate(sendingDate);
+                notification.setType(type);
+                notification.setAccepted(accepted);
+                notificationRepository.save(notification);
+                msg = "Notification added successfully!";
             }
             if (msg.equals("")) {
                 msg = "Couldn't make notification because the user provided has no such books issued";

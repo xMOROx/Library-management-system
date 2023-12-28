@@ -34,7 +34,6 @@ import java.net.URL;
 import java.sql.Date;
 import java.util.ResourceBundle;
 @Controller
-@RequiredArgsConstructor
 public class NotificationsController extends ControllerWithTableView<NotificationDTO> implements Initializable {
     @FXML
     private MFXCheckbox ignoreResolved;
@@ -71,9 +70,9 @@ public class NotificationsController extends ControllerWithTableView<Notificatio
 
     @Autowired
     public NotificationsController(UserSession userSession, NotificationService notificationService, ApplicationContext applicationContext) {
+        super(applicationContext);
         this.userSession = userSession;
         this.notificationService = notificationService;
-        this.applicationContext = applicationContext;
     }
 
     @Override
