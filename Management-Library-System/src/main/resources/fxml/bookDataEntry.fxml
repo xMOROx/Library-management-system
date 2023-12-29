@@ -81,32 +81,32 @@
                         <Font name="Segoe UI Semilight" size="18.0" />
                     </font>
                 </Label>
-                <CheckBox fx:id="availability" layoutX="389.0" layoutY="245.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="70.0" text="Available">
+                <CheckBox fx:id="availability" layoutX="389.0" layoutY="277.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="70.0" text="Available">
                     <font>
                         <Font name="Segoe UI Semilight" size="12.0" />
                     </font>
                 </CheckBox>
-                <ComboBox fx:id="coverType" layoutX="143.0" layoutY="250.0" prefWidth="150.0" />
-                <Label layoutX="43.0" layoutY="249.0" prefHeight="27.0" prefWidth="100.0" text="Cover type">
+                <ComboBox fx:id="coverType" layoutX="143.0" layoutY="282.0" prefWidth="150.0" />
+                <Label layoutX="43.0" layoutY="281.0" prefHeight="27.0" prefWidth="100.0" text="Cover type">
                     <font>
                         <Font name="Segoe UI Semilight" size="18.0" />
                     </font>
                 </Label>
 
-                <ComboBox fx:id="authorSelection" layoutX="143.0" layoutY="286.0" prefWidth="150.0" />
-                <Label layoutX="43.0" layoutY="285.0" prefHeight="27.0" prefWidth="100.0" text="Author">
+                <ComboBox fx:id="authorSelection" layoutX="143.0" layoutY="318.0" prefWidth="150.0" />
+                <Label layoutX="43.0" layoutY="317.0" prefHeight="27.0" prefWidth="100.0" text="Author">
                     <font>
                         <Font name="Segoe UI Semilight" size="18.0" />
                     </font>
                 </Label>
-                <ComboBox fx:id="publisherSelection" layoutX="143.0" layoutY="322.0" prefWidth="150.0" />
-                <Label layoutX="43.0" layoutY="321.0" prefHeight="27.0" prefWidth="100.0" text="Publisher">
+                <ComboBox fx:id="publisherSelection" layoutX="143.0" layoutY="354.0" prefWidth="150.0" />
+                <Label layoutX="43.0" layoutY="353.0" prefHeight="27.0" prefWidth="100.0" text="Publisher">
                     <font>
                         <Font name="Segoe UI Semilight" size="18.0" />
                     </font>
                 </Label>
-                <ComboBox fx:id="genresSelection" layoutX="143.0" layoutY="358.0" prefWidth="150.0" />
-                <Label layoutX="43.0" layoutY="357.0" prefHeight="27.0" prefWidth="100.0" text="Gengre(s)">
+                <ComboBox fx:id="genresSelection" layoutX="143.0" layoutY="390.0" prefWidth="150.0" />
+                <Label layoutX="43.0" layoutY="389.0" prefHeight="27.0" prefWidth="100.0" text="Gengre(s)">
                     <font>
                         <Font name="Segoe UI Semilight" size="18.0" />
                     </font>
@@ -123,6 +123,12 @@
                     </font>
                 </MFXButton>
                 <BorderPane fx:id="helperView" layoutX="458.0" layoutY="-1.0" prefHeight="470.0" prefWidth="535.0" />
+            <MFXTextField fx:id="imageURL" layoutX="143.0" layoutY="229.0" prefHeight="25.0" prefWidth="315.0" />
+            <Label layoutX="51.0" layoutY="247.0" prefHeight="27.0" prefWidth="92.0" text="Image URL">
+               <font>
+                  <Font name="Segoe UI Semilight" size="18.0" />
+               </font>
+            </Label>
 
             </Pane>
         </VBox>

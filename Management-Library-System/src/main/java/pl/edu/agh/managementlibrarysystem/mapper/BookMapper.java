@@ -28,6 +28,7 @@ public class BookMapper implements Mapper<Book, BookDTO> {
                 .description(book.getDescription())
                 .availability(book.getAvailability())
                 .cover(book.getCover())
+                .image(book.getImage())
                 .tableOfContent(book.getTableOfContent())
                 .genres(new HashSet<>())
                 .authors(new HashSet<>())

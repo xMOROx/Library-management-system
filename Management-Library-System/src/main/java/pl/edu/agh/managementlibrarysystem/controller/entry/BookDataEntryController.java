@@ -21,7 +21,6 @@ import pl.edu.agh.managementlibrarysystem.enums.CoverType;
 import pl.edu.agh.managementlibrarysystem.event.BorderPaneReadyEvent;
 import pl.edu.agh.managementlibrarysystem.event.fxml.LeavingBorderPaneEvent;
 import pl.edu.agh.managementlibrarysystem.event.fxml.NewItemAddedEvent;
-import pl.edu.agh.managementlibrarysystem.model.Book;
 import pl.edu.agh.managementlibrarysystem.service.AuthorService;
 import pl.edu.agh.managementlibrarysystem.service.BookService;
 import pl.edu.agh.managementlibrarysystem.service.GenresService;
@@ -30,7 +29,6 @@ import pl.edu.agh.managementlibrarysystem.utils.Alerts;
 
 import java.io.Serial;
 import java.net.URL;
-import java.util.HashSet;
 import java.util.ResourceBundle;
 
 @Controller
@@ -67,6 +65,8 @@ public class BookDataEntryController extends BaseDataEntryController<ActionEvent
     private ComboBox<String> genresSelection;
     @FXML
     private MFXTextField tableOfContent;
+    @FXML
+    private MFXTextField imageURL;
     @FXML
     private MFXButton selectAuthor;
     @FXML
@@ -174,6 +174,7 @@ public class BookDataEntryController extends BaseDataEntryController<ActionEvent
 
 
         int bookQuantity = Integer.parseInt(this.quantity.getText());
+
         BookDTO book = BookDTO.builder()
                 .title(this.title.getText())
                 .isbn(this.isbn.getText().trim())
@@ -183,6 +184,7 @@ public class BookDataEntryController extends BaseDataEntryController<ActionEvent
                 .description(!this.description.getText().isEmpty() ? this.description.getText() : null)
                 .availability(this.availability.isSelected() ? "available" : "unavailable")
                 .cover(this.coverType.getValue())
+                .image(!this.imageURL.getText().isEmpty() ? this.imageURL.getText() : null)
                 .tableOfContent(!this.tableOfContent.getText().isEmpty() ? this.tableOfContent.getText() : null)
                 .build();
 

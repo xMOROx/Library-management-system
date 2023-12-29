@@ -283,5 +283,6 @@ public class BookController extends ControllerWithTableView<BookDTO> {
         this.arrow.setVisible(visible);
         this.checkAllCheckbox.setVisible(visible);
         this.delete.setVisible(visible);
+        this.bookDetailsButton.setVisible(visible);
     }
 }

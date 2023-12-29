@@ -17,5 +17,6 @@ public class BookDTO {
     String availability;
     String description;
     String cover;
+    String image;
     String tableOfContent;
 }
