@@ -140,10 +140,9 @@ public class BookService {
 
     }
 
-    public void deleteBook(BookDTO bookDTO) {
-        this.bookRepository.delete(this.bookMapper.mapToEntity(bookDTO));
+    public void deleteBookByIsbn(String isbn) {
+        this.bookRepository.deleteBookByIsbn(isbn);
     }
-
 
     public boolean checkIfBookIsAvailable(BookDTO book) {
         return this.bookRepository.checkIfBookIsAvailable(book.getIsbn()).equalsIgnoreCase("available");

@@ -65,4 +65,10 @@ public class BookRepositoryImpl {
 
         return Optional.of(this.entityManager.merge(book));
     }
+
+    public void deleteBookByIsbn(String isbn) {
+        this.entityManager.createQuery("DELETE FROM books b WHERE b.isbn = ?1")
+                .setParameter(1, isbn)
+                .executeUpdate();
+    }
 }

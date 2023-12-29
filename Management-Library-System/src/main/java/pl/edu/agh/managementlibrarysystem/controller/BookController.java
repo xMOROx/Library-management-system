@@ -26,6 +26,7 @@ import pl.edu.agh.managementlibrarysystem.model.User;
 import pl.edu.agh.managementlibrarysystem.model.util.Permission;
 import pl.edu.agh.managementlibrarysystem.service.BookService;
 import pl.edu.agh.managementlibrarysystem.session.UserSession;
+import pl.edu.agh.managementlibrarysystem.utils.Alerts;
 import pl.edu.agh.managementlibrarysystem.utils.ControlsUtils;
 import pl.edu.agh.managementlibrarysystem.utils.TaskFactory;
 
@@ -224,16 +225,25 @@ public class BookController extends ControllerWithTableView<BookDTO> {
     private void deleteBook(ActionEvent actionEvent) {
         BookDTO bookDTO = this.tableView.getSelectionModel().getSelectedItem();
         if (bookDTO == null) {
+            Alerts.showErrorAlert("No book selected", "Please select book to delete");
             return;
         }
-        this.bookService.deleteBook(bookDTO);
+
+
+        this.bookService.deleteBookByIsbn(bookDTO.getIsbn());
         this.loadData();
         this.allBooksAndRemainingBooks();
+        Alerts.showSuccessAlert("Book deleted", "Book has been deleted");
     }
 
     @FXML
     private void deleteSelectedBooks(ActionEvent actionEvent) {
-
+        this.tableView.getSelectionModel().getSelectedItems().forEach(bookDTO -> {
+            this.bookService.deleteBookByIsbn(bookDTO.getIsbn());
+        });
+        this.loadData();
+        this.allBooksAndRemainingBooks();
+        Alerts.showSuccessAlert("Books deleted", "All selected books have been deleted");
     }
 
     @FXML
