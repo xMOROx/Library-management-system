@@ -182,7 +182,7 @@ public class BookService {
                         .isbn(book.getIsbn())
                         .title(book.getTitle())
                         .authors(book.getAuthors().stream().map(author -> author.getFirstname() + " " + author.getLastname()).toList().toString())
-                        .publisher(book.getPublisher().getName())
+                        .publisher(book.getPublisher()!=null ? book.getPublisher().getName() : null)
                         .genres(book.getGenres().stream().map(Genre::getGenre).toList().toString())
                         .edition(book.getEdition())
                         .quantity(book.getQuantity())

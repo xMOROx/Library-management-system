@@ -1,5 +1,7 @@
 package pl.edu.agh.managementlibrarysystem.controller;
 
+import io.github.palexdev.materialfx.controls.MFXButton;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -9,10 +11,13 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
 import pl.edu.agh.managementlibrarysystem.DTO.UserProfileDTO;
 import pl.edu.agh.managementlibrarysystem.controller.abstraction.ControllerWithTableView;
+import pl.edu.agh.managementlibrarysystem.event.BorderPaneReadyEvent;
 import pl.edu.agh.managementlibrarysystem.model.User;
+import pl.edu.agh.managementlibrarysystem.model.util.Permission;
 import pl.edu.agh.managementlibrarysystem.service.BookService;
 import pl.edu.agh.managementlibrarysystem.service.NotificationService;
 import pl.edu.agh.managementlibrarysystem.service.ProfileService;
@@ -28,6 +33,10 @@ public class ProfileController extends ControllerWithTableView<UserProfileDTO> i
     private final ProfileService profileService;
     private final BookService bookService;
 
+    @FXML
+    public MFXButton editButton;
+    @FXML
+    public BorderPane borderpane;
     @FXML
     private Label totalFees;
     @FXML
@@ -94,5 +103,15 @@ public class ProfileController extends ControllerWithTableView<UserProfileDTO> i
         data = this.profileService.getListOfUserProfileDTOofUser(currUser);
         this.tableView.getItems().clear();
         this.tableView.getItems().addAll(data);
+    }
+
+    public void editUser(ActionEvent actionEvent) {
+
+        if (userSession.getLoggedUser() == null) {
+            return;
+        }
+        User u = userSession.getLoggedUser();
+        applicationContext.publishEvent(new BorderPaneReadyEvent((BorderPane) borderpane.getParent(), new ClassPathResource("fxml/editUsers.fxml")));
+
     }
 }

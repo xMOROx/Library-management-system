@@ -33,6 +33,10 @@ public class AddOtherUserController extends BaseController implements Initializa
     public MFXButton addLibrarian;
     @FXML
     public MFXButton  addAdmin;
+    @FXML
+    public Label fullscreen;
+    @FXML
+    public Label unfullscreen;
 
     @FXML
     private TextField name;

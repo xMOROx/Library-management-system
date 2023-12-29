@@ -74,7 +74,10 @@ public class BookDetailsController extends ResizeableBaseController implements I
     }
 
     public void initializeBookCover() {
-        this.bookCover.setImage(new Image(book.getImage()));
+        if (book.getImage()!=null){
+            this.bookCover.setImage(new Image(book.getImage()));
+        }
+
     }
 
     @Override

@@ -13,6 +13,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
@@ -22,10 +23,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import pl.edu.agh.managementlibrarysystem.DTO.UserDTO;
 import pl.edu.agh.managementlibrarysystem.controller.abstraction.BaseController;
+import pl.edu.agh.managementlibrarysystem.event.fxml.LeavingBorderPaneEvent;
+import pl.edu.agh.managementlibrarysystem.model.User;
 import pl.edu.agh.managementlibrarysystem.model.util.Permission;
 import pl.edu.agh.managementlibrarysystem.repository.UserRepository;
 import pl.edu.agh.managementlibrarysystem.service.UserService;
+import pl.edu.agh.managementlibrarysystem.session.UserSession;
 import pl.edu.agh.managementlibrarysystem.utils.Alerts;
+import pl.edu.agh.managementlibrarysystem.utils.ControlsUtils;
 
 import java.net.URL;
 import java.util.List;
@@ -40,7 +45,7 @@ public class EditUserController extends BaseController implements Initializable 
     private final ObservableList<String> data = FXCollections.observableArrayList();
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
-
+    private final UserSession session;
     private UserDTO currUserDTO;
     @FXML
     private TextField surname;
@@ -67,12 +72,13 @@ public class EditUserController extends BaseController implements Initializable 
     private BooleanProperty emailBool;
     private BooleanProperty passwordBool;
     private BooleanProperty repeatPasswordBool;
-    public EditUserController(ApplicationContext applicationContext, UserService userService, PasswordEncoder passwordEncoder, UserRepository userRepository) {
+    public EditUserController(ApplicationContext applicationContext, UserService userService, PasswordEncoder passwordEncoder, UserRepository userRepository,UserSession session) {
         super(applicationContext);
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
         this.patternEmail = Pattern.compile(".+@.+\\..+", Pattern.CASE_INSENSITIVE);
         this.userService = userService;
+        this.session = session;
     }
     private static void errorLabel(String error_message, Color c, ObservableList<Node> list) {
         Label l = new Label();
@@ -104,6 +110,23 @@ public class EditUserController extends BaseController implements Initializable 
         validateEmail();
 
         validateNewPassword();
+
+        initializeStageOptions();
+
+    }
+    private void initializeStageOptions() {
+        if (session.getLoggedUser() == null) {
+            return;
+        }
+        User u = session.getLoggedUser();
+        if (u.getPermission() == Permission.NORMAL_USER) {
+            ControlsUtils.changeControlVisibility(chooseUser, false);
+            ControlsUtils.changeControlVisibility(saveAsAdmin, false);
+            ControlsUtils.changeControlVisibility(saveAsLib, false);
+            chooseUser.setValue(u.getId().toString());
+            userHasBeenChosen();
+
+        }
     }
     private void validateEmail() {
         emailBool.bind(Bindings.createBooleanBinding(() -> {
@@ -133,9 +156,6 @@ public class EditUserController extends BaseController implements Initializable 
 
         repeatPasswordBool.bind(Bindings.createBooleanBinding(() -> password.getText().length()>=8, repeatPassword.textProperty(), password.textProperty()));
         name.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue) {
-
-            }
         });
     }
     private void loadUserDropbox(){
@@ -223,6 +243,9 @@ public class EditUserController extends BaseController implements Initializable 
 
     @FXML
     private void passwordKeyPressed(KeyEvent keyEvent) {
-        validatePassword();
+        if (keyEvent.getCode() == KeyCode.ENTER) {
+            validatePassword();
+        }
+
     }
 }

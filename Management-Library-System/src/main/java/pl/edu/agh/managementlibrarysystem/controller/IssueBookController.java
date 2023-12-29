@@ -152,7 +152,7 @@ public class IssueBookController extends ResizeableBaseController implements Ini
         }
         this.userId = Long.parseLong(userId);
         user = userService.findById(this.userId);
-
+        System.out.println("lol");
         if (user == null) {
             errorUserMessage.setValue("User with given ID does not exist!");
             return;

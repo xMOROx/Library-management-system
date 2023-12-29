@@ -89,6 +89,9 @@ public class MainStageController extends BaseController implements Initializable
             users.setText("Profile");
             ControlsUtils.changeControlVisibility(addUser, false);
         }
+        if (u.getPermission() != Permission.ADMIN) {
+            ControlsUtils.changeControlVisibility(editUser, false);
+        }
     }
 
     @FXML
