@@ -14,7 +14,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY, targetEntity = ReadBook.class)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, targetEntity = ReadBook.class)
     private Set<ReadBook> readBooks = new HashSet<>();
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY, targetEntity = IssuedBook.class)
     private Set<IssuedBook> issuedBooks = new HashSet<>();

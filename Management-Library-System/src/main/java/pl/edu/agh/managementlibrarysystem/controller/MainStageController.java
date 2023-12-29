@@ -36,6 +36,8 @@ public class MainStageController extends BaseController implements Initializable
 
     public BorderPane pane;
     public UserSession session;
+    @FXML
+    private MFXButton editUser;
 
     @FXML
     private BorderPane borderpane;
@@ -171,5 +173,15 @@ public class MainStageController extends BaseController implements Initializable
     public void addUserPanel(ActionEvent actionEvent) {
         applicationContext
                 .publishEvent(new BorderPaneReadyEvent(pane, new ClassPathResource("fxml/addOtherUser.fxml")));
+    }
+    @FXML
+    public void editUserPanel(ActionEvent actionEvent) {
+        if (session.getLoggedUser() == null) {
+            return;
+        }
+        User u = session.getLoggedUser();
+        if (u.getPermission() == Permission.ADMIN) {
+            applicationContext.publishEvent(new BorderPaneReadyEvent(pane, new ClassPathResource("fxml/editUsers.fxml")));
+        }
     }
 }
