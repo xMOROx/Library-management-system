@@ -20,6 +20,7 @@ import pl.edu.agh.managementlibrarysystem.DTO.BookDTO;
 import pl.edu.agh.managementlibrarysystem.controller.abstraction.ControllerWithTableView;
 import pl.edu.agh.managementlibrarysystem.enums.BorderpaneFields;
 import pl.edu.agh.managementlibrarysystem.event.BorderPaneReadyEvent;
+import pl.edu.agh.managementlibrarysystem.event.OpenBookDetailsEvent;
 import pl.edu.agh.managementlibrarysystem.event.SetItemToBorderPaneEvent;
 import pl.edu.agh.managementlibrarysystem.event.fxml.LeavingBorderPaneEvent;
 import pl.edu.agh.managementlibrarysystem.model.User;
@@ -39,13 +40,15 @@ public class BookController extends ControllerWithTableView<BookDTO> {
     private final BookService bookService;
     private final UserSession session;
     @FXML
-    public ContextMenu contextMenu;
+    private ContextMenu contextMenu;
     @FXML
     private FontIcon searchIcon;
     @FXML
     private BorderPane borderpane;
     @FXML
     private MFXButton loadDataEntryButton;
+    @FXML
+    private MFXButton bookDetailsButton;
     @FXML
     private Label booksAmount;
     @FXML
@@ -116,6 +119,8 @@ public class BookController extends ControllerWithTableView<BookDTO> {
             this.delete.setVisible(false);
             this.availability.setVisible(false);
         }
+
+        this.bookDetailsButton.disableProperty().bind(this.tableView.getSelectionModel().selectedItemProperty().isNull());
     }
 
     private void initializeStageOptions() {
@@ -253,6 +258,20 @@ public class BookController extends ControllerWithTableView<BookDTO> {
                 new BorderPaneReadyEvent(this.borderpane, new ClassPathResource("fxml/bookDataEntry.fxml")));
     }
 
+    @FXML
+    private void loadBookDetails(ActionEvent actionEvent) {
+        if (this.tableView.getSelectionModel().getSelectedItems().size() > 1) {
+            Alerts.showErrorAlert("Too many books selected", "Please select only one book to see details");
+            return;
+        }
+
+        BookDTO bookDTO = this.tableView.getSelectionModel().getSelectedItem();
+
+        this.applicationContext.publishEvent(
+                new OpenBookDetailsEvent(new ClassPathResource("fxml/bookDetails.fxml"), bookDTO));
+
+    }
+
     private void changeFieldsVisibility(Boolean visible) {
         this.searchTextField.setVisible(visible);
         this.booksLabel.setVisible(visible);
@@ -265,5 +284,4 @@ public class BookController extends ControllerWithTableView<BookDTO> {
         this.checkAllCheckbox.setVisible(visible);
         this.delete.setVisible(visible);
     }
-
 }

@@ -107,7 +107,7 @@
                                     </font>
                                 </TextField>
                                 <HBox alignment="TOP_RIGHT" prefHeight="26.0" prefWidth="505.0" HBox.hgrow="ALWAYS">
-                                    <MFXButton fx:id="loadDataEntryButton" onAction="#loadDataBookEntry" prefHeight="25.0" prefWidth="125.0" style="-fx-background-radius: 0;" text="Add Book">
+                                    <MFXButton fx:id="bookDetailsButton" onAction="#loadBookDetails" prefHeight="25.0" prefWidth="125.0" style="-fx-background-radius: 0;" text="Book details">
                                         <HBox.margin>
                                             <Insets right="7.0" />
                                         </HBox.margin>
@@ -118,6 +118,14 @@
                                             <Font name="Segoe UI Semilight" size="12.0" />
                                         </font>
                                     </MFXButton>
+                           <MFXButton fx:id="loadDataEntryButton" onAction="#loadDataBookEntry" prefHeight="25.0" prefWidth="125.0" style="-fx-background-radius: 0;" text="Add Book">
+                              <graphic>
+                                 <FontIcon fill="white" iconLiteral="fas-plus" iconSize="17" />
+                              </graphic>
+                              <font>
+                                 <Font name="Segoe UI Semilight" size="12.0" />
+                              </font>
+                           </MFXButton>
                                 </HBox>
                             </HBox>
                         </VBox>
