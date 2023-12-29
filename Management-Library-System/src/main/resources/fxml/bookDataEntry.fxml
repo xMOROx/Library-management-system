@@ -13,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<BorderPane fx:id="root" prefHeight="519.0" prefWidth="993.0" style="-fx-background-color: white;" stylesheets="@../css/bookData.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.agh.managementlibrarysystem.controller.entry.BookDataEntryController">
+<BorderPane fx:id="root" prefHeight="519.0" prefWidth="993.0" style="-fx-background-color: white;" stylesheets="@../css/bookData.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.agh.managementlibrarysystem.controller.entry.BookDataEntryController">
     <top>
         <VBox prefHeight="519.0" prefWidth="993.0" BorderPane.alignment="CENTER">
             <HBox alignment="CENTER_LEFT" prefHeight="51.0" prefWidth="993.0" spacing="30.0">

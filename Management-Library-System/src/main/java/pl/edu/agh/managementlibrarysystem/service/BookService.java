@@ -2,6 +2,7 @@ package pl.edu.agh.managementlibrarysystem.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import pl.edu.agh.managementlibrarysystem.DTO.BookDTO;
 import pl.edu.agh.managementlibrarysystem.DTO.BookDetailsDTO;
@@ -15,6 +16,7 @@ import pl.edu.agh.managementlibrarysystem.repository.*;
 import pl.edu.agh.managementlibrarysystem.utils.Alerts;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -94,6 +96,11 @@ public class BookService {
         return this.issuedBooksRepository.sumAllFeesByUserId(id);
     }
 
+    public boolean updateBook(BookDTO bookDTO, String authorName, String authorLastname, String publisherName,
+                           String genreType){
+        Optional<Book> b = bookRepository.findByIsbn(bookDTO.getIsbn());
+        return bookRepository.updateBookWithGivenParams(b.get().getId(),bookDTO,authorName,authorLastname,publisherName,genreType).isPresent();
+    }
     public void updateFee() {
         this.issuedBooksRepository.updateFee();
     }
@@ -102,6 +109,21 @@ public class BookService {
         return this.bookRepository.findByIsbn(bookISBN)
                 .map(this.bookMapper::mapToDto)
                 .orElse(null);
+    }
+    public Optional<Book> findBookByISBN(String bookISBN) {
+        return this.bookRepository.findByIsbn(bookISBN);
+    }
+
+    public void deleteByISBN(String bookISBN){
+        Optional<Book> toDelete = this.bookRepository.findByIsbn(bookISBN);
+        try{
+            toDelete.ifPresent(book -> this.bookRepository.deleteById(book.getId()));
+        }
+        catch(DataIntegrityViolationException e){
+            Alerts.showErrorAlert("Unable to delete a book.","Book is used by other users");
+        }
+
+
     }
 
     public boolean checkIfUserHasGivenBook(UserDTO user, BookDTO book) {

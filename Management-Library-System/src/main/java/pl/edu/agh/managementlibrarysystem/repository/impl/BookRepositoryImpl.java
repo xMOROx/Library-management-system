@@ -6,11 +6,14 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import pl.edu.agh.managementlibrarysystem.DTO.BookDTO;
+import pl.edu.agh.managementlibrarysystem.mapper.BookMapper;
 import pl.edu.agh.managementlibrarysystem.model.Author;
 import pl.edu.agh.managementlibrarysystem.model.Book;
 import pl.edu.agh.managementlibrarysystem.model.Genre;
 import pl.edu.agh.managementlibrarysystem.model.Publisher;
 
+import java.lang.reflect.Field;
 import java.util.Optional;
 
 @Component
@@ -65,10 +68,10 @@ public class BookRepositoryImpl {
 
         return Optional.of(this.entityManager.merge(book));
     }
-
     public void deleteBookByIsbn(String isbn) {
         this.entityManager.createQuery("DELETE FROM books b WHERE b.isbn = ?1")
                 .setParameter(1, isbn)
                 .executeUpdate();
+
     }
 }

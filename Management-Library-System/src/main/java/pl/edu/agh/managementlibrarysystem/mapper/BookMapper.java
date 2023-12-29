@@ -35,6 +35,9 @@ public class BookMapper implements Mapper<Book, BookDTO> {
                 .readBooks(new HashSet<>())
                 .issuedBooks(new HashSet<>())
                 .notification(new HashSet<>())
+                .description(book.getDescription())
+                .tableOfContent(book.getTableOfContent())
+                .cover(book.getCover())
                 .build();
     }
 
@@ -54,6 +57,9 @@ public class BookMapper implements Mapper<Book, BookDTO> {
                 .quantity(book.getQuantity())
                 .remainingBooks(book.getRemainingBooks())
                 .availability(book.getAvailability())
+                .description(book.getDescription())
+                .tableOfContent(book.getTableOfContent())
+                .cover(book.getCover())
                 .build();
     }
 
