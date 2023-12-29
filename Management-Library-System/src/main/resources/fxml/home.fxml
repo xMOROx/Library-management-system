@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<BorderPane fx:id="borderpane" prefHeight="651.0" prefWidth="1000.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.agh.managementlibrarysystem.controller.HomeController">
+    <top>
+        <VBox prefHeight="123.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
+            <BorderPane maxHeight="67.0" prefHeight="67.0" prefWidth="1000.0" style="-fx-background-color: white;">
+                <right>
+                    <HBox alignment="TOP_RIGHT" prefHeight="37.0" prefWidth="127.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
+                        <Label fx:id="minimize" contentDisplay="GRAPHIC_ONLY" onMouseClicked="#minimize" />
+                        <Label fx:id="fullscreen" contentDisplay="GRAPHIC_ONLY" layoutX="194.0" layoutY="10.0" onMouseClicked="#fullscreen" />
+                        <Label fx:id="unfullscreen" contentDisplay="GRAPHIC_ONLY" layoutX="194.0" layoutY="10.0" onMouseClicked="#unfullscreen" />
+                        <Label fx:id="close" contentDisplay="GRAPHIC_ONLY" layoutX="194.0" layoutY="10.0" onMouseClicked="#close" />
+                    </HBox>
+                </right>
+                <center>
+                    <Label text="Library Management System" textFill="#a1a1a1" BorderPane.alignment="CENTER">
+                        <font>
+                            <Font name="Segoe UI Semilight" size="23.0" />
+                        </font>
+                    </Label>
+                </center>
+            </BorderPane>
+            <VBox prefHeight="117.0" prefWidth="1000.0" style="-fx-background-color: white;">
+                <HBox prefHeight="117.0" prefWidth="953.0" spacing="10.0">
+                    <Label prefHeight="73.0" prefWidth="147.0" style="-fx-text-fill: #2b579a;" text="Home">
+                        <font>
+                            <Font name="Segoe UI Semilight" size="46.0" />
+                        </font>
+                        <padding>
+                            <Insets left="10.0" />
+                        </padding>
+                    </Label>
+                    <Region prefHeight="85.0" prefWidth="14.0" HBox.hgrow="ALWAYS" />
+                      <HBox alignment="CENTER_LEFT" prefHeight="73.0" prefWidth="77.0">
+                  <children>
+                             <FontIcon fill="#2b579a" iconLiteral="fas-home" iconSize="40" selectionStart="0" text="" wrappingWidth="29.25" />
+                  </children>
+                      </HBox>
+                </HBox>
+                <HBox maxWidth="3000.0" prefHeight="53.0" prefWidth="1000.0" style="-fx-background-color: EEEEEE;">
+                    <VBox.margin>
+                        <Insets />
+                    </VBox.margin>
+                </HBox>
+            </VBox>
+        </VBox>
+    </top>
+   <center>
+      <HBox alignment="CENTER" BorderPane.alignment="CENTER">
+         <children>
+            <Region prefHeight="322.0" prefWidth="68.0" />
+            <VBox prefHeight="270.0" prefWidth="385.0">
+               <children>
+                  <Region prefHeight="36.0" prefWidth="384.0" />
+                  <Label prefHeight="17.0" prefWidth="739.0" style="-fx-text-fill: #2b579a;" text="Welcome!">
+                     <font>
+                        <Font size="36.0" />
+                     </font>
+                  </Label>
+                  <Region prefHeight="17.0" prefWidth="384.0" />
+                  <TextArea prefHeight="144.0" prefWidth="408.0" style="-fx-text-fill: #2b579a;" text="To the one and only application you will ever need &#10;for anything reading related - &#10;     - The great Library Management System!">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </TextArea>
+               </children>
+            </VBox>
+            <Region prefHeight="322.0" prefWidth="65.0" />
+            <HBox alignment="CENTER">
+               <children>
+                  <ImageView fitHeight="322.0" fitWidth="1200.0" pickOnBounds="true" preserveRatio="true" smooth="false">
+                     <image>
+                        <Image url="@../images/library.jpg" />
+                     </image>
+                  </ImageView>
+               </children>
+            </HBox>
+         </children>
+      </HBox>
+   </center>
+   <bottom>
+      <VBox BorderPane.alignment="CENTER">
+         <children>
+            <HBox maxWidth="3000.0" prefHeight="12.0" prefWidth="1000.0" style="-fx-background-color: EEEEEE;" />
+            <HBox prefHeight="230.0" prefWidth="1000.0">
+               <children>
+                  <Region prefHeight="251.0" prefWidth="48.0" />
+                  <VBox alignment="BASELINE_CENTER" prefHeight="159.0" prefWidth="142.0">
+                     <children>
+                        <Region prefHeight="46.0" prefWidth="135.0" />
+                        <FontIcon iconLiteral="far-user-circle" iconSize="64" />
+                        <Label fx:id="userRole" text="Role">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="230.0" prefWidth="215.0">
+                     <children>
+                        <Region prefHeight="61.0" prefWidth="240.0" />
+                        <Label prefHeight="17.0" prefWidth="254.0" text="Name:" />
+                        <Label fx:id="userName" alignment="CENTER" prefHeight="17.0" prefWidth="163.0" text="Label" />
+                        <Label text="Email:" />
+                        <Label fx:id="userEmail" alignment="CENTER" prefHeight="17.0" prefWidth="163.0" text="Label" />
+                     </children>
+                  </VBox>
+                  <FontIcon />
+                  <Region prefHeight="230.0" prefWidth="82.0" />
+                  <VBox prefHeight="230.0" prefWidth="448.0">
+                     <children>
+                        <Region prefHeight="74.0" prefWidth="447.0" />
+                        <HBox prefHeight="51.0" prefWidth="447.0">
+                           <children>
+                              <VBox>
+                                 <children>
+                                    <Region prefHeight="10.0" prefWidth="32.0" />
+                                    <FontIcon fx:id="notificationIcon" iconLiteral="far-bell" iconSize="36" text="" wrappingWidth="40.5" />
+                                 </children>
+                              </VBox>
+                              <Label fx:id="notificationText1" prefHeight="53.0" prefWidth="152.0" text="You have">
+                                 <font>
+                                    <Font size="36.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="numberOfNotifications" alignment="CENTER" contentDisplay="CENTER" prefHeight="53.0" prefWidth="58.0" text="0">
+                                 <font>
+                                    <Font size="36.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="notificationText2" prefHeight="53.0" prefWidth="214.0" text="Notifications">
+                                 <font>
+                                    <Font size="36.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <VBox />
+         </children>
+      </VBox>
+   </bottom>
+</BorderPane>

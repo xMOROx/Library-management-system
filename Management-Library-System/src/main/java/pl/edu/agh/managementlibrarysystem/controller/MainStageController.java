@@ -23,7 +23,6 @@ import pl.edu.agh.managementlibrarysystem.event.BorderPaneReadyEvent;
 import pl.edu.agh.managementlibrarysystem.event.OpenWindowEvent;
 import pl.edu.agh.managementlibrarysystem.model.User;
 import pl.edu.agh.managementlibrarysystem.model.util.Permission;
-import pl.edu.agh.managementlibrarysystem.service.UserService;
 import pl.edu.agh.managementlibrarysystem.session.UserSession;
 import pl.edu.agh.managementlibrarysystem.utils.ControlsUtils;
 
@@ -75,6 +74,7 @@ public class MainStageController extends BaseController implements Initializable
         pane = borderpane;
         initializeStageOptions();
         back.setTooltip(new Tooltip("Logout"));
+        applicationContext.publishEvent(new BorderPaneReadyEvent(pane, new ClassPathResource("fxml/home.fxml")));
 
     }
 
@@ -108,7 +108,7 @@ public class MainStageController extends BaseController implements Initializable
 
     @FXML
     private void loadHomePanel(ActionEvent actionEvent) {
-
+        applicationContext.publishEvent(new BorderPaneReadyEvent(pane, new ClassPathResource("fxml/home.fxml")));
     }
 
     @FXML
@@ -118,6 +118,16 @@ public class MainStageController extends BaseController implements Initializable
 
     @FXML
     private void loadUserPanel(ActionEvent actionEvent) {
+        if (session.getLoggedUser() == null) {
+            return;
+        }
+        User u = session.getLoggedUser();
+        if (u.getPermission() == Permission.NORMAL_USER) {
+            applicationContext.publishEvent(new BorderPaneReadyEvent(pane, new ClassPathResource("fxml/user.fxml")));
+        }
+        else{
+            applicationContext.publishEvent(new BorderPaneReadyEvent(pane, new ClassPathResource("fxml/usersAdmin.fxml")));
+        }
     }
 
     @FXML
@@ -137,7 +147,7 @@ public class MainStageController extends BaseController implements Initializable
 
     @FXML
     private void loadSendAnnouncementsPanel(ActionEvent actionEvent) {
-
+        applicationContext.publishEvent(new BorderPaneReadyEvent(pane, new ClassPathResource("fxml/notifications.fxml")));
     }
 
     @FXML

@@ -89,6 +89,10 @@ public class BookService {
                 .map(this.issuedBookMapper::mapToDto)
                 .toList();
     }
+    @Transactional
+    public Double getTotalFeesByUserId(Long id){
+        return this.issuedBooksRepository.sumAllFeesByUserId(id);
+    }
 
     public void updateFee() {
         this.issuedBooksRepository.updateFee();
