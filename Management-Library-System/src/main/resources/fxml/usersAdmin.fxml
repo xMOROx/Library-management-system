@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.CheckBox?>
-<?import javafx.scene.control.ContextMenu?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -17,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="borderPane" prefHeight="651.0" prefWidth="1000.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.agh.managementlibrarysystem.controller.NotificationsController">
+<BorderPane fx:id="borderPane" prefHeight="651.0" prefWidth="1000.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.agh.managementlibrarysystem.controller.allUsersListController">
     <top>
         <VBox prefHeight="123.0" prefWidth="953.0" BorderPane.alignment="CENTER">
             <BorderPane maxHeight="67.0" prefHeight="67.0" prefWidth="957.0" style="-fx-background-color: white;">
@@ -39,7 +35,7 @@
             </BorderPane>
             <VBox prefHeight="117.0" prefWidth="953.0" style="-fx-background-color: white;">
                 <HBox alignment="BOTTOM_LEFT" prefHeight="117.0" prefWidth="953.0" spacing="10.0">
-                    <Label text="Notifications" textFill="#2b579a">
+                    <Label text="Users" textFill="#2b579a">
                         <font>
                             <Font name="Segoe UI Semilight" size="46.0" />
                         </font>
@@ -53,15 +49,11 @@
                         </HBox.margin>
                         <Image url="@../images/spinner.gif" />
                     </ImageView>
-                    <HBox fx:id="toKill1" alignment="CENTER_RIGHT" prefHeight="84.0" prefWidth="587.0">
-                        <CheckBox fx:id="ignoreResolved" mnemonicParsing="false" onMouseClicked="#ignoreResolved"
-                                  text="Ignore Resolved"/>
+                    <HBox alignment="CENTER_RIGHT" prefHeight="84.0" prefWidth="684.0">
                         <Region prefHeight="84.0" prefWidth="72.0"/>
-                        <MFXButton fx:id="addNotification" alignment="CENTER_RIGHT" contentDisplay="RIGHT"
-                                   onAction="#addNotification" text="Add Notifications"/>
                     </HBox>
                 </HBox>
-                <HBox fx:id="toKill2" prefHeight="35.0" prefWidth="957.0" style="-fx-background-color: white;">
+                <HBox prefHeight="35.0" prefWidth="957.0" style="-fx-background-color: white;">
                     <ProgressBar fx:id="progressBar" prefWidth="10000.0" progress="1.0" scaleY="0.4">
                         <HBox.margin>
                             <Insets left="3.0" right="4.0" />
@@ -74,24 +66,14 @@
     <center>
         <TableView fx:id="tableView" prefHeight="200.0" prefWidth="200.0" tableMenuButtonVisible="true" BorderPane.alignment="CENTER">
             <columns>
-                <TableColumn fx:id="userID" prefWidth="92.0" text="User ID" />
-                <TableColumn fx:id="bookISBN" prefWidth="92.0" text="Book ISBN" />
-                <TableColumn fx:id="bookTitle" prefWidth="92.0" text="Book Title" />
-                <TableColumn fx:id="typeOfNotification" prefWidth="127.0" text="Type Of Notification" />
-                <TableColumn fx:id="dateOfAdmition" prefWidth="93.0" text="Date Of Admition" />
-                <TableColumn fx:id="status" prefWidth="92.0" text="Status" />
+                <TableColumn fx:id="userId" prefWidth="92.0" text="User ID" />
+                <TableColumn fx:id="fullName" prefWidth="230.0" text="Full Name" />
+                <TableColumn fx:id="email" prefWidth="329.0" text="Email" />
+                <TableColumn fx:id="permission" prefWidth="226.0" text="Permission" />
             </columns>
             <BorderPane.margin>
                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
             </BorderPane.margin>
-            <contextMenu>
-                <ContextMenu>
-                    <items>
-                        <MenuItem mnemonicParsing="false" onAction="#resolveNotification" text="Resolve Notification" />
-                        <MenuItem mnemonicParsing="false" onAction="#deleteNotification" text="Delete Notification" />
-                    </items>
-                </ContextMenu>
-            </contextMenu>
             <columnResizePolicy>
                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
             </columnResizePolicy>

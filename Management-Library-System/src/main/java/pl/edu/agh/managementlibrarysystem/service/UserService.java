@@ -14,6 +14,7 @@ import pl.edu.agh.managementlibrarysystem.repository.UserRepository;
 import pl.edu.agh.managementlibrarysystem.session.UserSession;
 import pl.edu.agh.managementlibrarysystem.utils.Alerts;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -60,5 +61,10 @@ public class UserService {
         return userOptional;
 
     }
-
+    @Transactional
+    public List<UserDTO> getAllUsers(){
+        return repository.findAll().stream()
+                .map(this.userMapper::mapToDto)
+                .toList();
+    }
 }

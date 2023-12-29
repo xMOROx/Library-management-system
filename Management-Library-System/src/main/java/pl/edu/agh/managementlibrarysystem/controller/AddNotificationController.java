@@ -59,10 +59,6 @@ public class AddNotificationController extends BaseDataEntryController<ActionEve
     private MFXTextField dateTextField;
     @FXML
     private MFXButton makeNotification;
-    @FXML
-    private Label close;
-    @FXML
-    private MFXButton backBtn;
     private final ObservableList<String> types = Type.getObservableList();
 
     public AddNotificationController(ApplicationContext applicationContext,
@@ -177,8 +173,17 @@ public class AddNotificationController extends BaseDataEntryController<ActionEve
             Alerts.showInformationAlert("Field validation", "User ID field is empty!");
             return;
         }
-
+        String numberRegex = ".*\\d.*";
+        if(!userId.matches(numberRegex)){
+            Alerts.showInformationAlert("Field validation", "User ID must be a number!");
+            return;
+        }
+        try{
         searchedUser = userService.findById(Long.parseLong(userId));
+        }
+        catch (NumberFormatException e){
+            e.printStackTrace();
+        }
 
         if (searchedUser == null) {
             Alerts.showErrorAlert("User not found", "User with given ID does not exist!");

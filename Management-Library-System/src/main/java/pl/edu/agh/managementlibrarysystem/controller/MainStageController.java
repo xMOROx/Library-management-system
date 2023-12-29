@@ -118,6 +118,16 @@ public class MainStageController extends BaseController implements Initializable
 
     @FXML
     private void loadUserPanel(ActionEvent actionEvent) {
+        if (session.getLoggedUser() == null) {
+            return;
+        }
+        User u = session.getLoggedUser();
+        if (u.getPermission() == Permission.NORMAL_USER) {
+            applicationContext.publishEvent(new BorderPaneReadyEvent(pane, new ClassPathResource("fxml/user.fxml")));
+        }
+        else{
+            applicationContext.publishEvent(new BorderPaneReadyEvent(pane, new ClassPathResource("fxml/usersAdmin.fxml")));
+        }
     }
 
     @FXML

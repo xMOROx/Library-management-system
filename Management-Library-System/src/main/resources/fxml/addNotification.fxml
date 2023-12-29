@@ -30,15 +30,16 @@
                     </font>
                 </Label>
             </HBox>
-         <HBox alignment="CENTER_LEFT" prefHeight="52.0" prefWidth="992.0">
-            <children>
-               <MFXButton fx:id="backBtn" contentDisplay="GRAPHIC_ONLY" onAction="#back" prefHeight="40.0" prefWidth="40.0" rippleColor="white" style="-fx-background-color: white; -fx-background-radius: 20000; -fx-border-color: black; -fx-border-radius: 20000;" text="Button">
-                  <graphic>
-                     <FontIcon iconLiteral="fas-arrow-left" iconSize="16" />
-                  </graphic>
-               </MFXButton>
-            </children>
-         </HBox>
+            <HBox alignment="CENTER_LEFT" prefHeight="52.0" prefWidth="992.0">
+                <MFXButton fx:id="backBtn" contentDisplay="GRAPHIC_ONLY" onAction="#back" prefHeight="40.0"
+                           prefWidth="40.0" rippleColor="white"
+                           style="-fx-background-color: white; -fx-background-radius: 20000; -fx-border-color: black; -fx-border-radius: 20000;"
+                           text="Button">
+                    <graphic>
+                        <FontIcon iconLiteral="fas-arrow-left" iconSize="16"/>
+                    </graphic>
+                </MFXButton>
+            </HBox>
             <HBox prefHeight="130.0" prefWidth="990.0" style="-fx-border-color: #EEEEEE;" VBox.vgrow="ALWAYS">
                 <VBox.margin>
                     <Insets left="1.0" right="1.0" top="2.0" />
@@ -97,17 +98,17 @@
                     </Text>
                 </VBox>
             </HBox>
-         <VBox alignment="CENTER" prefHeight="160.0" prefWidth="478.5" spacing="10.0">
-            <children>
-               <MFXTextField fx:id="dateTextField" floatMode="ABOVE" maxWidth="360.0" minWidth="360.0" onKeyPressed="#enterDate" prefHeight="31.0" prefWidth="360.0" promptText="Enter Date">
-                  <font>
-                     <Font size="14.0" />
-                  </font>
-               </MFXTextField>
-               <ComboBox fx:id="type" prefHeight="25.0" prefWidth="150.0" promptText="Choose Type" visibleRowCount="2" />
-               <CheckBox fx:id="isResolved" mnemonicParsing="false" text="Resolved" />
-            </children>
-         </VBox>
+            <VBox alignment="CENTER" prefHeight="160.0" prefWidth="478.5" spacing="10.0">
+                <MFXTextField fx:id="dateTextField" floatMode="ABOVE" maxWidth="360.0" minWidth="360.0"
+                              onKeyPressed="#enterDate" prefHeight="31.0" prefWidth="360.0" promptText="Enter Date">
+                    <font>
+                        <Font size="14.0"/>
+                    </font>
+                </MFXTextField>
+                <ComboBox fx:id="type" prefHeight="25.0" prefWidth="150.0" promptText="Choose Type"
+                          visibleRowCount="2"/>
+                <CheckBox fx:id="isResolved" mnemonicParsing="false" text="Resolved"/>
+            </VBox>
             <HBox alignment="CENTER" prefHeight="75.0" prefWidth="949.0" spacing="10.0">
                 <MFXButton fx:id="cancel" layoutX="401.0" layoutY="55.0" onAction="#cancel" prefHeight="31.0" prefWidth="167.0" text="Cancel">
                     <font>

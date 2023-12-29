@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<BorderPane fx:id="borderpane" prefHeight="651.0" prefWidth="1000.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.agh.managementlibrarysystem.controller.ProfileController">
+    <top>
+        <VBox prefHeight="123.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
+            <BorderPane maxHeight="67.0" prefHeight="67.0" prefWidth="1000.0" style="-fx-background-color: white;">
+                <right>
+                    <HBox alignment="TOP_RIGHT" prefHeight="37.0" prefWidth="127.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
+                        <Label fx:id="minimize" contentDisplay="GRAPHIC_ONLY" onMouseClicked="#minimize" />
+                        <Label fx:id="fullscreen" contentDisplay="GRAPHIC_ONLY" layoutX="194.0" layoutY="10.0" onMouseClicked="#fullscreen" />
+                        <Label fx:id="unfullscreen" contentDisplay="GRAPHIC_ONLY" layoutX="194.0" layoutY="10.0" onMouseClicked="#unfullscreen" />
+                        <Label fx:id="close" contentDisplay="GRAPHIC_ONLY" layoutX="194.0" layoutY="10.0" onMouseClicked="#close" />
+                    </HBox>
+                </right>
+                <center>
+                    <Label text="Library Management System" textFill="#a1a1a1" BorderPane.alignment="CENTER">
+                        <font>
+                            <Font name="Segoe UI Semilight" size="23.0" />
+                        </font>
+                    </Label>
+                </center>
+            </BorderPane>
+            <VBox prefHeight="117.0" prefWidth="1000.0" style="-fx-background-color: white;">
+                <HBox prefHeight="117.0" prefWidth="953.0" spacing="10.0">
+               <Region prefHeight="75.0" prefWidth="24.0" />
+               <FontIcon iconLiteral="far-user-circle" iconSize="64" />
+               <Region prefHeight="75.0" prefWidth="24.0" />
+                    <Label prefHeight="73.0" prefWidth="164.0" style="-fx-text-fill: #2b579a;" text="Profile">
+                        <font>
+                            <Font name="Segoe UI Semilight" size="46.0" />
+                        </font>
+                        <padding>
+                            <Insets left="10.0" />
+                        </padding>
+                    </Label>
+               <Region prefHeight="75.0" prefWidth="24.0" />
+                    <VBox alignment="CENTER" prefHeight="75.0" prefWidth="55.0">
+                        <Label fx:id="notifications" prefHeight="73.0" prefWidth="46.0" style="-fx-text-fill: #2b579a;"
+                               text="0">
+                            <font>
+                                <Font name="Segoe UI Semilight" size="46.0"/>
+                            </font>
+                            <padding>
+                                <Insets left="10.0"/>
+                            </padding>
+                        </Label>
+                    </VBox>
+                    <VBox alignment="CENTER">
+                        <FontIcon iconLiteral="far-bell" iconSize="36" text="" wrappingWidth="40.5"/>
+                    </VBox>
+                </HBox>
+                <HBox maxWidth="3000.0" prefHeight="53.0" prefWidth="1000.0" style="-fx-background-color: EEEEEE;">
+                    <VBox.margin>
+                        <Insets />
+                    </VBox.margin>
+                </HBox>
+            </VBox>
+        </VBox>
+    </top>
+   <bottom>
+       <VBox BorderPane.alignment="CENTER">
+           <HBox maxWidth="3000.0" prefHeight="12.0" prefWidth="1000.0" style="-fx-background-color: EEEEEE;"/>
+           <HBox prefHeight="349.0" prefWidth="1000.0">
+               <TableView fx:id="tableView" prefHeight="349.0" prefWidth="1111.0">
+                   <columns>
+                       <TableColumn fx:id="tableBookTitle" prefWidth="217.0" text="Book Title"/>
+                       <TableColumn fx:id="tableBorrowDate" prefWidth="218.0" text="Borrow Date"/>
+                       <TableColumn fx:id="tableDueDate" prefWidth="229.0" text="Returned Date"/>
+                       <TableColumn fx:id="tableDueFees" prefWidth="194.0" text="Due Fees"/>
+                       <TableColumn fx:id="tableCurrentlyBorrowed" prefWidth="141.0" text="Currently Borrowed"/>
+                   </columns>
+               </TableView>
+           </HBox>
+           <VBox/>
+           <HBox maxWidth="3000.0" prefHeight="12.0" prefWidth="1000.0" style="-fx-background-color: EEEEEE;"/>
+       </VBox>
+   </bottom>
+   <right>
+       <HBox prefHeight="224.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
+           <Region prefHeight="155.0" prefWidth="73.0"/>
+           <VBox prefHeight="155.0" prefWidth="133.0">
+              <children>
+                  <Label text="First Name:">
+                      <font>
+                          <Font size="24.0"/>
+                      </font>
+                  </Label>
+                  <Label fx:id="firstName" alignment="CENTER" prefHeight="60.0" prefWidth="133.0" text="Label">
+                      <font>
+                          <Font size="18.0"/>
+                      </font>
+                  </Label>
+              </children>
+           </VBox>
+           <Region prefHeight="155.0" prefWidth="73.0"/>
+           <VBox prefHeight="155.0" prefWidth="125.0">
+              <children>
+                  <Label text="Last Name:">
+                      <font>
+                          <Font size="24.0"/>
+                      </font>
+                  </Label>
+                  <Label fx:id="lastName" alignment="CENTER" prefHeight="57.0" prefWidth="133.0" text="Label">
+                      <font>
+                          <Font size="18.0"/>
+                      </font>
+                  </Label>
+              </children>
+           </VBox>
+           <Region prefHeight="155.0" prefWidth="73.0"/>
+           <VBox prefHeight="200.0" prefWidth="100.0">
+              <children>
+                  <Label text="Email:">
+                      <font>
+                          <Font size="24.0"/>
+                      </font>
+                  </Label>
+                  <Label fx:id="email" alignment="CENTER" prefHeight="57.0" prefWidth="133.0" text="Label">
+                      <font>
+                          <Font size="18.0"/>
+                      </font>
+                  </Label>
+              </children>
+           </VBox>
+           <Region prefHeight="155.0" prefWidth="73.0"/>
+           <VBox prefHeight="155.0" prefWidth="129.0">
+              <children>
+                  <Label text="Total fees:">
+                      <font>
+                          <Font size="24.0"/>
+                      </font>
+                  </Label>
+                  <Label fx:id="totalFees" alignment="CENTER" prefHeight="57.0" prefWidth="133.0" text="Label">
+                      <font>
+                          <Font size="18.0"/>
+                      </font>
+                  </Label>
+              </children>
+           </VBox>
+       </HBox>
+   </right>
+</BorderPane>
