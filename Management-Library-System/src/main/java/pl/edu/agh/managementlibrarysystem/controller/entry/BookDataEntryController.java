@@ -22,6 +22,8 @@ import pl.edu.agh.managementlibrarysystem.event.BorderPaneReadyEvent;
 import pl.edu.agh.managementlibrarysystem.event.fxml.LeavingBorderPaneEvent;
 import pl.edu.agh.managementlibrarysystem.event.fxml.NewItemAddedEvent;
 
+import pl.edu.agh.managementlibrarysystem.model.User;
+import pl.edu.agh.managementlibrarysystem.model.util.Permission;
 import pl.edu.agh.managementlibrarysystem.service.AuthorService;
 import pl.edu.agh.managementlibrarysystem.service.BookService;
 import pl.edu.agh.managementlibrarysystem.service.GenresService;
@@ -114,7 +116,7 @@ public class BookDataEntryController extends BaseDataEntryController<ActionEvent
         coverType.setItems(coverTypes);
         clearFields();
         if (session.getSelectedBook() == null){
-            deleteButton.setDisable(true);
+//            deleteButton.setDisable(true);
         }
         this.helperView.addEventHandler(EntryHelperEmptyEvent.HELPER_EMPTY, event ->
                 {
@@ -178,7 +180,7 @@ public class BookDataEntryController extends BaseDataEntryController<ActionEvent
         }
         User u = session.getLoggedUser();
         if (u.getPermission() == Permission.NORMAL_USER) {
-            ControlsUtils.changeControlVisibility(deleteButton,false);
+//            ControlsUtils.changeControlVisibility(deleteButton,false);
             ControlsUtils.changeControlVisibility(cancel,false);
             ControlsUtils.changeControlVisibility(save,false);
             ControlsUtils.changeControlVisibility(addAuthorButton,false);

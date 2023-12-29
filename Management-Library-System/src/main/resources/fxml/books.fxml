@@ -145,7 +145,7 @@
         </VBox>
     </top>
     <center>
-        <TableView onMouseClicked="#selectBook" fx:id="tableView" prefHeight="523.0" prefWidth="990.0" tableMenuButtonVisible="true" BorderPane.alignment="CENTER">
+        <TableView fx:id="tableView" prefHeight="523.0" prefWidth="990.0" tableMenuButtonVisible="true" BorderPane.alignment="CENTER">
             <columns>
                 <TableColumn fx:id="bookISBN" prefWidth="113.95263671875" text="Book ISBN" />
                 <TableColumn fx:id="bookTitle" prefWidth="141.11334228515625" text="Book Title" />

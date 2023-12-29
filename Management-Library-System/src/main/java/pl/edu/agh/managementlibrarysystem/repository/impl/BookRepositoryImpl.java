@@ -68,10 +68,75 @@ public class BookRepositoryImpl {
 
         return Optional.of(this.entityManager.merge(book));
     }
+
+
     public void deleteBookByIsbn(String isbn) {
         this.entityManager.createQuery("DELETE FROM books b WHERE b.isbn = ?1")
                 .setParameter(1, isbn)
                 .executeUpdate();
+    }
+
+    public Optional<Book> updateBookWithGivenParams(Long bookId, BookDTO bookDTO, String authorName, String authorLastname, String publisherName, String genreType) {
+        Genre genre = null;
+        Author author = null;
+        Publisher publisher = null;
+
+        BookMapper m = new BookMapper();
+        Book fromDTO = m.mapToEntity(bookDTO);
+        Book book = entityManager.find(Book.class,bookId);
+        copyNonNullFields(fromDTO,book);
+        try {
+            author = this.entityManager.createQuery("SELECT a FROM authors a WHERE a.firstname = ?1 AND a.lastname = ?2", Author.class)
+                    .setParameter(1, authorName)
+                    .setParameter(2, authorLastname)
+                    .getSingleResult();
+        } catch (NoResultException ignored) {
+        }
+
+        try {
+            publisher = this.entityManager.createQuery("SELECT p FROM publishers p WHERE p.name = ?1", Publisher.class)
+                    .setParameter(1, publisherName)
+                    .getSingleResult();
+        } catch (NoResultException ignored) {
+        }
+
+        try {
+            genre = this.entityManager.createQuery("SELECT g FROM genres g WHERE g.genre = ?1", Genre.class)
+                    .setParameter(1, genreType)
+                    .getSingleResult();
+        } catch (NoResultException ignored) {
+        }
+
+        if (author != null) {
+            book.getAuthors().add(author);
+            author.getBooks().add(book);
+        }
+
+        if (publisher != null) {
+            book.setPublisher(publisher);
+            publisher.getBooks().add(book);
+        }
+
+        if (genre != null) {
+            book.getGenres().add(genre);
+            genre.getBooks().add(book);
+        }
+
+        return Optional.of(this.entityManager.merge(book));
+    }
+    private void copyNonNullFields(Object source, Object target) {
+        Field[] fields = source.getClass().getDeclaredFields();
+        for (Field field : fields) {
+            try {
+                field.setAccessible(true);
+                Object value = field.get(source);
+                if (value != null) {
+                    field.set(target, value);
+                }
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
 
     }
 }
