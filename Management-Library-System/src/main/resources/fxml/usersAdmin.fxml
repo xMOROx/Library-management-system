@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ProgressBar?>
@@ -50,8 +51,13 @@
                         <Image url="@../images/spinner.gif" />
                     </ImageView>
                     <HBox alignment="CENTER_RIGHT" prefHeight="84.0" prefWidth="684.0">
-                        <Region prefHeight="84.0" prefWidth="72.0"/>
+                        <Region prefHeight="84.0" prefWidth="72.0" />
                     </HBox>
+               <HBox alignment="CENTER_RIGHT" prefHeight="84.0" prefWidth="123.0">
+                  <children>
+                     <MFXButton prefHeight="43.0" prefWidth="128.0" onMouseClicked="#deleteUser" text="Delete User" />
+                  </children>
+               </HBox>
                 </HBox>
                 <HBox prefHeight="35.0" prefWidth="957.0" style="-fx-background-color: white;">
                     <ProgressBar fx:id="progressBar" prefWidth="10000.0" progress="1.0" scaleY="0.4">

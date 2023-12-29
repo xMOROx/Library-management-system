@@ -1,114 +1,100 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import io.github.palexdev.materialfx.controls.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
-<BorderPane fx:id="borderpane" onMouseDragged="#stageDragged" onMousePressed="#stagePressed" prefHeight="651.0"
-            prefWidth="1141.0" style="-fx-border-color: #2b579a;" xmlns="http://javafx.com/javafx/19"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="pl.edu.agh.managementlibrarysystem.controller.MainStageController">
+
+<BorderPane fx:id="borderpane" onMouseDragged="#stageDragged" onMousePressed="#stagePressed" prefHeight="651.0" prefWidth="1141.0" style="-fx-border-color: #2b579a;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.agh.managementlibrarysystem.controller.MainStageController">
     <left>
-        <VBox fx:id="homeButtonsPanel" maxWidth="140.0" minWidth="140.0" prefHeight="651.0" prefWidth="140.0"
-              stylesheets="@../css/main.css" BorderPane.alignment="CENTER">
-            <MFXButton fx:id="back" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" onAction="#logout"
-                       prefHeight="43.0" prefWidth="43.0"
-                       style="-fx-border-color: #ffffff; -fx-border-radius: 2000; -fx-border-width: 2;"
-                       stylesheets="@../css/main.css">
+        <VBox fx:id="homeButtonsPanel" maxWidth="140.0" minWidth="140.0" prefHeight="651.0" prefWidth="140.0" stylesheets="@../css/main.css" BorderPane.alignment="CENTER">
+            <MFXButton fx:id="back" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" onAction="#logout" prefHeight="43.0" prefWidth="43.0" style="-fx-border-color: #ffffff; -fx-border-radius: 2000; -fx-border-width: 2;" stylesheets="@../css/main.css">
                 <VBox.margin>
-                    <Insets left="20.0" top="10.0"/>
+                    <Insets left="20.0" top="10.0" />
                 </VBox.margin>
                 <graphic>
-                    <FontIcon fill="WHITE" iconLiteral="fas-sign-out-alt" rotate="180.0" iconSize="25"/>
+                    <FontIcon fill="WHITE" iconLiteral="fas-sign-out-alt" iconSize="25" rotate="180.0" />
                 </graphic>
             </MFXButton>
-            <MFXButton fx:id="home" alignment="CENTER" layoutX="11.0" layoutY="323.0" onAction="#loadHomePanel"
-                       prefHeight="40.0" prefWidth="150.0" text="Home" textAlignment="JUSTIFY" textFill="WHITE">
+            <MFXButton fx:id="home" alignment="CENTER" layoutX="11.0" layoutY="323.0" onAction="#loadHomePanel" prefHeight="40.0" prefWidth="150.0" text="Home" textAlignment="JUSTIFY" textFill="WHITE">
                 <font>
-                    <Font size="16.0"/>
+                    <Font size="16.0" />
                 </font>
                 <VBox.margin>
-                    <Insets left="1.0" right="1.0" top="20.0"/>
+                    <Insets left="1.0" right="1.0" top="20.0" />
                 </VBox.margin>
             </MFXButton>
-            <MFXButton fx:id="books" alignment="CENTER" onAction="#loadBooksPanel" prefHeight="40.0" prefWidth="150.0"
-                       text="Books" textFill="WHITE">
+            <MFXButton fx:id="books" alignment="CENTER" onAction="#loadBooksPanel" prefHeight="40.0" prefWidth="150.0" text="Books" textFill="WHITE">
                 <font>
-                    <Font size="16.0"/>
+                    <Font size="16.0" />
                 </font>
                 <VBox.margin>
-                    <Insets left="1.0" right="1.0"/>
+                    <Insets left="1.0" right="1.0" />
                 </VBox.margin>
             </MFXButton>
-            <MFXButton fx:id="users" alignment="CENTER" layoutX="10.0" layoutY="87.0" onAction="#loadUserPanel"
-                       prefHeight="40.0" prefWidth="150.0" text="Users" textFill="WHITE">
+            <MFXButton fx:id="users" alignment="CENTER" layoutX="10.0" layoutY="87.0" onAction="#loadUserPanel" prefHeight="40.0" prefWidth="150.0" text="Users" textFill="WHITE">
                 <font>
-                    <Font size="16.0"/>
+                    <Font size="16.0" />
                 </font>
                 <VBox.margin>
-                    <Insets left="1.0" right="1.0"/>
+                    <Insets left="1.0" right="1.0" />
                 </VBox.margin>
             </MFXButton>
-            <MFXButton fx:id="issuedBooks" alignment="CENTER" layoutX="10.0" layoutY="124.0"
-                       onAction="#loadIssueBooksPanel" prefHeight="40.0" prefWidth="150.0" text="Issue Book"
-                       textAlignment="JUSTIFY" textFill="WHITE">
+            <MFXButton fx:id="issuedBooks" alignment="CENTER" layoutX="10.0" layoutY="124.0" onAction="#loadIssueBooksPanel" prefHeight="40.0" prefWidth="150.0" text="Issue Book" textAlignment="JUSTIFY" textFill="WHITE">
                 <font>
-                    <Font size="16.0"/>
+                    <Font size="16.0" />
                 </font>
                 <VBox.margin>
-                    <Insets left="1.0" right="1.0"/>
+                    <Insets left="1.0" right="1.0" />
                 </VBox.margin>
             </MFXButton>
-            <MFXButton fx:id="returnBooks" alignment="CENTER" layoutX="10.0" layoutY="161.0"
-                       onAction="#loadReturnBooksPanel" prefHeight="40.0" prefWidth="150.0" text="Return Book"
-                       textAlignment="JUSTIFY" textFill="WHITE">
+            <MFXButton fx:id="returnBooks" alignment="CENTER" layoutX="10.0" layoutY="161.0" onAction="#loadReturnBooksPanel" prefHeight="40.0" prefWidth="150.0" text="Return Book" textAlignment="JUSTIFY" textFill="WHITE">
                 <font>
-                    <Font size="16.0"/>
+                    <Font size="16.0" />
                 </font>
                 <VBox.margin>
-                    <Insets left="1.0" right="1.0"/>
+                    <Insets left="1.0" right="1.0" />
                 </VBox.margin>
             </MFXButton>
-            <MFXButton fx:id="allIssuedBooks" alignment="CENTER" layoutX="11.0" layoutY="203.0"
-                       onAction="#viewAllIssuedBooks" prefHeight="40.0" prefWidth="150.0" text="All Issued Books"
-                       textAlignment="JUSTIFY" textFill="WHITE">
+            <MFXButton fx:id="allIssuedBooks" alignment="CENTER" layoutX="11.0" layoutY="203.0" onAction="#viewAllIssuedBooks" prefHeight="40.0" prefWidth="150.0" text="All Issued Books" textAlignment="JUSTIFY" textFill="WHITE">
                 <font>
-                    <Font size="16.0"/>
+                    <Font size="16.0" />
                 </font>
             </MFXButton>
-            <MFXButton fx:id="announcement" alignment="CENTER" layoutX="11.0" layoutY="363.0"
-                       onAction="#loadSendAnnouncementsPanel" prefHeight="40.0" prefWidth="150.0" text="Announcement"
-                       textAlignment="CENTER" textFill="WHITE">
+            <MFXButton fx:id="announcement" alignment="CENTER" layoutX="11.0" layoutY="363.0" onAction="#loadSendAnnouncementsPanel" prefHeight="40.0" prefWidth="150.0" text="Announcement" textAlignment="CENTER" textFill="WHITE">
                 <font>
-                    <Font size="16.0"/>
+                    <Font size="16.0" />
                 </font>
             </MFXButton>
-            <MFXButton fx:id="settings" alignment="CENTER" layoutX="10.0" layoutY="238.0" onAction="#loadSettingsPanel"
-                       prefHeight="40.0" prefWidth="150.0" text="Settings" textAlignment="JUSTIFY" textFill="WHITE">
+            <MFXButton fx:id="settings" alignment="CENTER" layoutX="10.0" layoutY="238.0" onAction="#loadSettingsPanel" prefHeight="40.0" prefWidth="150.0" text="Settings" textAlignment="JUSTIFY" textFill="WHITE">
                 <font>
-                    <Font size="16.0"/>
+                    <Font size="16.0" />
                 </font>
                 <VBox.margin>
-                    <Insets left="1.0" right="1.0"/>
+                    <Insets left="1.0" right="1.0" />
                 </VBox.margin>
             </MFXButton>
-            <MFXButton fx:id="addUser" alignment="CENTER" layoutX="10.0" layoutY="238.0" onAction="#addUserPanel"
-                       prefHeight="40.0" prefWidth="150.0" text="AddUser" textAlignment="JUSTIFY" textFill="WHITE">
+            <MFXButton fx:id="addUser" alignment="CENTER" layoutX="10.0" layoutY="238.0" onAction="#addUserPanel" prefHeight="40.0" prefWidth="150.0" text="AddUser" textAlignment="JUSTIFY" textFill="WHITE">
                 <font>
-                    <Font size="16.0"/>
+                    <Font size="16.0" />
                 </font>
                 <VBox.margin>
-                    <Insets left="1.0" right="1.0"/>
+                    <Insets left="1.0" right="1.0" />
                 </VBox.margin>
             </MFXButton>
-            <MFXButton fx:id="closeButton" alignment="CENTER" layoutX="10.0" layoutY="285.0" onAction="#closeApp"
-                       prefHeight="40.0" prefWidth="150.0" text="Close" textAlignment="JUSTIFY" textFill="WHITE">
+         <MFXButton fx:id="editUser" alignment="CENTER" onAction="#editUserPanel" prefHeight="40.0" prefWidth="150.0" text="EditUser" textAlignment="JUSTIFY" textFill="WHITE">
+            <font>
+               <Font size="16.0" />
+            </font>
+         </MFXButton>
+            <MFXButton fx:id="closeButton" alignment="CENTER" layoutX="10.0" layoutY="285.0" onAction="#closeApp" prefHeight="40.0" prefWidth="150.0" text="Close" textAlignment="JUSTIFY" textFill="WHITE">
                 <font>
-                    <Font size="16.0"/>
+                    <Font size="16.0" />
                 </font>
                 <VBox.margin>
-                    <Insets left="1.0" right="1.0"/>
+                    <Insets left="1.0" right="1.0" />
                 </VBox.margin>
             </MFXButton>
         </VBox>

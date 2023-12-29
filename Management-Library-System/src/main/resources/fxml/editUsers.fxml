@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane fx:id="borderPane" prefHeight="651.0" prefWidth="1000.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.agh.managementlibrarysystem.controller.EditUserController">
+    <top>
+        <VBox prefHeight="123.0" prefWidth="953.0" BorderPane.alignment="CENTER">
+            <BorderPane maxHeight="67.0" prefHeight="67.0" prefWidth="957.0" style="-fx-background-color: white;">
+                <right>
+                    <HBox alignment="TOP_RIGHT" prefHeight="37.0" prefWidth="127.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
+                        <Label fx:id="minimize" contentDisplay="GRAPHIC_ONLY" onMouseClicked="#minimize" />
+                        <Label fx:id="fullscreen" contentDisplay="GRAPHIC_ONLY" layoutX="194.0" layoutY="10.0" onMouseClicked="#fullscreen" />
+                        <Label fx:id="unfullscreen" contentDisplay="GRAPHIC_ONLY" layoutX="194.0" layoutY="10.0" onMouseClicked="#unfullscreen" />
+                        <Label fx:id="close" contentDisplay="GRAPHIC_ONLY" layoutX="194.0" layoutY="10.0" onMouseClicked="#close" />
+                    </HBox>
+                </right>
+                <center>
+                    <Label text="Library Management System" textFill="#a1a1a1" BorderPane.alignment="CENTER">
+                        <font>
+                            <Font name="Segoe UI Semilight" size="23.0" />
+                        </font>
+                    </Label>
+                </center>
+            </BorderPane>
+            <VBox prefHeight="117.0" prefWidth="953.0" style="-fx-background-color: white;">
+                <HBox alignment="BOTTOM_LEFT" prefHeight="117.0" prefWidth="953.0" spacing="10.0">
+                    <Label fx:id="word" text="Edit users" textFill="#2b579a">
+                        <font>
+                            <Font name="Segoe UI Semilight" size="46.0" />
+                        </font>
+                        <HBox.margin>
+                            <Insets left="2.0" />
+                        </HBox.margin>
+                    </Label>
+                </HBox>
+            </VBox>
+        </VBox>
+    </top>
+    <center>
+        <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="528.0" prefWidth="1002.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+            <Label layoutX="101.0" layoutY="91.0" text="Name" />
+            <Label layoutX="102.0" layoutY="123.0" text="Surname" />
+            <Label layoutX="102.0" layoutY="155.0" text="Email" />
+            <Label layoutX="100.0" layoutY="189.0" text="Old password" />
+            <Label layoutX="101.0" layoutY="220.0" text="New password" />
+            <TextField fx:id="name" layoutX="326.0" layoutY="87.0" onKeyTyped="#keyTyped" />
+            <TextField fx:id="surname" layoutX="326.0" layoutY="119.0" onKeyTyped="#keyTyped" />
+            <TextField fx:id="email" layoutX="326.0" layoutY="151.0" onKeyTyped="#keyTyped" />
+            <MFXButton fx:id="saveAsUs" layoutX="370.0" layoutY="314.0" onMouseClicked="#addUserClicked" text="Save as user" />
+            <MFXButton fx:id="saveAsLib" layoutX="370.0" layoutY="282.0" onMouseClicked="#addLibrarianClicked" text="Save as librarian" />
+            <MFXButton fx:id="saveAsAdmin" layoutX="368.0" layoutY="249.0" onMouseClicked="#addAdminClicked" text="Save as administrator" />
+            <PasswordField fx:id="password" layoutX="326.0" layoutY="185.0" onKeyPressed="#passwordKeyPressed" />
+            <PasswordField fx:id="repeatPassword" layoutX="326.0" layoutY="216.0" onKeyTyped="#keyTyped" />
+            <VBox fx:id="errorVbox" layoutX="102.0" layoutY="249.0" prefHeight="90.0" prefWidth="224.0" />
+         <ComboBox fx:id="chooseUser" layoutX="100.0" layoutY="41.0" prefHeight="25.0" prefWidth="376.0" onAction="#userHasBeenChosen" promptText="Choose User" />
+
+        </AnchorPane>
+    </center>
+</BorderPane>

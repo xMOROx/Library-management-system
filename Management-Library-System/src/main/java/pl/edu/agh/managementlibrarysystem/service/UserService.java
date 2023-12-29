@@ -67,4 +67,13 @@ public class UserService {
                 .map(this.userMapper::mapToDto)
                 .toList();
     }
+    @Transactional
+    public void deleteByUserId(Long id){
+        repository.deleteById(id);
+    }
+    @Transactional
+    public void updateUser(Long id, String firstname, String lastname, String email, String password, Permission permission){
+        repository.updateUser(id,firstname,lastname,email,password,permission);
+    }
+
 }
