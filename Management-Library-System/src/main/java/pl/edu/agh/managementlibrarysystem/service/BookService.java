@@ -4,10 +4,12 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.edu.agh.managementlibrarysystem.DTO.BookDTO;
+import pl.edu.agh.managementlibrarysystem.DTO.BookDetailsDTO;
 import pl.edu.agh.managementlibrarysystem.DTO.IssuedBookDTO;
 import pl.edu.agh.managementlibrarysystem.DTO.UserDTO;
 import pl.edu.agh.managementlibrarysystem.mapper.Mapper;
 import pl.edu.agh.managementlibrarysystem.model.Book;
+import pl.edu.agh.managementlibrarysystem.model.Genre;
 import pl.edu.agh.managementlibrarysystem.model.IssuedBook;
 import pl.edu.agh.managementlibrarysystem.repository.*;
 import pl.edu.agh.managementlibrarysystem.utils.Alerts;
@@ -146,5 +148,25 @@ public class BookService {
 
     public boolean checkIfBookIsAvailable(BookDTO book) {
         return this.bookRepository.checkIfBookIsAvailable(book.getIsbn()).equalsIgnoreCase("available");
+    }
+
+    public BookDetailsDTO getBookDetails(String bookISBN) {
+        return this.bookRepository.findByIsbn(bookISBN)
+                .map(book -> BookDetailsDTO.builder()
+                        .isbn(book.getIsbn())
+                        .title(book.getTitle())
+                        .authors(book.getAuthors().stream().map(author -> author.getFirstname() + " " + author.getLastname()).toList().toString())
+                        .publisher(book.getPublisher().getName())
+                        .genres(book.getGenres().stream().map(Genre::getGenre).toList().toString())
+                        .edition(book.getEdition())
+                        .quantity(book.getQuantity())
+                        .remainingBooks(book.getRemainingBooks())
+                        .availability(book.getAvailability())
+                        .description(book.getDescription())
+                        .cover(book.getCover())
+                        .image(book.getImage())
+                        .tableOfContent(book.getTableOfContent())
+                        .build())
+                .orElse(null);
     }
 }

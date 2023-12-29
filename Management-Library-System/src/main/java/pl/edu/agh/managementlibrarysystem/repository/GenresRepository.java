@@ -18,6 +18,7 @@ public interface GenresRepository extends JpaRepository<Genre, Long> {
 
     @Query(FIND_BY_TYPE)
     Optional<Genre> findByType(@Param("genre") String genre);
+
     @Query(FIND_ALL_MAIN_GENRES)
     List<Genre> findAllMainGenres();
 }
