@@ -22,6 +22,6 @@ public class ProfileService {
                     .map(userProfileMapper::mapToDto)
                     .toList();
         }
-        else return null;
+        return null;
     }
 }
