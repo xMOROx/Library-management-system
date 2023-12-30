@@ -17,7 +17,7 @@ import pl.edu.agh.managementlibrarysystem.utils.TaskFactory;
 import java.net.URL;
 import java.util.ResourceBundle;
 @Controller
-public class allUsersListController extends ControllerWithTableView<UserDTO> implements Initializable {
+public class AllUsersListController extends ControllerWithTableView<UserDTO> implements Initializable {
     private final UserService userService;
 
     @FXML
@@ -29,7 +29,7 @@ public class allUsersListController extends ControllerWithTableView<UserDTO> imp
     @FXML
     private TableColumn<UserDTO, String> permission;
 
-    public allUsersListController(ApplicationContext applicationContext, UserService userService) {
+    public AllUsersListController(ApplicationContext applicationContext, UserService userService) {
         super(applicationContext);
         this.userService = userService;
     }
