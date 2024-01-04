@@ -4,13 +4,15 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ContextMenu;
-import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationContext;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
 import pl.edu.agh.managementlibrarysystem.DTO.ReadBookAvailableToVoteDTO;
+import pl.edu.agh.managementlibrarysystem.event.OpenNewBookWindowEvent;
 import pl.edu.agh.managementlibrarysystem.service.BookService;
 import pl.edu.agh.managementlibrarysystem.session.UserSession;
 
@@ -21,6 +23,7 @@ import java.util.ResourceBundle;
 @Controller
 @RequiredArgsConstructor
 public class ReadBookAvailableToReviewController implements Initializable {
+    private final ApplicationContext applicationContext;
     private final BookService bookService;
     private final UserSession session;
 
@@ -49,8 +52,6 @@ public class ReadBookAvailableToReviewController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         initializeColumns();
         initData();
-        this.tableViewForReadBook.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-
     }
 
     private void initializeColumns() {
@@ -71,11 +72,17 @@ public class ReadBookAvailableToReviewController implements Initializable {
 
     @FXML
     private void refreshList(ActionEvent actionEvent) {
-
+        initData();
     }
 
     @FXML
     private void rateBook(ActionEvent actionEvent) {
+        ReadBookAvailableToVoteDTO bookDTO = this.tableViewForReadBook.getSelectionModel().getSelectedItem();
 
+        this.applicationContext.publishEvent(
+                new OpenNewBookWindowEvent<>(new ClassPathResource("fxml/reviewBook.fxml"), bookDTO, (book, controller) -> {
+                    ReviewBookController reviewBookController = (ReviewBookController) controller;
+                    reviewBookController.setBook((ReadBookAvailableToVoteDTO) book);
+                }, "Book review"));
     }
 }

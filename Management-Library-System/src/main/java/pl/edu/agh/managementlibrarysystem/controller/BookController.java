@@ -20,7 +20,7 @@ import pl.edu.agh.managementlibrarysystem.DTO.BookDTO;
 import pl.edu.agh.managementlibrarysystem.controller.abstraction.ControllerWithTableView;
 import pl.edu.agh.managementlibrarysystem.enums.BorderpaneFields;
 import pl.edu.agh.managementlibrarysystem.event.BorderPaneReadyEvent;
-import pl.edu.agh.managementlibrarysystem.event.OpenBookDetailsEvent;
+import pl.edu.agh.managementlibrarysystem.event.OpenNewBookWindowEvent;
 import pl.edu.agh.managementlibrarysystem.event.SetItemToBorderPaneEvent;
 import pl.edu.agh.managementlibrarysystem.event.fxml.LeavingBorderPaneEvent;
 import pl.edu.agh.managementlibrarysystem.model.User;
@@ -280,7 +280,10 @@ public class BookController extends ControllerWithTableView<BookDTO> {
         BookDTO bookDTO = this.tableView.getSelectionModel().getSelectedItem();
 
         this.applicationContext.publishEvent(
-                new OpenBookDetailsEvent(new ClassPathResource("fxml/bookDetails.fxml"), bookDTO));
+                new OpenNewBookWindowEvent<>(new ClassPathResource("fxml/bookDetails.fxml"), bookDTO, (book, controller) -> {
+                    BookDetailsController bookDetailsController = (BookDetailsController) controller;
+                    bookDetailsController.setBookISBN(((BookDTO) book).getIsbn());
+                }, "Book details"));
 
     }
 
@@ -289,34 +292,29 @@ public class BookController extends ControllerWithTableView<BookDTO> {
         FXMLLoader fxmlLoader = new FXMLLoader(new ClassPathResource("fxml/readBookTable.fxml").getURL());
         fxmlLoader.setControllerFactory(this.applicationContext::getBean);
 
-        this.readBooksButton.setVisible(false);
-        this.allBooksButton.setVisible(true);
-
         this.borderPane.setCenter(fxmlLoader.load());
-
-        this.delete.setVisible(false);
-        this.arrow.setVisible(false);
-        this.checkAllCheckbox.setVisible(false);
-        this.remainingBooksAmount.setVisible(false);
-        this.remainingBooksLabel.setVisible(false);
-        this.booksAmount.setVisible(false);
-        this.booksLabel.setVisible(false);
+        this.changeVisibilityOfControls(false);
 
     }
 
     @FXML
     private void loadAllData(ActionEvent actionEvent) {
-        this.readBooksButton.setVisible(true);
-        this.allBooksButton.setVisible(false);
         this.borderPane.setCenter(this.tableView);
+        this.changeVisibilityOfControls(true);
+    }
 
-        this.delete.setVisible(true);
-        this.arrow.setVisible(true);
-        this.checkAllCheckbox.setVisible(true);
-        this.remainingBooksAmount.setVisible(true);
-        this.remainingBooksLabel.setVisible(true);
-        this.booksAmount.setVisible(true);
-        this.booksLabel.setVisible(true);
+    private void changeVisibilityOfControls(Boolean visible) {
+        this.readBooksButton.setVisible(visible);
+        this.allBooksButton.setVisible(!visible);
+        this.bookDetailsButton.setVisible(visible);
+
+        this.delete.setVisible(visible);
+        this.arrow.setVisible(visible);
+        this.checkAllCheckbox.setVisible(visible);
+        this.remainingBooksAmount.setVisible(visible);
+        this.remainingBooksLabel.setVisible(visible);
+        this.booksAmount.setVisible(visible);
+        this.booksLabel.setVisible(visible);
     }
 
     private void changeFieldsVisibility(Boolean visible) {

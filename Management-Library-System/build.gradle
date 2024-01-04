@@ -45,6 +45,8 @@ dependencies {
     implementation group: 'io.github.palexdev', name: 'materialfx', version: '11.17.0'
     implementation 'org.kordamp.ikonli:ikonli-javafx:12.3.1'
     implementation 'org.kordamp.ikonli:ikonli-fontawesome5-pack:12.3.1'
+    implementation group: 'org.controlsfx', name: 'controlsfx', version: '11.2.0'
+
 
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'

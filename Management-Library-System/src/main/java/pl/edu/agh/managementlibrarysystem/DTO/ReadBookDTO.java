@@ -6,11 +6,11 @@ import lombok.Value;
 @Value
 @Builder
 public class ReadBookDTO {
-    String review;
-    String title;
     String isbn;
+    String title;
     String authors;
     String genres;
-    int rating;
+    String review;
+    double rating;
     int edition;
 }

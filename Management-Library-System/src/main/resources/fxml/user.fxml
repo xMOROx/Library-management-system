@@ -12,7 +12,7 @@
 <?import javafx.scene.text.Font?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<BorderPane fx:id="borderpane" prefHeight="651.0" prefWidth="1000.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.agh.managementlibrarysystem.controller.ProfileController">
+<BorderPane fx:id="borderpane" prefHeight="651.0" prefWidth="1000.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.agh.managementlibrarysystem.controller.ProfileController">
     <top>
         <VBox prefHeight="123.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
             <BorderPane maxHeight="67.0" prefHeight="67.0" prefWidth="1000.0" style="-fx-background-color: white;">
@@ -72,14 +72,15 @@
    <bottom>
        <VBox BorderPane.alignment="CENTER">
            <HBox maxWidth="3000.0" prefHeight="12.0" prefWidth="1000.0" style="-fx-background-color: EEEEEE;" />
-           <HBox prefHeight="349.0" prefWidth="1000.0">
-               <TableView fx:id="tableView" prefHeight="349.0" prefWidth="1111.0">
+           <HBox prefHeight="349.0" prefWidth="980.0">
+               <TableView fx:id="tableView" prefHeight="349.0" prefWidth="1007.0">
                    <columns>
-                       <TableColumn fx:id="tableBookTitle" prefWidth="217.0" text="Book Title" />
-                       <TableColumn fx:id="tableBorrowDate" prefWidth="218.0" text="Borrow Date" />
-                       <TableColumn fx:id="tableDueDate" prefWidth="229.0" text="Returned Date" />
-                       <TableColumn fx:id="tableDueFees" prefWidth="194.0" text="Due Fees" />
-                       <TableColumn fx:id="tableCurrentlyBorrowed" prefWidth="141.0" text="Currently Borrowed" />
+                       <TableColumn fx:id="bookISBN" prefWidth="166.0" text="ISBN" />
+                       <TableColumn fx:id="bookTitle" prefWidth="197.0" text="Book Title" />
+                       <TableColumn fx:id="bookAuthors" prefWidth="206.0" text="Authors" />
+                       <TableColumn fx:id="bookGenres" prefWidth="216.0" text="Genres" />
+                       <TableColumn fx:id="bookEdition" prefWidth="110.0" text="Edition" />
+                       <TableColumn fx:id="bookRating" prefWidth="103.0" text="Rating" />
                    </columns>
                </TableView>
            </HBox>
@@ -91,18 +92,16 @@
        <HBox prefHeight="224.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
            <Region prefHeight="155.0" prefWidth="73.0" />
            <VBox prefHeight="155.0" prefWidth="133.0">
-              <children>
-                  <Label text="First Name:">
-                      <font>
-                          <Font size="24.0" />
-                      </font>
-                  </Label>
-                  <Label fx:id="firstName" alignment="CENTER" prefHeight="60.0" prefWidth="133.0" text="Label">
-                      <font>
-                          <Font size="18.0" />
-                      </font>
-                  </Label>
-              </children>
+               <Label text="First Name:">
+                   <font>
+                       <Font size="24.0" />
+                   </font>
+               </Label>
+               <Label fx:id="firstName" alignment="CENTER" prefHeight="60.0" prefWidth="133.0" text="Label">
+                   <font>
+                       <Font size="18.0" />
+                   </font>
+               </Label>
            </VBox>
            <Region prefHeight="155.0" prefWidth="73.0" />
            <VBox prefHeight="155.0" prefWidth="125.0">
@@ -121,33 +120,29 @@
            </VBox>
            <Region prefHeight="155.0" prefWidth="73.0" />
            <VBox prefHeight="200.0" prefWidth="100.0">
-              <children>
-                  <Label text="Email:">
-                      <font>
-                          <Font size="24.0" />
-                      </font>
-                  </Label>
-                  <Label fx:id="email" alignment="CENTER" prefHeight="57.0" prefWidth="133.0" text="Label">
-                      <font>
-                          <Font size="18.0" />
-                      </font>
-                  </Label>
-              </children>
+               <Label text="Email:">
+                   <font>
+                       <Font size="24.0" />
+                   </font>
+               </Label>
+               <Label fx:id="email" alignment="CENTER" prefHeight="57.0" prefWidth="133.0" text="Label">
+                   <font>
+                       <Font size="18.0" />
+                   </font>
+               </Label>
            </VBox>
            <Region prefHeight="155.0" prefWidth="73.0" />
            <VBox prefHeight="155.0" prefWidth="129.0">
-              <children>
-                  <Label text="Total fees:">
-                      <font>
-                          <Font size="24.0" />
-                      </font>
-                  </Label>
-                  <Label fx:id="totalFees" alignment="CENTER" prefHeight="57.0" prefWidth="133.0" text="Label">
-                      <font>
-                          <Font size="18.0" />
-                      </font>
-                  </Label>
-              </children>
+               <Label text="Total fees:">
+                   <font>
+                       <Font size="24.0" />
+                   </font>
+               </Label>
+               <Label fx:id="totalFees" alignment="CENTER" prefHeight="57.0" prefWidth="133.0" text="Label">
+                   <font>
+                       <Font size="18.0" />
+                   </font>
+               </Label>
            </VBox>
        </HBox>
    </right>
