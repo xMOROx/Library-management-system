@@ -281,7 +281,7 @@ public class BookDataEntryController extends BaseDataEntryController<ActionEvent
         this.tableOfContent.setText(bookDTO.getTableOfContent());
         this.availability.setSelected(Boolean.parseBoolean(bookDTO.getAvailability()));
         this.coverType.setValue(bookDTO.getCover());
-        this.authorSelection.setValue(bookDTO.getAuthor());
+        this.authorSelection.setValue(bookDTO.getAuthors());
         this.publisherSelection.setValue(bookDTO.getPublisher());
         this.genresSelection.setValue(bookDTO.getMainGenre());
     }

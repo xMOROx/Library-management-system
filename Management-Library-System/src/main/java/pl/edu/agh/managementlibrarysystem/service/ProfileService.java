@@ -19,7 +19,7 @@ public class ProfileService {
 
             List<IssuedBookDTO> issuedBooks = bookService.getIssuedBooksByUserId(user.getId());
             return issuedBooks.stream()
-                    .map(userProfileMapper::mapToDto)
+                    .map(userProfileMapper::map)
                     .toList();
         }
         return null;

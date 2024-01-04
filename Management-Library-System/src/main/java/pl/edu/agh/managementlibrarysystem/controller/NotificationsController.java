@@ -91,7 +91,7 @@ public class NotificationsController extends ControllerWithTableView<Notificatio
                 LeavingBorderPaneEvent.LEAVING,
                 event -> {
                     this.applicationContext.publishEvent(new SetItemToBorderPaneEvent<>(this.tableView, this.borderPane, BorderpaneFields.CENTER));
-                    this.loadData();
+                    this.initData();
                     setVisibility(true);
                 }
         );
@@ -103,7 +103,7 @@ public class NotificationsController extends ControllerWithTableView<Notificatio
 
         task.setOnSucceeded(event -> {
             spinner.setVisible(false);
-            this.loadData();
+            this.initData();
         });
 
         Thread thread = new Thread(task);
@@ -126,7 +126,7 @@ public class NotificationsController extends ControllerWithTableView<Notificatio
     }
 
     @Override
-    protected void loadData() {
+    protected void initData() {
         data = this.notificationService.getNotifications(currUser, ignoreResolved.isSelected());
         this.tableView.getItems().clear();
         this.tableView.getItems().addAll(data);
@@ -149,7 +149,7 @@ public class NotificationsController extends ControllerWithTableView<Notificatio
         NotificationDTO notificationDTO = tableView.getSelectionModel().getSelectedItem();
         String msg = notificationService.deleteNotification(notificationDTO);
         Alerts.showInformationAlert("Notification notification", msg);
-        loadData();
+        initData();
     }
 
     @FXML
@@ -157,11 +157,11 @@ public class NotificationsController extends ControllerWithTableView<Notificatio
         NotificationDTO notificationDTO = tableView.getSelectionModel().getSelectedItem();
         String msg = notificationService.resolveNotifications(notificationDTO);
         Alerts.showInformationAlert("Notification notification", msg);
-        loadData();
+        initData();
     }
 
     @FXML
     private void ignoreResolved(MouseEvent actionEvent) {
-        loadData();
+        initData();
     }
 }

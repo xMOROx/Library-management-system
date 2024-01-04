@@ -8,7 +8,7 @@ import lombok.Value;
 public class BookDTO {
     String isbn;
     String title;
-    String author;
+    String authors;
     String publisher;
     String mainGenre;
     Integer edition;

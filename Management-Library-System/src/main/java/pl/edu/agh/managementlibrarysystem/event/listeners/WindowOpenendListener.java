@@ -26,8 +26,7 @@ public class WindowOpenendListener implements ApplicationListener<OpenWindowEven
     public void onApplicationEvent(OpenWindowEvent event) {
         try {
             Stage stage = event.getStage();
-            URL url = null;
-            url = event.getFxml().getURL();
+            URL url = event.getFxml().getURL();
             FXMLLoader fxmlLoader = new FXMLLoader(url);
             fxmlLoader.setControllerFactory(this.applicationContext::getBean);
 

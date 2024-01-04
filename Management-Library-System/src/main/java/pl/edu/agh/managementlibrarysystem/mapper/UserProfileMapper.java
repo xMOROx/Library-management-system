@@ -4,18 +4,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import pl.edu.agh.managementlibrarysystem.DTO.IssuedBookDTO;
 import pl.edu.agh.managementlibrarysystem.DTO.UserProfileDTO;
+import pl.edu.agh.managementlibrarysystem.mapper.abstraction.Mapper;
+import pl.edu.agh.managementlibrarysystem.mapper.abstraction.OneWayMapper;
 
 @Component
 @RequiredArgsConstructor
-public class UserProfileMapper implements Mapper<IssuedBookDTO, UserProfileDTO>{
+public class UserProfileMapper implements OneWayMapper<IssuedBookDTO, UserProfileDTO> {
 
     @Override
-    public IssuedBookDTO mapToEntity(UserProfileDTO object) {
-        return null;
-    }
-
-    @Override
-    public UserProfileDTO mapToDto(IssuedBookDTO object) {
+    public UserProfileDTO map(IssuedBookDTO object) {
         return UserProfileDTO.builder()
                 .bookTitle(object.getBookTitle())
                 .borrowDate(object.getIssuedDate())

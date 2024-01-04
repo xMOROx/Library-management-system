@@ -3,6 +3,7 @@ package pl.edu.agh.managementlibrarysystem.mapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import pl.edu.agh.managementlibrarysystem.DTO.IssuedBookDTO;
+import pl.edu.agh.managementlibrarysystem.mapper.abstraction.Mapper;
 import pl.edu.agh.managementlibrarysystem.model.Book;
 import pl.edu.agh.managementlibrarysystem.model.IssuedBook;
 import pl.edu.agh.managementlibrarysystem.model.User;

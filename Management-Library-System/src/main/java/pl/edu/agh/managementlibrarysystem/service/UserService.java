@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.edu.agh.managementlibrarysystem.DTO.UserDTO;
-import pl.edu.agh.managementlibrarysystem.mapper.Mapper;
+import pl.edu.agh.managementlibrarysystem.mapper.abstraction.Mapper;
 import pl.edu.agh.managementlibrarysystem.model.User;
 import pl.edu.agh.managementlibrarysystem.model.util.Permission;
 import pl.edu.agh.managementlibrarysystem.repository.IssuedBooksRepository;

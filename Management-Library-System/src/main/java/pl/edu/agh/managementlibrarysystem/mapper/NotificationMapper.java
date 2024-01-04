@@ -3,21 +3,17 @@ package pl.edu.agh.managementlibrarysystem.mapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import pl.edu.agh.managementlibrarysystem.DTO.NotificationDTO;
+import pl.edu.agh.managementlibrarysystem.mapper.abstraction.OneWayMapper;
 import pl.edu.agh.managementlibrarysystem.model.Book;
 import pl.edu.agh.managementlibrarysystem.model.Notification;
 import pl.edu.agh.managementlibrarysystem.model.User;
-import pl.edu.agh.managementlibrarysystem.repository.IssuedBooksRepository;
 
 @Component
 @RequiredArgsConstructor
-public class NotificationMapper implements Mapper<Notification, NotificationDTO>{
-    @Override
-    public Notification mapToEntity(NotificationDTO object) {
-        return null;
-    }
+public class NotificationMapper implements OneWayMapper<Notification, NotificationDTO> {
 
     @Override
-    public NotificationDTO mapToDto(Notification object) {
+    public NotificationDTO map(Notification object) {
         Book book = object.getBooks();
         User user = object.getUser();
         return NotificationDTO.builder()

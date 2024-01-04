@@ -4,7 +4,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.edu.agh.managementlibrarysystem.DTO.NotificationDTO;
-import pl.edu.agh.managementlibrarysystem.mapper.NotificationMapper;
+import pl.edu.agh.managementlibrarysystem.mapper.abstraction.OneWayMapper;
 import pl.edu.agh.managementlibrarysystem.model.Book;
 import pl.edu.agh.managementlibrarysystem.model.IssuedBook;
 import pl.edu.agh.managementlibrarysystem.model.Notification;
@@ -27,15 +27,15 @@ public class NotificationService {
     private final UserRepository userRepository;
     private final BookRepository bookRepository;
     private final IssuedBooksRepository issuedBooksRepository;
-    private final NotificationMapper notificationMapper;
+    private final OneWayMapper<Notification, NotificationDTO> notificationMapper;
 
-    @Transactional //returns a string that answers whether a notification
-    public String makeNewNotification( String isbn, String email, Date sendingDate, Type type, boolean accepted ){
+    //returns a string that answers whether a notification
+    public String makeNewNotification(String isbn, String email, Date sendingDate, Type type, boolean accepted) {
         String msg = "";
         Optional<Book> book = bookRepository.findByIsbn(isbn);
         Optional<User> user = userRepository.findByEmail(email);
-        if(book.isPresent() && user.isPresent()){
-            Optional<IssuedBook> issuedBook = issuedBooksRepository.findIssuedBookByUserIdAndBookIsbn(user.get().getId(),book.get().getIsbn());
+        if (book.isPresent() && user.isPresent()) {
+            Optional<IssuedBook> issuedBook = issuedBooksRepository.findIssuedBookByUserIdAndBookIsbn(user.get().getId(), book.get().getIsbn());
             if (issuedBook.isPresent() && issuedBook.get().getBook().equals(book.get())) {
                 Notification notification = new Notification();
                 notification.setUser(user.get());
@@ -46,76 +46,72 @@ public class NotificationService {
                 notificationRepository.save(notification);
                 msg = "Notification added successfully!";
             }
-            if (msg.equals("")) {
+            if (msg.isEmpty()) {
                 msg = "Couldn't make notification because the user provided has no such books issued";
             }
-        }
-        else if(book.isPresent()){
+        } else if (book.isPresent()) {
             msg = "Couldn't make notification because no such user exists";
-        }
-        else{
+        } else {
             msg = "Couldn't make notification because no such book exists";
         }
         return msg;
     }
-    @Transactional
-    public String resolveNotifications(NotificationDTO notificationDTO){
+
+    public String resolveNotifications(NotificationDTO notificationDTO) {
         String msg = "";
         String bookISBN = notificationDTO.getBookISBN();
         Long userId = notificationDTO.getUserID();
         List<Notification> notifications = notificationRepository.findAll();
-        for(Notification notification : notifications){
-            if(notification.getUser().getId().equals(userId)){
-                if(notification.getBooks().getIsbn().equals(bookISBN)){
+        for (Notification notification : notifications) {
+            if (notification.getUser().getId().equals(userId)) {
+                if (notification.getBooks().getIsbn().equals(bookISBN)) {
                     notification.setAccepted(true);
                     notificationRepository.save(notification);
-                    msg="Notification(s) resolved!";
+                    msg = "Notification(s) resolved!";
                 }
             }
         }
-        if(msg.equals("")){
-            msg="No such notifications exit";
+        if (msg.isEmpty()) {
+            msg = "No such notifications exit";
         }
         return msg;
     }
 
-    @Transactional
-    public Integer getAmount(String email){
+    public Integer getAmount(String email) {
         return notificationRepository.sumAllByUserEmail(email);
     }
-    public List<NotificationDTO> getNotificationsOfUserByEmail(String email){
+
+    public List<NotificationDTO> getNotificationsOfUserByEmail(String email) {
         return notificationRepository.findALLByUserEmail(email)
                 .stream()
-                .map(this.notificationMapper::mapToDto)
+                .map(this.notificationMapper::map)
                 .toList();
     }
-    @Transactional
+
     public List<NotificationDTO> getNotifications(User user, boolean ignoreResolved) {
-        List <Notification> notifications;
-        if(user.getPermission().toString().equalsIgnoreCase("normal_user")){
-            notifications=this.notificationRepository.findALLByUserEmail(user.getEmail());
-        }
-        else{
+        List<Notification> notifications;
+        if (user.getPermission().toString().equalsIgnoreCase("normal_user")) {
+            notifications = this.notificationRepository.findALLByUserEmail(user.getEmail());
+        } else {
             notifications = this.notificationRepository.findAll();
         }
         return notifications
                 .stream()
                 .filter(notification -> !ignoreResolved || !notification.getAccepted())
-                .map(this.notificationMapper::mapToDto)
+                .map(this.notificationMapper::map)
                 .toList();
     }
-    @Transactional
-    public String deleteNotification(NotificationDTO notificationDTO){
-        Long id =notificationDTO.getNotificationID();
+
+    public String deleteNotification(NotificationDTO notificationDTO) {
+        Long id = notificationDTO.getNotificationID();
         String msg = "";
 
-        if(notificationRepository.findById(id).isPresent()){
+        if (notificationRepository.findById(id).isPresent()) {
             notificationRepository.deleteById(id);
             msg = "deleted successfully!";
 
-        }
-        else{
-            msg="couldn't delete notification";
+        } else {
+            msg = "couldn't delete notification";
         }
         return msg;
     }

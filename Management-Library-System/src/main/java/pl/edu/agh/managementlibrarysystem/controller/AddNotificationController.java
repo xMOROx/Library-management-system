@@ -8,7 +8,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
@@ -19,7 +18,9 @@ import pl.edu.agh.managementlibrarysystem.DTO.UserDTO;
 import pl.edu.agh.managementlibrarysystem.controller.abstraction.BaseDataEntryController;
 import pl.edu.agh.managementlibrarysystem.event.fxml.LeavingBorderPaneEvent;
 import pl.edu.agh.managementlibrarysystem.model.util.Type;
-import pl.edu.agh.managementlibrarysystem.service.*;
+import pl.edu.agh.managementlibrarysystem.service.BookService;
+import pl.edu.agh.managementlibrarysystem.service.NotificationService;
+import pl.edu.agh.managementlibrarysystem.service.UserService;
 import pl.edu.agh.managementlibrarysystem.utils.Alerts;
 
 import java.net.URL;
@@ -32,9 +33,9 @@ public class AddNotificationController extends BaseDataEntryController<ActionEve
     private final BookService bookService;
     private final NotificationService notificationService;
     private final UserService userService;
+    private final ObservableList<String> types = Type.getObservableList();
     private BookDTO searchedBook;
     private UserDTO searchedUser;
-
     @FXML
     private CheckBox isResolved;
     @FXML
@@ -44,7 +45,7 @@ public class AddNotificationController extends BaseDataEntryController<ActionEve
     @FXML
     private Text bookTitle;
     @FXML
-    private Text bookAuthor;
+    private Text bookAuthors;
     @FXML
     private Text bookPublisher;
     @FXML
@@ -59,7 +60,6 @@ public class AddNotificationController extends BaseDataEntryController<ActionEve
     private MFXTextField dateTextField;
     @FXML
     private MFXButton makeNotification;
-    private final ObservableList<String> types = Type.getObservableList();
 
     public AddNotificationController(ApplicationContext applicationContext,
                                      BookService bookService,
@@ -72,7 +72,7 @@ public class AddNotificationController extends BaseDataEntryController<ActionEve
     }
 
     @FXML
-    public void back(ActionEvent actionEvent){
+    public void back(ActionEvent actionEvent) {
         this.root.fireEvent(new LeavingBorderPaneEvent(LeavingBorderPaneEvent.LEAVING));
     }
 
@@ -85,6 +85,7 @@ public class AddNotificationController extends BaseDataEntryController<ActionEve
                 .or(this.bookSearchField.textProperty().isEmpty())
                 .or(this.dateTextField.textProperty().isEmpty()));
     }
+
     @FXML
     @Override
     protected void save(ActionEvent event) {
@@ -99,7 +100,7 @@ public class AddNotificationController extends BaseDataEntryController<ActionEve
             Alerts.showErrorAlert("Wrong input", "Provided input is not a ISBN 10 or 13");
             return false;
         }
-        if(!userSearchTextField.getText().matches(numberRegex)){
+        if (!userSearchTextField.getText().matches(numberRegex)) {
             Alerts.showErrorAlert("Wrong input", "User ID must be a number");
             return false;
         }
@@ -107,7 +108,7 @@ public class AddNotificationController extends BaseDataEntryController<ActionEve
             Alerts.showErrorAlert("Wrong input", "enter date as: YYYY-MM-DD");
             return false;
         }
-        if(type.getValue().equals("Choose Type")){
+        if (type.getValue().equals("Choose Type")) {
             Alerts.showErrorAlert("Wrong input", "You must select a notification type");
             return false;
         }
@@ -126,7 +127,7 @@ public class AddNotificationController extends BaseDataEntryController<ActionEve
         this.dateTextField.clear();
         this.bookSearchField.clear();
         this.bookTitle.setText("Book Title");
-        this.bookAuthor.setText("Book Author");
+        this.bookAuthors.setText("Book Author");
         this.bookPublisher.setText("Book Publisher");
         this.availability.setText("Availability");
         this.userFullName.setText("User Full Name");
@@ -162,10 +163,11 @@ public class AddNotificationController extends BaseDataEntryController<ActionEve
 
 
         this.bookTitle.setText(searchedBook.getTitle());
-        this.bookAuthor.setText(searchedBook.getAuthor());
+        this.bookAuthors.setText(searchedBook.getAuthors());
         this.bookPublisher.setText(searchedBook.getPublisher());
         this.availability.setText(searchedBook.getAvailability());
     }
+
     @FXML
     private void searchUser(KeyEvent keyEvent) {
         String userId = userSearchTextField.getText();
@@ -174,15 +176,15 @@ public class AddNotificationController extends BaseDataEntryController<ActionEve
             return;
         }
         String numberRegex = ".*\\d.*";
-        if(!userId.matches(numberRegex)){
+        if (!userId.matches(numberRegex)) {
             Alerts.showInformationAlert("Field validation", "User ID must be a number!");
             return;
         }
-        try{
-        searchedUser = userService.findById(Long.parseLong(userId));
-        }
-        catch (NumberFormatException e){
+        try {
+            searchedUser = userService.findById(Long.parseLong(userId));
+        } catch (NumberFormatException e) {
             e.printStackTrace();
+            return;
         }
 
         if (searchedUser == null) {
@@ -208,19 +210,18 @@ public class AddNotificationController extends BaseDataEntryController<ActionEve
             Alerts.showErrorAlert("Field validation", "date must be in format YYYY-MM-DD!");
         }
     }
+
     @FXML
-    private void makeNotification(){
-        if(!this.verifyData()){
+    private void makeNotification() {
+        if (!this.verifyData()) {
             return;
         }
         String date = dateTextField.getText();
         Type type1 = null;
-        if(type.getValue().equals("Books are due")){
+        if (type.getValue().equals("Books are due")) {
             type1 = Type.BOOKS_ARE_DUE;
-        }
-        else if(type.getValue().equals("Return date is approaching"))
-        {
-            type1=Type.RETURN_DATE_IS_CLOSE;
+        } else if (type.getValue().equals("Return date is approaching")) {
+            type1 = Type.RETURN_DATE_IS_CLOSE;
         }
         String msg = notificationService.makeNewNotification(
                 searchedBook.getIsbn(),
@@ -230,7 +231,7 @@ public class AddNotificationController extends BaseDataEntryController<ActionEve
                 isResolved.isSelected()
         );
 
-        Alerts.showInformationAlert("Notification notification",msg);
+        Alerts.showInformationAlert("Notification notification", msg);
     }
 
 }

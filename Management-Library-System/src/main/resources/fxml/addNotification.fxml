@@ -59,7 +59,7 @@
                             <Font size="14.0"/>
                         </font>
                     </Text>
-                    <Text fx:id="bookAuthor" layoutX="237.0" layoutY="96.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                    <Text fx:id="bookAuthors" layoutX="237.0" layoutY="96.0" strokeType="OUTSIDE" strokeWidth="0.0"
                           text="Book Author" textAlignment="CENTER" wrappingWidth="470.0">
                         <font>
                             <Font size="14.0"/>

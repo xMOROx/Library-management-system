@@ -57,5 +57,5 @@ public abstract class ControllerWithTableView<T> extends ResizeableBaseControlle
     @FXML
     protected abstract void searchData(KeyEvent keyEvent);
 
-    protected abstract void loadData();
+    protected abstract void initData();
 }

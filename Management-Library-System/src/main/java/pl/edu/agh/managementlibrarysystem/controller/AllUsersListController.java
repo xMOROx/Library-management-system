@@ -45,7 +45,7 @@ public class AllUsersListController extends ControllerWithTableView<UserDTO> imp
 
         task.setOnSucceeded(event -> {
             spinner.setVisible(false);
-            this.loadData();
+            this.initData();
         });
 
         Thread thread = new Thread(task);
@@ -67,7 +67,7 @@ public class AllUsersListController extends ControllerWithTableView<UserDTO> imp
     }
 
     @Override
-    protected void loadData() {
+    protected void initData() {
         data = this.userService.getAllUsers();
         this.tableView.getItems().clear();
         this.tableView.getItems().addAll(data);
@@ -76,6 +76,6 @@ public class AllUsersListController extends ControllerWithTableView<UserDTO> imp
     @FXML
     private void deleteUser(MouseEvent mouseEvent) {
         userService.deleteByUserId(tableView.getSelectionModel().getSelectedItem().getId());
-        loadData();
+        initData();
     }
 }

@@ -61,9 +61,9 @@ public class BookDetailsController extends ResizeableBaseController implements I
 
         data.add("Book ISBN:              " + book.getIsbn());
         data.add("Book Title:              " + book.getTitle());
-        data.add("Authors:          " + book.getAuthors().substring(1, book.getAuthors().length() - 1));
+        data.add("Authors:          " + book.getAuthors());
         data.add("Publisher:          " + book.getPublisher());
-        data.add("Genres:          " + book.getGenres().substring(1, book.getGenres().length() - 1));
+        data.add("Genres:          " + book.getGenres());
         data.add("Edition:          " + book.getEdition());
         data.add("Quantity:          " + book.getQuantity());
         data.add("Remaining amount:          " + book.getRemainingBooks());

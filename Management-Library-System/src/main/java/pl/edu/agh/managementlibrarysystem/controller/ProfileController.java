@@ -17,7 +17,6 @@ import pl.edu.agh.managementlibrarysystem.DTO.UserProfileDTO;
 import pl.edu.agh.managementlibrarysystem.controller.abstraction.ControllerWithTableView;
 import pl.edu.agh.managementlibrarysystem.event.BorderPaneReadyEvent;
 import pl.edu.agh.managementlibrarysystem.model.User;
-import pl.edu.agh.managementlibrarysystem.model.util.Permission;
 import pl.edu.agh.managementlibrarysystem.service.BookService;
 import pl.edu.agh.managementlibrarysystem.service.NotificationService;
 import pl.edu.agh.managementlibrarysystem.service.ProfileService;
@@ -71,7 +70,7 @@ public class ProfileController extends ControllerWithTableView<UserProfileDTO> i
     public void initialize(URL location, ResourceBundle resources){
         this.tooltipInitializer();
         this.initializeColumns();
-        this.loadData();
+        this.initData();
     }
     @Override
     protected void createNewTask(int maxIterations, int sleepTime) {
@@ -93,7 +92,7 @@ public class ProfileController extends ControllerWithTableView<UserProfileDTO> i
     }
 
     @Override
-    protected void loadData() {
+    protected void initData() {
         User currUser = userSession.getLoggedUser();
         this.firstName.setText(currUser.getFirstname());
         this.lastName.setText(currUser.getLastname());

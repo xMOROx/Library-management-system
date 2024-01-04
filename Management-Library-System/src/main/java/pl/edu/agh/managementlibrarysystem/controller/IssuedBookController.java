@@ -131,7 +131,7 @@ public class IssuedBookController extends ControllerWithTableView<IssuedBookDTO>
 
         task.setOnSucceeded(event -> {
             spinner.setVisible(false);
-            loadData();
+            initData();
         });
 
         Thread thread = new Thread(task);
@@ -140,7 +140,7 @@ public class IssuedBookController extends ControllerWithTableView<IssuedBookDTO>
     }
 
     @Override
-    protected void loadData() {
+    protected void initData() {
         if (session.getLoggedUser().getPermission() == Permission.NORMAL_USER) {
             data = this.bookService.getIssuedBooksByUserId(session.getLoggedUser().getId());
         } else {
@@ -174,6 +174,6 @@ public class IssuedBookController extends ControllerWithTableView<IssuedBookDTO>
 
         issuedBookDTO.setIsTaken("yes");
         this.bookService.issueBookToUser(issuedBookDTO);
-        this.loadData();
+        this.initData();
     }
 }

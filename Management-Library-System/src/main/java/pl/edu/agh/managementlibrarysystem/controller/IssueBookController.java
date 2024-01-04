@@ -126,7 +126,7 @@ public class IssueBookController extends ResizeableBaseController implements Ini
         errorISBNMessage.setValue("");
 
         this.bookTitle.setText(book.getTitle());
-        this.bookAuthor.setText(book.getAuthor());
+        this.bookAuthor.setText(book.getAuthors());
         this.bookPublisher.setText(book.getPublisher());
         this.availability.setText(book.getAvailability());
 
