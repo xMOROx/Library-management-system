@@ -7,17 +7,16 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.ListView;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import lombok.Setter;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import pl.edu.agh.managementlibrarysystem.DTO.BookDetailsDTO;
 import pl.edu.agh.managementlibrarysystem.controller.abstraction.ResizeableBaseController;
 import pl.edu.agh.managementlibrarysystem.service.BookService;
+import pl.edu.agh.managementlibrarysystem.utils.ImageLoader;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -25,9 +24,9 @@ import java.util.ResourceBundle;
 @Controller
 public class BookDetailsController extends ResizeableBaseController implements Initializable {
     private final BookService bookService;
+    private final ImageLoader imageLoader;
     private final ObservableList<String> data = FXCollections.observableArrayList();
     private BookDetailsDTO book;
-    @Setter
     private String bookISBN;
     @FXML
     private Pane mainContainer;
@@ -37,9 +36,12 @@ public class BookDetailsController extends ResizeableBaseController implements I
     private ImageView bookCover;
 
 
-    public BookDetailsController(ApplicationContext applicationContext, BookService bookService) {
+    public BookDetailsController(ApplicationContext applicationContext,
+                                 ImageLoader imageLoader,
+                                 BookService bookService) {
         super(applicationContext);
         this.bookService = bookService;
+        this.imageLoader = imageLoader;
     }
 
     @Override
@@ -74,10 +76,7 @@ public class BookDetailsController extends ResizeableBaseController implements I
     }
 
     public void initializeBookCover() {
-        if (book.getImage()!=null){
-            this.bookCover.setImage(new Image(book.getImage()));
-        }
-
+        this.bookCover.setImage(this.imageLoader.getImage(book.getImage()));
     }
 
     @Override

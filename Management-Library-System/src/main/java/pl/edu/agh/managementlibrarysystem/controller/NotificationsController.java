@@ -34,6 +34,7 @@ import pl.edu.agh.managementlibrarysystem.utils.TaskFactory;
 import java.net.URL;
 import java.sql.Date;
 import java.util.ResourceBundle;
+
 @Controller
 public class NotificationsController extends ControllerWithTableView<NotificationDTO> implements Initializable {
     @FXML
@@ -54,7 +55,7 @@ public class NotificationsController extends ControllerWithTableView<Notificatio
     @FXML
     private MFXButton addNotification;
     @FXML
-    private TableColumn<NotificationDTO,Long> userID;
+    private TableColumn<NotificationDTO, Long> userID;
     @FXML
     private TableColumn<NotificationDTO, String> bookISBN;
     @FXML
@@ -68,16 +69,18 @@ public class NotificationsController extends ControllerWithTableView<Notificatio
 
 
     @Autowired
-    public NotificationsController(UserSession userSession, NotificationService notificationService, ApplicationContext applicationContext) {
+    public NotificationsController(UserSession userSession,
+                                   NotificationService notificationService,
+                                   ApplicationContext applicationContext) {
         super(applicationContext);
         this.userSession = userSession;
         this.notificationService = notificationService;
     }
 
     @Override
-    public void initialize(URL location, ResourceBundle resources){
+    public void initialize(URL location, ResourceBundle resources) {
         currUser = userSession.getLoggedUser();
-        if(currUser.getPermission().toString().equalsIgnoreCase("normal_user")){
+        if (currUser.getPermission().toString().equalsIgnoreCase("normal_user")) {
             addNotification.setVisible(false);
             tableView.addEventFilter(ContextMenuEvent.CONTEXT_MENU_REQUESTED, Event::consume);
         }
@@ -93,6 +96,7 @@ public class NotificationsController extends ControllerWithTableView<Notificatio
                 }
         );
     }
+
     @Override
     protected void createNewTask(int maxIterations, int sleepTime) {
         Task<Integer> task = TaskFactory.countingTaskForProgressBar(maxIterations, sleepTime, progressBar);
@@ -123,34 +127,39 @@ public class NotificationsController extends ControllerWithTableView<Notificatio
 
     @Override
     protected void loadData() {
-        data = this.notificationService.getNotifications(currUser,ignoreResolved.isSelected());
+        data = this.notificationService.getNotifications(currUser, ignoreResolved.isSelected());
         this.tableView.getItems().clear();
         this.tableView.getItems().addAll(data);
     }
+
     @FXML
     private void addNotification(ActionEvent actionEvent) {
         setVisibility(false);
         this.applicationContext.publishEvent(new BorderPaneReadyEvent(this.borderPane, new ClassPathResource("fxml/addNotification.fxml")));
     }
-    private void setVisibility(boolean visibility){
+
+    private void setVisibility(boolean visibility) {
         toKill1.setVisible(visibility);
         toKill2.setVisible(visibility);
         ignoreResolved.setVisible(visibility);
     }
+
     @FXML
     private void deleteNotification(ActionEvent actionEvent) {
         NotificationDTO notificationDTO = tableView.getSelectionModel().getSelectedItem();
         String msg = notificationService.deleteNotification(notificationDTO);
-        Alerts.showInformationAlert("Notification notification",msg);
+        Alerts.showInformationAlert("Notification notification", msg);
         loadData();
     }
+
     @FXML
     private void resolveNotification(ActionEvent actionEvent) {
         NotificationDTO notificationDTO = tableView.getSelectionModel().getSelectedItem();
         String msg = notificationService.resolveNotifications(notificationDTO);
-        Alerts.showInformationAlert("Notification notification",msg);
+        Alerts.showInformationAlert("Notification notification", msg);
         loadData();
     }
+
     @FXML
     private void ignoreResolved(MouseEvent actionEvent) {
         loadData();

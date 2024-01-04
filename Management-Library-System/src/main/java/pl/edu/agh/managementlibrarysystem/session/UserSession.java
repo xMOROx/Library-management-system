@@ -7,14 +7,12 @@ import org.springframework.stereotype.Component;
 import pl.edu.agh.managementlibrarysystem.DTO.BookDTO;
 import pl.edu.agh.managementlibrarysystem.model.User;
 
+@Setter
+@Getter
 @Component
 @Scope("singleton")
 public class UserSession {
-    @Getter
-    @Setter
     private User loggedUser;
 
-    @Getter
-    @Setter
     private BookDTO selectedBook;
 }

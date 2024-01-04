@@ -8,7 +8,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.Control;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -129,8 +128,7 @@ public class MainStageController extends BaseController implements Initializable
         User u = session.getLoggedUser();
         if (u.getPermission() == Permission.NORMAL_USER) {
             applicationContext.publishEvent(new BorderPaneReadyEvent(pane, new ClassPathResource("fxml/user.fxml")));
-        }
-        else{
+        } else {
             applicationContext.publishEvent(new BorderPaneReadyEvent(pane, new ClassPathResource("fxml/usersAdmin.fxml")));
         }
     }
@@ -177,6 +175,7 @@ public class MainStageController extends BaseController implements Initializable
         applicationContext
                 .publishEvent(new BorderPaneReadyEvent(pane, new ClassPathResource("fxml/addOtherUser.fxml")));
     }
+
     @FXML
     public void editUserPanel(ActionEvent actionEvent) {
         if (session.getLoggedUser() == null) {
