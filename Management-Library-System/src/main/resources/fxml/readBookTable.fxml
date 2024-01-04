@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="pl.edu.agh.managementlibrarysystem.controller.ReadBookAvailableToReviewController"
+            prefHeight="400.0" prefWidth="600.0">
+    <TableView fx:id="tableViewForReadBook" prefHeight="523.0" prefWidth="990.0"
+               tableMenuButtonVisible="true" BorderPane.alignment="CENTER">
+        <columns>
+            <TableColumn fx:id="bookISBN" prefWidth="113.95263671875" text="Book ISBN"/>
+            <TableColumn fx:id="bookTitle" prefWidth="141.11334228515625" text="Book Title"/>
+            <TableColumn fx:id="bookAuthors" prefWidth="120.84616088867188" text="Book Authors"/>
+            <TableColumn fx:id="bookPublisher" prefWidth="120.84616088867188" text="Book Publisher"/>
+            <TableColumn fx:id="bookGenres" prefWidth="122.32125854492188" text="Genres"/>
+            <TableColumn fx:id="bookEdition" prefWidth="68.4598388671875" text="Edition"/>
+            <TableColumn fx:id="returnedDate" prefWidth="62.04144287109375" text="Return date"/>
+        </columns>
+        <contextMenu>
+            <ContextMenu fx:id="contextMenu">
+                <items>
+                    <MenuItem mnemonicParsing="false" onAction="#refreshList" text="Refresh list"/>
+                    <MenuItem mnemonicParsing="false" onAction="#rateBook" text="Rate Book"/>
+                </items>
+            </ContextMenu>
+        </contextMenu>
+        <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+        </columnResizePolicy>
+    </TableView>
+
+</AnchorPane>

@@ -3,6 +3,7 @@ package pl.edu.agh.managementlibrarysystem.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
 import java.util.Set;
 
 @Setter
@@ -37,6 +38,10 @@ public class Book {
     )
     private Set<Genre> genres;
 
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, targetEntity = Publisher.class)
+    @JoinColumn(name = "publisher_id", referencedColumnName = "id")
+    private Publisher publisher;
+
     @Column(name = "title", nullable = false, columnDefinition = "varchar(255) default 'Unknown'")
     private String title;
     @Column(name = "isbn", nullable = false, unique = true, length = 255, columnDefinition = "varchar(255)")
@@ -58,8 +63,28 @@ public class Book {
     @Column(name = "table_of_content", columnDefinition = "varchar(255)")
     private String tableOfContent;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, targetEntity = Publisher.class)
-    @JoinColumn(name = "publisher_id", referencedColumnName = "id")
-    private Publisher publisher;
+    public static String getAuthorsAsString(Book book) {
+        Set<Author> bookAuthors = book.getAuthors();
+
+        if (bookAuthors.isEmpty()) {
+            return null;
+        }
+
+        return bookAuthors
+                .stream()
+                .reduce("", (authors, author) -> authors + author.getFirstname() + " " + author.getLastname() + (bookAuthors.size() > 1 ? ", " : ""), String::concat);
+    }
+
+    public static String getGenresAsString(Book book) {
+        Set<Genre> bookGenres = book.getGenres();
+
+        if (bookGenres.isEmpty()) {
+            return null;
+        }
+
+        return bookGenres
+                .stream()
+                .reduce("", (genres, genre) -> genres + genre.getGenre() + (bookGenres.size() > 1 ? ", " : ""), String::concat);
+    }
 
 }

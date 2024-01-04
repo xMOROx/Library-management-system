@@ -6,12 +6,11 @@ import javafx.collections.transformation.SortedList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 import org.kordamp.ikonli.javafx.FontIcon;
 import org.springframework.context.ApplicationContext;
@@ -24,7 +23,6 @@ import pl.edu.agh.managementlibrarysystem.event.BorderPaneReadyEvent;
 import pl.edu.agh.managementlibrarysystem.event.OpenBookDetailsEvent;
 import pl.edu.agh.managementlibrarysystem.event.SetItemToBorderPaneEvent;
 import pl.edu.agh.managementlibrarysystem.event.fxml.LeavingBorderPaneEvent;
-import pl.edu.agh.managementlibrarysystem.mapper.BookMapper;
 import pl.edu.agh.managementlibrarysystem.model.User;
 import pl.edu.agh.managementlibrarysystem.model.util.Permission;
 import pl.edu.agh.managementlibrarysystem.service.BookService;
@@ -33,6 +31,7 @@ import pl.edu.agh.managementlibrarysystem.utils.Alerts;
 import pl.edu.agh.managementlibrarysystem.utils.ControlsUtils;
 import pl.edu.agh.managementlibrarysystem.utils.TaskFactory;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -46,11 +45,13 @@ public class BookController extends ControllerWithTableView<BookDTO> {
     @FXML
     private FontIcon searchIcon;
     @FXML
-    private BorderPane borderpane;
-    @FXML
     private MFXButton loadDataEntryButton;
     @FXML
     private MFXButton bookDetailsButton;
+    @FXML
+    private MFXButton allBooksButton;
+    @FXML
+    private MFXButton readBooksButton;
     @FXML
     private Label booksAmount;
     @FXML
@@ -65,13 +66,12 @@ public class BookController extends ControllerWithTableView<BookDTO> {
     private CheckBox checkAllCheckbox;
     @FXML
     private Hyperlink delete;
-
     @FXML
     private TableColumn<BookDTO, String> bookISBN;
     @FXML
     private TableColumn<BookDTO, String> bookTitle;
     @FXML
-    private TableColumn<BookDTO, String> bookAuthor;
+    private TableColumn<BookDTO, String> bookAuthors;
     @FXML
     private TableColumn<BookDTO, String> bookPublisher;
     @FXML
@@ -85,25 +85,30 @@ public class BookController extends ControllerWithTableView<BookDTO> {
     @FXML
     private TableColumn<BookDTO, String> availability;
 
-    public BookController(ApplicationContext applicationContext, BookService bookService, UserSession session) {
+
+    public BookController(ApplicationContext applicationContext, BookService bookService, UserSession session) throws IOException {
         super(applicationContext);
         this.bookService = bookService;
         this.session = session;
+
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         super.initialize(location, resources);
         initializeStageOptions();
+
+
         this.createNewTask(50, 20);
         this.loadDataEntryButton.disableProperty().setValue(true);
 
-        this.borderpane.addEventHandler(
+
+        this.borderPane.addEventHandler(
                 LeavingBorderPaneEvent.LEAVING,
                 event -> {
                     this.applicationContext.publishEvent(
-                            new SetItemToBorderPaneEvent<>(this.tableView, this.borderpane, BorderpaneFields.CENTER));
-                    this.loadData();
+                            new SetItemToBorderPaneEvent<>(this.tableView, this.borderPane, BorderpaneFields.CENTER));
+                    this.initData();
                     this.changeFieldsVisibility(true);
                 });
 
@@ -120,9 +125,14 @@ public class BookController extends ControllerWithTableView<BookDTO> {
         if (this.session.getLoggedUser().getPermission() == Permission.NORMAL_USER) {
             this.delete.setVisible(false);
             this.availability.setVisible(false);
+        } else {
+            this.readBooksButton.setVisible(false);
         }
 
-        this.bookDetailsButton.disableProperty().bind(this.tableView.getSelectionModel().selectedItemProperty().isNull());
+
+        this.bookDetailsButton.disableProperty()
+                .bind(this.tableView.getSelectionModel().selectedItemProperty().isNull());
+
     }
 
     private void initializeStageOptions() {
@@ -140,7 +150,7 @@ public class BookController extends ControllerWithTableView<BookDTO> {
     protected void initializeColumns() {
         bookISBN.setCellValueFactory(new PropertyValueFactory<>("isbn"));
         bookTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
-        bookAuthor.setCellValueFactory(new PropertyValueFactory<>("author"));
+        bookAuthors.setCellValueFactory(new PropertyValueFactory<>("authors"));
         bookPublisher.setCellValueFactory(new PropertyValueFactory<>("publisher"));
         mainGenre.setCellValueFactory(new PropertyValueFactory<>("mainGenre"));
         edition.setCellValueFactory(new PropertyValueFactory<>("edition"));
@@ -155,7 +165,7 @@ public class BookController extends ControllerWithTableView<BookDTO> {
 
         task.setOnSucceeded(event -> {
             spinner.setVisible(false);
-            this.loadData();
+            this.initData();
             this.allBooksAndRemainingBooks();
             this.loadDataEntryButton.disableProperty().setValue(false);
         });
@@ -175,7 +185,7 @@ public class BookController extends ControllerWithTableView<BookDTO> {
     }
 
     @Override
-    protected void loadData() {
+    protected void initData() {
         data = this.session.getLoggedUser().getPermission() == Permission.NORMAL_USER ?
                 this.bookService.getAllAvailableBooks() : this.bookService.getAllBooks();
         this.tableView.getItems().clear();
@@ -198,7 +208,7 @@ public class BookController extends ControllerWithTableView<BookDTO> {
                             return true;
                         } else if (book.getTitle().toLowerCase().contains(lowerCaseFilter)) {
                             return true;
-                        } else if (book.getAuthor().toLowerCase().contains(lowerCaseFilter)) {
+                        } else if (book.getAuthors().toLowerCase().contains(lowerCaseFilter)) {
                             return true;
                         } else if (book.getPublisher().toLowerCase().contains(lowerCaseFilter)) {
                             return true;
@@ -224,7 +234,7 @@ public class BookController extends ControllerWithTableView<BookDTO> {
 
     @FXML
     private void refreshList(ActionEvent actionEvent) {
-        this.loadData();
+        this.initData();
         this.allBooksAndRemainingBooks();
     }
 
@@ -238,7 +248,7 @@ public class BookController extends ControllerWithTableView<BookDTO> {
 
 
         this.bookService.deleteBookByIsbn(bookDTO.getIsbn());
-        this.loadData();
+        this.initData();
         this.allBooksAndRemainingBooks();
         Alerts.showSuccessAlert("Book deleted", "Book has been deleted");
     }
@@ -248,7 +258,7 @@ public class BookController extends ControllerWithTableView<BookDTO> {
         this.tableView.getSelectionModel().getSelectedItems().forEach(bookDTO -> {
             this.bookService.deleteBookByIsbn(bookDTO.getIsbn());
         });
-        this.loadData();
+        this.initData();
         this.allBooksAndRemainingBooks();
         Alerts.showSuccessAlert("Books deleted", "All selected books have been deleted");
     }
@@ -257,7 +267,7 @@ public class BookController extends ControllerWithTableView<BookDTO> {
     private void loadDataBookEntry(ActionEvent actionEvent) {
         changeFieldsVisibility(false);
         this.applicationContext.publishEvent(
-                new BorderPaneReadyEvent(this.borderpane, new ClassPathResource("fxml/bookDataEntry.fxml")));
+                new BorderPaneReadyEvent(this.borderPane, new ClassPathResource("fxml/bookDataEntry.fxml")));
     }
 
     @FXML
@@ -274,6 +284,41 @@ public class BookController extends ControllerWithTableView<BookDTO> {
 
     }
 
+    @FXML
+    private void loadReadBookAvailableToReview(ActionEvent actionEvent) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(new ClassPathResource("fxml/readBookTable.fxml").getURL());
+        fxmlLoader.setControllerFactory(this.applicationContext::getBean);
+
+        this.readBooksButton.setVisible(false);
+        this.allBooksButton.setVisible(true);
+
+        this.borderPane.setCenter(fxmlLoader.load());
+
+        this.delete.setVisible(false);
+        this.arrow.setVisible(false);
+        this.checkAllCheckbox.setVisible(false);
+        this.remainingBooksAmount.setVisible(false);
+        this.remainingBooksLabel.setVisible(false);
+        this.booksAmount.setVisible(false);
+        this.booksLabel.setVisible(false);
+
+    }
+
+    @FXML
+    private void loadAllData(ActionEvent actionEvent) {
+        this.readBooksButton.setVisible(true);
+        this.allBooksButton.setVisible(false);
+        this.borderPane.setCenter(this.tableView);
+
+        this.delete.setVisible(true);
+        this.arrow.setVisible(true);
+        this.checkAllCheckbox.setVisible(true);
+        this.remainingBooksAmount.setVisible(true);
+        this.remainingBooksLabel.setVisible(true);
+        this.booksAmount.setVisible(true);
+        this.booksLabel.setVisible(true);
+    }
+
     private void changeFieldsVisibility(Boolean visible) {
         this.searchTextField.setVisible(visible);
         this.booksLabel.setVisible(visible);
@@ -287,4 +332,6 @@ public class BookController extends ControllerWithTableView<BookDTO> {
         this.delete.setVisible(visible);
         this.bookDetailsButton.setVisible(visible);
     }
+
+
 }

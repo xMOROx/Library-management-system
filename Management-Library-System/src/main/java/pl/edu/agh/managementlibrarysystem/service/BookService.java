@@ -4,14 +4,10 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
-import pl.edu.agh.managementlibrarysystem.DTO.BookDTO;
-import pl.edu.agh.managementlibrarysystem.DTO.BookDetailsDTO;
-import pl.edu.agh.managementlibrarysystem.DTO.IssuedBookDTO;
-import pl.edu.agh.managementlibrarysystem.DTO.UserDTO;
-import pl.edu.agh.managementlibrarysystem.mapper.Mapper;
-import pl.edu.agh.managementlibrarysystem.model.Book;
-import pl.edu.agh.managementlibrarysystem.model.Genre;
-import pl.edu.agh.managementlibrarysystem.model.IssuedBook;
+import pl.edu.agh.managementlibrarysystem.DTO.*;
+import pl.edu.agh.managementlibrarysystem.mapper.abstraction.Mapper;
+import pl.edu.agh.managementlibrarysystem.mapper.abstraction.OneWayMapper;
+import pl.edu.agh.managementlibrarysystem.model.*;
 import pl.edu.agh.managementlibrarysystem.repository.*;
 import pl.edu.agh.managementlibrarysystem.utils.Alerts;
 
@@ -25,11 +21,15 @@ public class BookService {
     private final BookRepository bookRepository;
     private final IssuedBooksRepository issuedBooksRepository;
     private final ReadBooksRepository readBooksRepository;
+    private final ReturnedBookRepository returnedBookRepository;
     private final AuthorRepository authorRepository;
     private final PublisherRepository publishersRepository;
     private final GenresRepository genresRepository;
     private final Mapper<Book, BookDTO> bookMapper;
     private final Mapper<IssuedBook, IssuedBookDTO> issuedBookMapper;
+    private final OneWayMapper<ReadBook, ReadBookDTO> readBookMapper;
+    private final OneWayMapper<Book, BookDetailsDTO> bookDetailsMapper;
+    private final OneWayMapper<ReturnedBook, ReadBookAvailableToVoteDTO> returnedBookReadBookAvailableToVoteDTOOneWayMapper;
 
     public boolean saveBook(BookDTO bookDTO, String authorName, String authorLastname, String publisherName,
                             String genreType) {
@@ -91,16 +91,18 @@ public class BookService {
                 .map(this.issuedBookMapper::mapToDto)
                 .toList();
     }
+
     @Transactional
-    public Double getTotalFeesByUserId(Long id){
+    public Double getTotalFeesByUserId(Long id) {
         return this.issuedBooksRepository.sumAllFeesByUserId(id);
     }
 
     public boolean updateBook(BookDTO bookDTO, String authorName, String authorLastname, String publisherName,
-                           String genreType){
+                              String genreType) {
         Optional<Book> b = bookRepository.findByIsbn(bookDTO.getIsbn());
-        return bookRepository.updateBookWithGivenParams(b.get().getId(),bookDTO,authorName,authorLastname,publisherName,genreType).isPresent();
+        return bookRepository.updateBookWithGivenParams(b.get().getId(), bookDTO, authorName, authorLastname, publisherName, genreType).isPresent();
     }
+
     public void updateFee() {
         this.issuedBooksRepository.updateFee();
     }
@@ -110,17 +112,17 @@ public class BookService {
                 .map(this.bookMapper::mapToDto)
                 .orElse(null);
     }
+
     public Optional<Book> findBookByISBN(String bookISBN) {
         return this.bookRepository.findByIsbn(bookISBN);
     }
 
-    public void deleteByISBN(String bookISBN){
+    public void deleteByISBN(String bookISBN) {
         Optional<Book> toDelete = this.bookRepository.findByIsbn(bookISBN);
-        try{
+        try {
             toDelete.ifPresent(book -> this.bookRepository.deleteById(book.getId()));
-        }
-        catch(DataIntegrityViolationException e){
-            Alerts.showErrorAlert("Unable to delete a book.","Book is used by other users");
+        } catch (DataIntegrityViolationException e) {
+            Alerts.showErrorAlert("Unable to delete a book.", "Book is used by other users");
         }
 
 
@@ -178,21 +180,21 @@ public class BookService {
 
     public BookDetailsDTO getBookDetails(String bookISBN) {
         return this.bookRepository.findByIsbn(bookISBN)
-                .map(book -> BookDetailsDTO.builder()
-                        .isbn(book.getIsbn())
-                        .title(book.getTitle())
-                        .authors(book.getAuthors().stream().map(author -> author.getFirstname() + " " + author.getLastname()).toList().toString())
-                        .publisher(book.getPublisher()!=null ? book.getPublisher().getName() : null)
-                        .genres(book.getGenres().stream().map(Genre::getGenre).toList().toString())
-                        .edition(book.getEdition())
-                        .quantity(book.getQuantity())
-                        .remainingBooks(book.getRemainingBooks())
-                        .availability(book.getAvailability())
-                        .description(book.getDescription())
-                        .cover(book.getCover())
-                        .image(book.getImage())
-                        .tableOfContent(book.getTableOfContent())
-                        .build())
+                .map(this.bookDetailsMapper::map)
                 .orElse(null);
+    }
+
+    public List<ReadBookDTO> getAllReadBookForUser(User loggedUser) {
+        return this.readBooksRepository.findAllByUserId(loggedUser.getId())
+                .stream()
+                .map(readBookMapper::map)
+                .toList();
+    }
+
+    public List<ReadBookAvailableToVoteDTO> getAllReadBookAvailableToVoteByUserId(User loggedUser) {
+        return this.returnedBookRepository.findAllReadBookAvailableToVoteByUserId(loggedUser.getId())
+                .stream()
+                .map(this.returnedBookReadBookAvailableToVoteDTOOneWayMapper::map)
+                .toList();
     }
 }

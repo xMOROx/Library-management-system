@@ -1,13 +1,17 @@
 package pl.edu.agh.managementlibrarysystem.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import pl.edu.agh.managementlibrarysystem.model.keys.readBooksKey;
 
 @Getter
 @Setter
 @Entity(name = "read_books")
+@NoArgsConstructor
+@AllArgsConstructor
 public class ReadBook {
     @EmbeddedId
     private readBooksKey id;
@@ -24,15 +28,4 @@ public class ReadBook {
     @Column(name = "rating", columnDefinition = "int default 1")
 //    Min = 1, Max = 5
     private int rating;
-
-    public ReadBook() {
-    }
-
-    public ReadBook(Book books, User user, String review, int rating) {
-        this.books = books;
-        this.user = user;
-        this.review = review;
-        this.rating = rating;
-    }
-
 }
