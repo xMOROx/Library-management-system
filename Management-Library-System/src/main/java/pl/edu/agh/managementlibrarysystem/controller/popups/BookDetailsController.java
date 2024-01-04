@@ -1,4 +1,4 @@
-package pl.edu.agh.managementlibrarysystem.controller;
+package pl.edu.agh.managementlibrarysystem.controller.popups;
 
 
 import javafx.fxml.FXML;
@@ -7,7 +7,6 @@ import javafx.scene.image.ImageView;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import pl.edu.agh.managementlibrarysystem.DTO.BookDetailsDTO;
-import pl.edu.agh.managementlibrarysystem.controller.abstraction.BookPopUpWindowController;
 import pl.edu.agh.managementlibrarysystem.service.BookService;
 import pl.edu.agh.managementlibrarysystem.utils.ImageLoader;
 

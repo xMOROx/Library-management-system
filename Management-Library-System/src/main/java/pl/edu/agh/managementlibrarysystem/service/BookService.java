@@ -8,7 +8,10 @@ import pl.edu.agh.managementlibrarysystem.DTO.*;
 import pl.edu.agh.managementlibrarysystem.mapper.abstraction.Mapper;
 import pl.edu.agh.managementlibrarysystem.mapper.abstraction.OneWayMapper;
 import pl.edu.agh.managementlibrarysystem.model.*;
-import pl.edu.agh.managementlibrarysystem.repository.*;
+import pl.edu.agh.managementlibrarysystem.repository.BookRepository;
+import pl.edu.agh.managementlibrarysystem.repository.IssuedBooksRepository;
+import pl.edu.agh.managementlibrarysystem.repository.ReadBookRepository;
+import pl.edu.agh.managementlibrarysystem.repository.ReturnedBookRepository;
 import pl.edu.agh.managementlibrarysystem.utils.Alerts;
 
 import java.util.List;
@@ -20,11 +23,8 @@ import java.util.Optional;
 public class BookService {
     private final BookRepository bookRepository;
     private final IssuedBooksRepository issuedBooksRepository;
-    private final ReadBooksRepository readBooksRepository;
+    private final ReadBookRepository readBooksRepository;
     private final ReturnedBookRepository returnedBookRepository;
-    private final AuthorRepository authorRepository;
-    private final PublisherRepository publishersRepository;
-    private final GenresRepository genresRepository;
     private final Mapper<Book, BookDTO> bookMapper;
     private final Mapper<IssuedBook, IssuedBookDTO> issuedBookMapper;
     private final OneWayMapper<ReadBook, ReadBookDTO> readBookMapper;
@@ -196,5 +196,10 @@ public class BookService {
                 .stream()
                 .map(this.returnedBookReadBookAvailableToVoteDTOOneWayMapper::map)
                 .toList();
+    }
+
+
+    public boolean reviewBook(long bookId, long userId, String review, double rating) {
+        return this.readBooksRepository.reviewBook(bookId, userId, review, rating);
     }
 }

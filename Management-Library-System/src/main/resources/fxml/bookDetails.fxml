@@ -8,7 +8,7 @@
 <?import javafx.scene.text.Font?>
 <BorderPane prefHeight="651.0" prefWidth="1000.0" style="-fx-background-color: white;"
             stylesheets="@../css/issueBook.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="pl.edu.agh.managementlibrarysystem.controller.BookDetailsController">
+            fx:controller="pl.edu.agh.managementlibrarysystem.controller.popups.BookDetailsController">
     <top>
         <VBox prefHeight="123.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
             <BorderPane prefHeight="67.0" prefWidth="1000.0" style="-fx-background-color: white;">

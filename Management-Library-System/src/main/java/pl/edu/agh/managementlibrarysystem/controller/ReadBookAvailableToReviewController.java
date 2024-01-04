@@ -12,6 +12,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
 import pl.edu.agh.managementlibrarysystem.DTO.ReadBookAvailableToVoteDTO;
+import pl.edu.agh.managementlibrarysystem.controller.popups.ReviewBookController;
 import pl.edu.agh.managementlibrarysystem.event.OpenNewBookWindowEvent;
 import pl.edu.agh.managementlibrarysystem.service.BookService;
 import pl.edu.agh.managementlibrarysystem.session.UserSession;

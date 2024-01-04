@@ -12,5 +12,7 @@ public class ReadBookAvailableToVoteDTO {
     String publisher;
     String genres;
     String returnedDate;
+    long bookId;
+    long userId;
     int edition;
 }

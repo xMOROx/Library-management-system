@@ -25,7 +25,7 @@ public class ReadBook {
     private User user;
     @Column(name = "review", length = 1000, columnDefinition = "TEXT")
     private String review;
-    @Column(name = "rating", columnDefinition = "double(1,2) default 0")
+    @Column(name = "rating", columnDefinition = "double(3,2) default 0")
 //    Min = 1, Max = 5
     private double rating;
 }

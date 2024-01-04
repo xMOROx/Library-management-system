@@ -9,7 +9,7 @@ import pl.edu.agh.managementlibrarysystem.mapper.abstraction.Mapper;
 import pl.edu.agh.managementlibrarysystem.model.User;
 import pl.edu.agh.managementlibrarysystem.model.util.Permission;
 import pl.edu.agh.managementlibrarysystem.repository.IssuedBooksRepository;
-import pl.edu.agh.managementlibrarysystem.repository.ReadBooksRepository;
+import pl.edu.agh.managementlibrarysystem.repository.ReadBookRepository;
 import pl.edu.agh.managementlibrarysystem.repository.UserRepository;
 import pl.edu.agh.managementlibrarysystem.session.UserSession;
 import pl.edu.agh.managementlibrarysystem.utils.Alerts;
@@ -23,7 +23,7 @@ import java.util.Optional;
 public class UserService {
     private final UserRepository repository;
     private final IssuedBooksRepository issuedBooksRepository;
-    private final ReadBooksRepository readBooksRepository;
+    private final ReadBookRepository readBooksRepository;
     private final Mapper<User, UserDTO> userMapper;
     private final PasswordEncoder passwordEncoder;
     private final UserSession session;

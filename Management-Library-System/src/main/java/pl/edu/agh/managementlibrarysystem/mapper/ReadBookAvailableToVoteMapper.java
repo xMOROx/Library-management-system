@@ -1,7 +1,6 @@
 package pl.edu.agh.managementlibrarysystem.mapper;
 
 import org.springframework.stereotype.Component;
-import pl.edu.agh.managementlibrarysystem.DTO.BookDetailsDTO;
 import pl.edu.agh.managementlibrarysystem.DTO.ReadBookAvailableToVoteDTO;
 import pl.edu.agh.managementlibrarysystem.mapper.abstraction.OneWayMapper;
 import pl.edu.agh.managementlibrarysystem.model.Book;
@@ -9,7 +8,7 @@ import pl.edu.agh.managementlibrarysystem.model.ReturnedBook;
 
 @Component
 public class ReadBookAvailableToVoteMapper implements OneWayMapper<ReturnedBook, ReadBookAvailableToVoteDTO> {
-@Override
+    @Override
     public ReadBookAvailableToVoteDTO map(ReturnedBook returnedBook) {
         Book book = returnedBook.getBook();
         String authorsAsString = Book.getAuthorsAsString(book);
@@ -23,6 +22,8 @@ public class ReadBookAvailableToVoteMapper implements OneWayMapper<ReturnedBook,
                 .genres(genresAsString != null ? genresAsString : "---")
                 .returnedDate(String.valueOf(returnedBook.getReturnedDate()))
                 .edition(book.getEdition())
+                .bookId(book.getId())
+                .userId(returnedBook.getUser().getId())
                 .build();
     }
 }

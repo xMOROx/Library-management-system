@@ -1,17 +1,19 @@
-package pl.edu.agh.managementlibrarysystem.controller;
+package pl.edu.agh.managementlibrarysystem.controller.popups;
 
 
 import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.TextArea;
+import javafx.stage.Stage;
 import org.controlsfx.control.Rating;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import pl.edu.agh.managementlibrarysystem.DTO.ReadBookAvailableToVoteDTO;
-import pl.edu.agh.managementlibrarysystem.controller.abstraction.BookPopUpWindowController;
 import pl.edu.agh.managementlibrarysystem.service.BookService;
+import pl.edu.agh.managementlibrarysystem.utils.Alerts;
 import pl.edu.agh.managementlibrarysystem.utils.ImageLoader;
 
 import java.net.URL;
@@ -66,6 +68,11 @@ public class ReviewBookController extends BookPopUpWindowController<ReadBookAvai
 
     @FXML
     private void submit(ActionEvent actionEvent) {
-
+        if (!this.bookService.reviewBook(this.book.getBookId(), this.book.getUserId(), this.reviewTextArea.getText(), this.rating.getRating())) {
+            Alerts.showErrorAlert("Error", "Error while reviewing book");
+            return;
+        }
+        Alerts.showSuccessAlert("Success", "Book reviewed successfully");
+        ((Stage) ((Node) actionEvent.getSource()).getScene().getWindow()).close();
     }
 }

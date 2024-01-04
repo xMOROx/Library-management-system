@@ -1,4 +1,4 @@
-package pl.edu.agh.managementlibrarysystem.controller.abstraction;
+package pl.edu.agh.managementlibrarysystem.controller.popups;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -11,6 +11,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
+import pl.edu.agh.managementlibrarysystem.controller.abstraction.ResizeableBaseController;
 import pl.edu.agh.managementlibrarysystem.service.BookService;
 import pl.edu.agh.managementlibrarysystem.utils.ImageLoader;
 
