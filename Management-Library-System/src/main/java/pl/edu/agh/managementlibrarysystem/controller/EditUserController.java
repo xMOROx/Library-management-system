@@ -23,6 +23,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import pl.edu.agh.managementlibrarysystem.DTO.UserDTO;
 import pl.edu.agh.managementlibrarysystem.controller.abstraction.BaseController;
+import pl.edu.agh.managementlibrarysystem.controller.abstraction.ResizeableBaseController;
 import pl.edu.agh.managementlibrarysystem.event.fxml.LeavingBorderPaneEvent;
 import pl.edu.agh.managementlibrarysystem.model.User;
 import pl.edu.agh.managementlibrarysystem.model.util.Permission;
@@ -39,7 +40,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 @Controller
 
-public class EditUserController extends BaseController implements Initializable {
+public class EditUserController extends ResizeableBaseController implements Initializable {
     private final UserService userService;
     private final Pattern patternEmail;
     private final ObservableList<String> data = FXCollections.observableArrayList();
@@ -233,12 +234,6 @@ public class EditUserController extends BaseController implements Initializable 
     private void updateUser(Permission permission){
         userService.updateUser(this.currUserDTO.getId(),this.name.getText(),this.surname.getText(),this.email.getText(),passwordEncoder.encode(this.repeatPassword.getText()),permission);
         Alerts.showInformationAlert("Update User attempt","user has been updated");
-    }
-    @FXML
-    private void fullscreen(MouseEvent mouseEvent) {
-    }
-    @FXML
-    private void unfullscreen(MouseEvent mouseEvent) {
     }
 
     @FXML

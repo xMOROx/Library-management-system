@@ -68,7 +68,7 @@
                     <Font size="16.0" />
                 </font>
             </MFXButton>
-            <MFXButton fx:id="addUser" alignment="CENTER" layoutX="10.0" layoutY="238.0" onAction="#addUserPanel" prefHeight="40.0" prefWidth="150.0" text="AddUser" textAlignment="JUSTIFY" textFill="WHITE">
+            <MFXButton fx:id="addUser" alignment="CENTER" layoutX="10.0" layoutY="238.0" onAction="#addUserPanel" prefHeight="40.0" prefWidth="150.0" text="Add User" textAlignment="JUSTIFY" textFill="WHITE">
                 <font>
                     <Font size="16.0" />
                 </font>
@@ -76,7 +76,7 @@
                     <Insets left="1.0" right="1.0" />
                 </VBox.margin>
             </MFXButton>
-            <MFXButton fx:id="editUser" alignment="CENTER" onAction="#editUserPanel" prefHeight="40.0" prefWidth="150.0" text="EditUser" textAlignment="JUSTIFY" textFill="WHITE">
+            <MFXButton fx:id="editUser" alignment="CENTER" onAction="#editUserPanel" prefHeight="40.0" prefWidth="150.0" text="Edit User" textAlignment="JUSTIFY" textFill="WHITE">
                 <font>
                     <Font size="16.0" />
                 </font>
