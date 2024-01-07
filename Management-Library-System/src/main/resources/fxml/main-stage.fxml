@@ -81,6 +81,11 @@
                     <Font size="16.0" />
                 </font>
             </MFXButton>
+            <MFXButton fx:id="statistics" alignment="CENTER" onAction="#loadStatisticsPanel" prefHeight="40.0" prefWidth="150.0" text="Statistics" textAlignment="JUSTIFY" textFill="WHITE">
+                <font>
+                    <Font size="16.0" />
+                </font>
+            </MFXButton>
             <MFXButton fx:id="settings" alignment="CENTER" layoutX="10.0" layoutY="238.0" onAction="#loadSettingsPanel" prefHeight="40.0" prefWidth="150.0" text="Settings" textAlignment="JUSTIFY" textFill="WHITE">
                 <font>
                     <Font size="16.0" />

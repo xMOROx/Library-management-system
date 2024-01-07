@@ -36,8 +36,9 @@ public class MainStageController extends BaseController implements Initializable
     public BorderPane pane;
     public UserSession session;
     @FXML
+    public MFXButton statistics;
+    @FXML
     private MFXButton editUser;
-
     @FXML
     private BorderPane borderpane;
     @FXML
@@ -152,7 +153,10 @@ public class MainStageController extends BaseController implements Initializable
     private void loadSendAnnouncementsPanel(ActionEvent actionEvent) {
         applicationContext.publishEvent(new BorderPaneReadyEvent(pane, new ClassPathResource("fxml/notifications.fxml")));
     }
-
+    @FXML
+    private void loadStatisticsPanel(ActionEvent actionEvent) {
+        applicationContext.publishEvent(new BorderPaneReadyEvent(pane, new ClassPathResource("fxml/statisticsUser.fxml")));
+    }
     @FXML
     private void loadSettingsPanel(ActionEvent actionEvent) {
 

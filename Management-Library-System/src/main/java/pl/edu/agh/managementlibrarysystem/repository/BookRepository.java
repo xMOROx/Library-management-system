@@ -20,7 +20,7 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     String SUM_OF_ALL_REMAINING_BOOKS = "SELECT SUM(b.remainingBooks) FROM books b WHERE b.remainingBooks > 0";
     String SUM_OF_ALL_AVAILABLE_REMAINING_BOOKS = "SELECT SUM(b.remainingBooks) FROM books b WHERE b.availability = 'available' AND b.remainingBooks > 0";
     String CHECK_IF_BOOK_IS_AVAILABLE = "SELECT b.availability FROM books b WHERE b.isbn = ?1";
-
+    String NUMBER_OF_ISSUES = "SELECT b.title, COUNT(*) as number FROM books b INNER JOIN issued_books ib ON b.id = ib.book_id GROUP BY b.id ORDER BY number DESC LIMIT ?1";
     @Query(FIND_BY_ISBN)
     Optional<Book> findByIsbn(String isbn);
 
@@ -41,6 +41,9 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 
     @Query(CHECK_IF_BOOK_IS_AVAILABLE)
     String checkIfBookIsAvailable(String isbn);
+
+    @Query(value=NUMBER_OF_ISSUES,nativeQuery = true)
+    List<Object[]> getNumberOfIssues(Integer top);
     void deleteBookByIsbn(String isbn);
 
     Optional<Book> saveNewBookWithGivenParams(Book book, String authorName, String authorLastname, String publisherName, String genreType);
