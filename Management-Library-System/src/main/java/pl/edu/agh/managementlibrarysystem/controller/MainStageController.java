@@ -157,7 +157,7 @@ public class MainStageController extends BaseController implements Initializable
 
     @FXML
     private void loadReturnBooksPanel(ActionEvent actionEvent) {
-        applicationContext.publishEvent(new BorderPaneReadyEvent(pane, new ClassPathResource("fxml/returnBook.fxml")));
+        applicationContext.publishEvent(new BorderPaneReadyEvent(pane, new ClassPathResource("fxml/readBook.fxml")));
     }
 
     @FXML

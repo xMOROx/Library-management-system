@@ -16,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
-import pl.edu.agh.managementlibrarysystem.DTO.ReadBookDTO;
+import pl.edu.agh.managementlibrarysystem.DTO.ReviewBookDTO;
 import pl.edu.agh.managementlibrarysystem.controller.abstraction.ControllerWithTableView;
 import pl.edu.agh.managementlibrarysystem.event.BorderPaneReadyEvent;
 import pl.edu.agh.managementlibrarysystem.model.User;
@@ -29,7 +29,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 @Controller
-public class ProfileController extends ControllerWithTableView<ReadBookDTO> implements Initializable {
+public class ProfileController extends ControllerWithTableView<ReviewBookDTO> implements Initializable {
     private final UserSession userSession;
     private final NotificationService notificationService;
     private final BookService bookService;
@@ -38,12 +38,12 @@ public class ProfileController extends ControllerWithTableView<ReadBookDTO> impl
     public MFXButton editButton;
     @FXML
     public BorderPane borderpane;
-    public TableColumn<ReadBookDTO, String> bookISBN;
-    public TableColumn<ReadBookDTO, String> bookTitle;
-    public TableColumn<ReadBookDTO, String> bookAuthors;
-    public TableColumn<ReadBookDTO, String> bookGenres;
-    public TableColumn<ReadBookDTO, Integer> bookEdition;
-    public TableColumn<ReadBookDTO, Integer> bookRating;
+    public TableColumn<ReviewBookDTO, String> bookISBN;
+    public TableColumn<ReviewBookDTO, String> bookTitle;
+    public TableColumn<ReviewBookDTO, String> bookAuthors;
+    public TableColumn<ReviewBookDTO, String> bookGenres;
+    public TableColumn<ReviewBookDTO, Integer> bookEdition;
+    public TableColumn<ReviewBookDTO, Integer> bookRating;
     @FXML
     private Label totalFees;
     @FXML

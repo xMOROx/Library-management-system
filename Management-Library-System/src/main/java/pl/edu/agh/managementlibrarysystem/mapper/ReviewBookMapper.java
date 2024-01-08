@@ -1,19 +1,19 @@
 package pl.edu.agh.managementlibrarysystem.mapper;
 
 import org.springframework.stereotype.Component;
-import pl.edu.agh.managementlibrarysystem.DTO.ReadBookDTO;
+import pl.edu.agh.managementlibrarysystem.DTO.ReviewBookDTO;
 import pl.edu.agh.managementlibrarysystem.mapper.abstraction.OneWayMapper;
 import pl.edu.agh.managementlibrarysystem.model.Book;
-import pl.edu.agh.managementlibrarysystem.model.ReadBook;
+import pl.edu.agh.managementlibrarysystem.model.ReviewBook;
 @Component
-public class ReadBookMapper implements OneWayMapper<ReadBook, ReadBookDTO> {
+public class ReviewBookMapper implements OneWayMapper<ReviewBook, ReviewBookDTO> {
     @Override
-    public ReadBookDTO map(ReadBook object) {
+    public ReviewBookDTO map(ReviewBook object) {
         Book book = object.getBook();
         String authorsAsString = Book.getAuthorsAsString(book);
         String genresAsString = Book.getGenresAsString(book);
 
-        return ReadBookDTO
+        return ReviewBookDTO
                 .builder()
                 .review(object.getReview())
                 .title(book.getTitle())

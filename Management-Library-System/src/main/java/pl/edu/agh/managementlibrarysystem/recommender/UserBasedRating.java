@@ -3,9 +3,9 @@ package pl.edu.agh.managementlibrarysystem.recommender;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-import pl.edu.agh.managementlibrarysystem.model.ReadBook;
+import pl.edu.agh.managementlibrarysystem.model.ReviewBook;
 import pl.edu.agh.managementlibrarysystem.model.User;
-import pl.edu.agh.managementlibrarysystem.repository.ReadBookRepository;
+import pl.edu.agh.managementlibrarysystem.repository.ReviewBookRepository;
 import pl.edu.agh.managementlibrarysystem.repository.UserRepository;
 
 import java.util.Collections;
@@ -17,7 +17,7 @@ import java.util.List;
 public class UserBasedRating extends SimilarityRatingCal {
 
 
-    protected UserBasedRating(ReadBookRepository readBookRepository,
+    protected UserBasedRating(ReviewBookRepository readBookRepository,
                               UserRepository userRepository,
                               @Value("50") int similarityNum,
                               @Value("1") int minimalRater) {
@@ -29,26 +29,26 @@ public class UserBasedRating extends SimilarityRatingCal {
     private double getUserAvgRating(User user) {
         return readBookRepository.findAllByUserId(user.getId())
                 .stream()
-                .mapToDouble(ReadBook::getRating)
+                .mapToDouble(ReviewBook::getRating)
                 .average()
                 .orElse(0.0);
     }
 
     private double calUserSim(User user, User other) {
-        List<ReadBook> userBooks = readBookRepository.findAllByUserId(user.getId());
+        List<ReviewBook> userBooks = readBookRepository.findAllByUserId(user.getId());
 
         double userAvgRating = userBooks
                 .stream()
-                .mapToDouble(ReadBook::getRating)
+                .mapToDouble(ReviewBook::getRating)
                 .average()
                 .orElse(0.0);
 
 
-        List<ReadBook> otherBooks = readBookRepository.findAllByUserId(other.getId());
+        List<ReviewBook> otherBooks = readBookRepository.findAllByUserId(other.getId());
 
         double otherAvgRating = otherBooks
                 .stream()
-                .mapToDouble(ReadBook::getRating)
+                .mapToDouble(ReviewBook::getRating)
                 .average()
                 .orElse(0.0);
 
@@ -59,8 +59,8 @@ public class UserBasedRating extends SimilarityRatingCal {
         int minNumCommon = 0;
         double userScore, otherScore;
 
-        for (ReadBook book : userBooks) {
-            for (ReadBook otherBook : otherBooks) {
+        for (ReviewBook book : userBooks) {
+            for (ReviewBook otherBook : otherBooks) {
                 if (book.getBook().getId().equals(otherBook.getBook().getId())) {
                     minNumCommon++;
                     userScore = book.getRating() - userAvgRating;
@@ -104,7 +104,7 @@ public class UserBasedRating extends SimilarityRatingCal {
         int numbNeighbors = Math.min(similarityScore.size(), similarityNum);
         List<RatingLookUp> similarityRatingList = new LinkedList<>();
 
-        List<ReadBook> bookList = readBookRepository.findAll();
+        List<ReviewBook> bookList = readBookRepository.findAll();
 
 
         RatingLookUp userRating;
@@ -114,7 +114,7 @@ public class UserBasedRating extends SimilarityRatingCal {
         double norm, total, otherAvg, rating, cosineScore;
         double userAvgRating = getUserAvgRating(user);
 
-        for (ReadBook book : bookList) {
+        for (ReviewBook book : bookList) {
             bookId = book.getBook().getId();
             counter = 0;
             norm = 0.0;

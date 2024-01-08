@@ -3,11 +3,10 @@ package pl.edu.agh.managementlibrarysystem.recommender;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-import pl.edu.agh.managementlibrarysystem.model.ReadBook;
+import pl.edu.agh.managementlibrarysystem.model.ReviewBook;
 import pl.edu.agh.managementlibrarysystem.model.User;
-import pl.edu.agh.managementlibrarysystem.repository.ReadBookRepository;
+import pl.edu.agh.managementlibrarysystem.repository.ReviewBookRepository;
 import pl.edu.agh.managementlibrarysystem.repository.UserRepository;
-import pl.edu.agh.managementlibrarysystem.session.UserSession;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -18,7 +17,7 @@ import java.util.List;
 @Scope("singleton")
 public class ItemBasedRating extends SimilarityRatingCal {
 
-    protected ItemBasedRating(ReadBookRepository readBookRepository,
+    protected ItemBasedRating(ReviewBookRepository readBookRepository,
                               UserRepository userRepository,
                               @Value("5") int similarityNum,
                               @Value("1") int minimalRater) {
@@ -42,12 +41,12 @@ public class ItemBasedRating extends SimilarityRatingCal {
                 minNumCommonUser++;
                 userAvg = readBookRepository.findAllByUserId(id)
                         .stream()
-                        .mapToDouble(ReadBook::getRating)
+                        .mapToDouble(ReviewBook::getRating)
                         .average()
                         .orElse(0.0);
 
-                ReadBook readBook1 = readBookRepository.findByUserIdAndBookId(id, id1);
-                ReadBook readBook2 = readBookRepository.findByUserIdAndBookId(id, id2);
+                ReviewBook readBook1 = readBookRepository.findByUserIdAndBookId(id, id1);
+                ReviewBook readBook2 = readBookRepository.findByUserIdAndBookId(id, id2);
                 m1Score = readBook1.getRating() - userAvg;
                 m2Score = readBook2.getRating() - userAvg;
                 similarityScore += m1Score * m2Score;
@@ -64,15 +63,15 @@ public class ItemBasedRating extends SimilarityRatingCal {
     private HashMap<Long, List<RatingLookUp>> getSimilarityScores(User user) {
         HashMap<Long, List<RatingLookUp>> allCosineScores = new HashMap<>();
         // book i
-        List<ReadBook> allBooks = readBookRepository.findAll();
+        List<ReviewBook> allBooks = readBookRepository.findAll();
         // book j
-        List<ReadBook> allRatedBooks = readBookRepository.findAllRatedBooksByUserId(user.getId());
+        List<ReviewBook> allRatedBooks = readBookRepository.findAllRatedBooksByUserId(user.getId());
 
-        for (ReadBook other : allBooks) {
+        for (ReviewBook other : allBooks) {
             Long otherId = other.getBook().getId();
             List<RatingLookUp> newList = new LinkedList<>();
 
-            for (ReadBook ratedBook : allRatedBooks) {
+            for (ReviewBook ratedBook : allRatedBooks) {
                 Long ratedBookId = ratedBook.getBook().getId();
                 if (!otherId.equals(ratedBookId)) {
                     double cosineScore = calItemSim(ratedBookId, otherId);
