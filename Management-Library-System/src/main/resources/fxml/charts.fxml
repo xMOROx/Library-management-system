@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ProgressBar?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
@@ -15,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="651.0" prefWidth="1000.0" style="-fx-background-color: white;" stylesheets="@../css/issueBook.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.agh.managementlibrarysystem.controller.StatisticsUserController">
+<BorderPane prefHeight="651.0" prefWidth="1000.0" style="-fx-background-color: white;" stylesheets="@../css/issueBook.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.agh.managementlibrarysystem.controller.popups.ChartsController">
     <top>
         <VBox prefHeight="123.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
             <BorderPane prefHeight="67.0" prefWidth="1000.0" style="-fx-background-color: white;">
@@ -59,42 +58,40 @@
                             <Insets left="3.0" right="5.0" />
                         </HBox.margin>
                     </ProgressBar>
-               <MFXButton onMouseClicked="#openCharts" prefHeight="26.0" prefWidth="167.0" text="Charts" />
                     <Region prefHeight="81.0" prefWidth="182.0" HBox.hgrow="ALWAYS" />
                 </HBox>
             </VBox>
             <HBox prefHeight="35.0" prefWidth="1000.0" style="-fx-background-color: #efefefef;" />
         </VBox>
     </top>
-   <center>
-      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
-         <children>
-            <HBox alignment="CENTER" prefHeight="38.0" prefWidth="957.0" spacing="5.0" style="-fx-border-color: #C5CAE9; -fx-background-color: EEEEEE;">
-               <children>
-                  <Label text="All read books">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Label>
-               </children>
-            </HBox>
-            <TableView prefHeight="200.0" prefWidth="200.0">
-              <columns>
-                <TableColumn prefWidth="75.0" text="C1" />
-                <TableColumn prefWidth="75.0" text="C2" />
-              </columns>
-            </TableView>
-            <HBox alignment="CENTER" prefHeight="38.0" prefWidth="957.0" spacing="5.0" style="-fx-border-color: #C5CAE9; -fx-background-color: EEEEEE;">
-               <children>
-                  <Label text="Other statistics">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Label>
-               </children>
-            </HBox>
-            <ListView prefHeight="200.0" prefWidth="200.0" />
-         </children></VBox>
-   </center>
-
+<center>
+    <HBox prefHeight="500.0" prefWidth="200.0">
+        <children>
+            <BarChart fx:id="popularBooks" animated="false" minHeight="200.0" minWidth="100.0" prefHeight="1000.0" prefWidth="1000.0" title="Most popular books">
+                <xAxis>
+                    <CategoryAxis maxHeight="50.0" side="BOTTOM" />
+                </xAxis>
+                <yAxis>
+                    <NumberAxis label="Number of issues" maxHeight="50.0" minorTickVisible="false" side="LEFT" tickUnit="1.0" />
+                </yAxis>
+            </BarChart>
+            <BarChart fx:id="popularAuthors" animated="false" minHeight="200.0" minWidth="100.0" prefHeight="1000.0" prefWidth="1000.0" title="Most popular authors">
+                <xAxis>
+                    <CategoryAxis maxHeight="50.0" side="BOTTOM" />
+                </xAxis>
+                <yAxis>
+                    <NumberAxis label="Number of issues" maxHeight="50.0" minorTickVisible="false" side="LEFT" tickUnit="1.0" />
+                </yAxis>
+            </BarChart>
+            <BarChart fx:id="popularGenres" animated="false" minHeight="200.0" minWidth="100.0" prefHeight="1000.0" prefWidth="1000.0" title="Most popular genres">
+                <xAxis>
+                    <CategoryAxis maxHeight="50.0" side="BOTTOM" />
+                </xAxis>
+                <yAxis>
+                    <NumberAxis label="Number of issues" maxHeight="50.0" minorTickCount="1" minorTickVisible="false" side="LEFT" tickUnit="1.0" />
+                </yAxis>
+            </BarChart>
+        </children>
+    </HBox>
+</center>
 </BorderPane>

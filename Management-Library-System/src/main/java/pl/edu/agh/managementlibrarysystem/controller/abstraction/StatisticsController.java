@@ -1,18 +1,19 @@
 package pl.edu.agh.managementlibrarysystem.controller.abstraction;
 
-import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.chart.BarChart;
-import javafx.scene.chart.XYChart;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 import org.springframework.context.ApplicationContext;
-import pl.edu.agh.managementlibrarysystem.model.User;
-import pl.edu.agh.managementlibrarysystem.model.util.Permission;
+import org.springframework.core.io.ClassPathResource;
+import pl.edu.agh.managementlibrarysystem.event.OpenChartsWindowEvent;
+import pl.edu.agh.managementlibrarysystem.event.OpenWindowEvent;
 import pl.edu.agh.managementlibrarysystem.service.StatisticsService;
 import pl.edu.agh.managementlibrarysystem.session.UserSession;
-import pl.edu.agh.managementlibrarysystem.utils.TaskFactory;
 
 import java.net.URL;
 import java.util.List;
@@ -23,18 +24,10 @@ public abstract class StatisticsController extends ResizeableBaseController impl
 
     protected final UserSession session;
     @FXML
-    public BarChart<String,Number> popularBooks;
-    @FXML
-    public BarChart<String,Number> popularAuthors;
-    @FXML
-    public BarChart<String,Number> popularGenres;
-    @FXML
     public ImageView spinner;
     @FXML
     public ProgressBar progressBar;
-    private List<Object[]> booksData;
-    private List<Object[]> authorsData;
-    private List<Object[]> genresData;
+
     public StatisticsController(ApplicationContext applicationContext,
                                     StatisticsService statisticsService,
                                     UserSession session) {
@@ -49,35 +42,13 @@ public abstract class StatisticsController extends ResizeableBaseController impl
     public void initialize(URL location, ResourceBundle resources) {
         tooltipInitializer();
         initializeStageOptions();
-        this.createNewTask(50, 20);
-    }
-    protected void createNewTask(int maxIterations, int sleepTime) {
-        Task<Integer> task = TaskFactory.countingTaskForProgressBar(maxIterations, sleepTime, progressBar);
 
-        task.setOnSucceeded(event -> {
-            spinner.setVisible(false);
-            this.initData();
-        });
-
-        Thread thread = new Thread(task);
-        thread.setDaemon(true);
-        thread.start();
     }
-    private void initData(){
-        booksData = statisticsService.getPopularBooks(5);
-        authorsData = statisticsService.getPopularAuthors(5);
-        genresData = statisticsService.getPopularGenres(5);
-        fillBarChart(popularBooks,booksData);
-        fillBarChart(popularAuthors,authorsData);
-        fillBarChart(popularGenres,genresData);
+    @FXML
+    public void openCharts(MouseEvent mouseEvent){
+        applicationContext.publishEvent(new OpenChartsWindowEvent(new ClassPathResource("fxml/charts.fxml")));
     }
     abstract protected void initializeStageOptions();
 
-    private void fillBarChart(BarChart<String,Number> chart,List<Object[]> data){
-        XYChart.Series series = new XYChart.Series();
-        for(Object[] row:data){
-            series.getData().add(new XYChart.Data<String,Number>((String) row[0],(Number) row[1]));
-        }
-        chart.getData().add(series);
-    }
+
 }
