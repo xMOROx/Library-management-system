@@ -23,7 +23,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 @Controller
-public class ReturnBookController extends ResizeableBaseController implements Initializable {
+public class ReadBookController extends ResizeableBaseController implements Initializable {
 
     private final BookService bookService;
     private final ObservableList<String> data = FXCollections.observableArrayList();
@@ -42,7 +42,7 @@ public class ReturnBookController extends ResizeableBaseController implements In
     private Long userId, bookId;
 
 
-    public ReturnBookController(ApplicationContext applicationContext, BookService bookService) {
+    public ReadBookController(ApplicationContext applicationContext, BookService bookService) {
         super(applicationContext);
         this.bookService = bookService;
     }

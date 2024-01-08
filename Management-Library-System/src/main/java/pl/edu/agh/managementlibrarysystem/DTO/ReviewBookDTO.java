@@ -5,7 +5,7 @@ import lombok.Value;
 
 @Value
 @Builder
-public class ReadBookDTO {
+public class ReviewBookDTO {
     String isbn;
     String title;
     String authors;

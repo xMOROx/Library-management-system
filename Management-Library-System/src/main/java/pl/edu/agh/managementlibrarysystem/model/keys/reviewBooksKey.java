@@ -12,7 +12,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @Embeddable
-public class readBooksKey implements Serializable {
+public class reviewBooksKey implements Serializable {
     @Serial
     private static final long serialVersionUID = 798123798312L;
 
@@ -21,7 +21,7 @@ public class readBooksKey implements Serializable {
     @Column(name="user_id")
     private Long userId;
 
-    public readBooksKey() {
+    public reviewBooksKey() {
     }
 
 
@@ -29,7 +29,7 @@ public class readBooksKey implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        readBooksKey that = (readBooksKey) o;
+        reviewBooksKey that = (reviewBooksKey) o;
         return Objects.equals(bookId, that.bookId) && Objects.equals(userId, that.userId);
     }
 

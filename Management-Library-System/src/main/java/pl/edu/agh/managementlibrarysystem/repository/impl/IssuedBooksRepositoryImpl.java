@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import pl.edu.agh.managementlibrarysystem.model.Book;
 import pl.edu.agh.managementlibrarysystem.model.IssuedBook;
 import pl.edu.agh.managementlibrarysystem.repository.BookRepository;
-import pl.edu.agh.managementlibrarysystem.repository.ReturnedBookRepository;
+import pl.edu.agh.managementlibrarysystem.repository.ReadBookRepository;
 import pl.edu.agh.managementlibrarysystem.repository.SettingsRepository;
 
 import java.util.Date;
@@ -20,7 +20,7 @@ public class IssuedBooksRepositoryImpl {
     @PersistenceContext
     private final EntityManager entityManager;
     private final SettingsRepository settingsRepository;
-    private final ReturnedBookRepository returnedBookRepository;
+    private final ReadBookRepository returnedBookRepository;
     private final BookRepository bookRepository;
 
     @Transactional
@@ -99,7 +99,7 @@ public class IssuedBooksRepositoryImpl {
         }
 
 
-        String insertQuery = "INSERT INTO returned_books (user_id, book_id, returned_date, issued_date, days, fee) VALUES (?1, ?2, CURRENT_DATE, ?3, ?4, ?5)";
+        String insertQuery = "INSERT INTO read_books (user_id, book_id, returned_date, issued_date, days, fee) VALUES (?1, ?2, CURRENT_DATE, ?3, ?4, ?5)";
 
 
         entityManager.createNativeQuery(insertQuery)

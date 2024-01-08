@@ -10,8 +10,8 @@ import pl.edu.agh.managementlibrarysystem.mapper.abstraction.OneWayMapper;
 import pl.edu.agh.managementlibrarysystem.model.*;
 import pl.edu.agh.managementlibrarysystem.repository.BookRepository;
 import pl.edu.agh.managementlibrarysystem.repository.IssuedBooksRepository;
+import pl.edu.agh.managementlibrarysystem.repository.ReviewBookRepository;
 import pl.edu.agh.managementlibrarysystem.repository.ReadBookRepository;
-import pl.edu.agh.managementlibrarysystem.repository.ReturnedBookRepository;
 import pl.edu.agh.managementlibrarysystem.utils.Alerts;
 
 import java.util.List;
@@ -23,13 +23,13 @@ import java.util.Optional;
 public class BookService {
     private final BookRepository bookRepository;
     private final IssuedBooksRepository issuedBooksRepository;
-    private final ReadBookRepository readBooksRepository;
-    private final ReturnedBookRepository returnedBookRepository;
+    private final ReviewBookRepository readBooksRepository;
+    private final ReadBookRepository returnedBookRepository;
     private final Mapper<Book, BookDTO> bookMapper;
     private final Mapper<IssuedBook, IssuedBookDTO> issuedBookMapper;
-    private final OneWayMapper<ReadBook, ReadBookDTO> readBookMapper;
+    private final OneWayMapper<ReviewBook, ReviewBookDTO> readBookMapper;
     private final OneWayMapper<Book, BookDetailsDTO> bookDetailsMapper;
-    private final OneWayMapper<ReturnedBook, ReadBookAvailableToVoteDTO> returnedBookReadBookAvailableToVoteDTOOneWayMapper;
+    private final OneWayMapper<ReadBook, ReadBookAvailableToVoteDTO> returnedBookReadBookAvailableToVoteDTOOneWayMapper;
 
     public boolean saveBook(BookDTO bookDTO, String authorName, String authorLastname, String publisherName,
                             String genreType) {
@@ -190,7 +190,7 @@ public class BookService {
                 .orElse(null);
     }
 
-    public List<ReadBookDTO> getAllReadBookForUser(User loggedUser) {
+    public List<ReviewBookDTO> getAllReadBookForUser(User loggedUser) {
         return this.readBooksRepository.findAllByUserId(loggedUser.getId())
                 .stream()
                 .map(readBookMapper::map)

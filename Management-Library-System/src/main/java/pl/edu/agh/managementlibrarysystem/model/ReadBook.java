@@ -1,31 +1,40 @@
 package pl.edu.agh.managementlibrarysystem.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import pl.edu.agh.managementlibrarysystem.model.keys.readBooksKey;
+import lombok.*;
+
+import java.sql.Date;
 
 @Getter
 @Setter
+@Builder
 @Entity(name = "read_books")
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class ReadBook {
-    @EmbeddedId
-    private readBooksKey id;
-    @ManyToOne
-    @MapsId("bookId")
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "book_id")
     private Book book;
-    @ManyToOne
-    @MapsId("userId")
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "user_id")
     private User user;
-    @Column(name = "review", length = 1000, columnDefinition = "TEXT")
-    private String review;
-    @Column(name = "rating", columnDefinition = "double(3,2) default -1")
-//    Min = 0, Max = 5
-    private double rating;
+
+    @Column(name = "days", nullable = false, columnDefinition = "int")
+    private int days;
+    @Column(name = "fee", nullable = false, columnDefinition = "double")
+    private double fee;
+    @Column(name = "issued_date", nullable = false, columnDefinition = "DATE")
+    private Date issuedDate;
+    @Column(name = "returned_date", nullable = true, columnDefinition = "DATE")
+    private Date returnedDate;
+
+    @Column(name = "is_reviewed", nullable = false, columnDefinition = "boolean default false")
+    private boolean isReviewed;
+
 }
