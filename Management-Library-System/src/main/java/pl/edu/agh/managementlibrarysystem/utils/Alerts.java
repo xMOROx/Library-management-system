@@ -31,8 +31,8 @@ public class Alerts extends Alert {
         alert.showAndWait();
     }
 
-    public static void showAlert(String bookAlreadyIssued, String s, String pleaseChooseAnotherBook) {
-        Alert alert = new Alerts(AlertType.INFORMATION, bookAlreadyIssued, s, pleaseChooseAnotherBook);
+    public static void showAlert(String title, String message, String content) {
+        Alert alert = new Alerts(AlertType.INFORMATION, title, message, content);
         alert.showAndWait();
     }
 }

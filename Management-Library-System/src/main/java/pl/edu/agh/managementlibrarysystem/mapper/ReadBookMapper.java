@@ -9,7 +9,7 @@ import pl.edu.agh.managementlibrarysystem.model.ReadBook;
 public class ReadBookMapper implements OneWayMapper<ReadBook, ReadBookDTO> {
     @Override
     public ReadBookDTO map(ReadBook object) {
-        Book book = object.getBooks();
+        Book book = object.getBook();
         String authorsAsString = Book.getAuthorsAsString(book);
         String genresAsString = Book.getGenresAsString(book);
 

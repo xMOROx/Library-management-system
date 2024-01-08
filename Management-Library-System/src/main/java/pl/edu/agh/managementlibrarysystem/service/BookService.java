@@ -184,6 +184,12 @@ public class BookService {
                 .orElse(null);
     }
 
+    public BookDetailsDTO getBookDetails(Long id) {
+        return this.bookRepository.findById(id)
+                .map(this.bookDetailsMapper::map)
+                .orElse(null);
+    }
+
     public List<ReadBookDTO> getAllReadBookForUser(User loggedUser) {
         return this.readBooksRepository.findAllByUserId(loggedUser.getId())
                 .stream()
@@ -201,5 +207,9 @@ public class BookService {
 
     public boolean reviewBook(long bookId, long userId, String review, double rating) {
         return this.readBooksRepository.reviewBook(bookId, userId, review, rating);
+    }
+
+    public boolean checkIfBookIsIssuedByUser(Long bookId, Long userId) {
+        return this.issuedBooksRepository.findByBookIdAndUserId(bookId, userId).isPresent();
     }
 }

@@ -12,6 +12,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.BorderPane;
+import org.controlsfx.control.SearchableComboBox;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
@@ -21,7 +22,6 @@ import pl.edu.agh.managementlibrarysystem.enums.CoverType;
 import pl.edu.agh.managementlibrarysystem.event.BorderPaneReadyEvent;
 import pl.edu.agh.managementlibrarysystem.event.fxml.LeavingBorderPaneEvent;
 import pl.edu.agh.managementlibrarysystem.event.fxml.NewItemAddedEvent;
-
 import pl.edu.agh.managementlibrarysystem.model.User;
 import pl.edu.agh.managementlibrarysystem.model.util.Permission;
 import pl.edu.agh.managementlibrarysystem.service.AuthorService;
@@ -44,11 +44,10 @@ public class BookDataEntryController extends BaseDataEntryController<ActionEvent
     private final PublisherService publisherService;
     private final GenresService genresService;
     private final ObservableList<String> coverTypes = CoverType.getObservableList();
-
+    private final UserSession session;
     private ObservableList<String> authors;
     private ObservableList<String> publishers;
     private ObservableList<String> genres;
-    private UserSession session;
     @FXML
     private MFXTextField title;
     @FXML
@@ -64,11 +63,11 @@ public class BookDataEntryController extends BaseDataEntryController<ActionEvent
     @FXML
     private ComboBox<String> coverType;
     @FXML
-    private ComboBox<String> authorSelection;
+    private SearchableComboBox<String> authorSelection;
     @FXML
-    private ComboBox<String> publisherSelection;
+    private SearchableComboBox<String> publisherSelection;
     @FXML
-    private ComboBox<String> genresSelection;
+    private SearchableComboBox<String> genresSelection;
     @FXML
     private MFXTextField tableOfContent;
     @FXML
@@ -115,9 +114,8 @@ public class BookDataEntryController extends BaseDataEntryController<ActionEvent
         save.disabledProperty();
         coverType.setItems(coverTypes);
         clearFields();
-        if (session.getSelectedBook() == null){
-//            deleteButton.setDisable(true);
-        }
+
+
         this.helperView.addEventHandler(EntryHelperEmptyEvent.HELPER_EMPTY, event ->
                 {
                     this.helperView.setCenter(null);
@@ -167,7 +165,7 @@ public class BookDataEntryController extends BaseDataEntryController<ActionEvent
                         .or(this.quantity.textProperty().isEmpty())
                         .or(this.coverType.valueProperty().isNull())
         );
-        if(session.getSelectedBook()!=null){
+        if (session.getSelectedBook() != null) {
             BookDTO bookDTO = session.getSelectedBook();
             setFields(bookDTO);
         }
@@ -180,12 +178,11 @@ public class BookDataEntryController extends BaseDataEntryController<ActionEvent
         }
         User u = session.getLoggedUser();
         if (u.getPermission() == Permission.NORMAL_USER) {
-//            ControlsUtils.changeControlVisibility(deleteButton,false);
-            ControlsUtils.changeControlVisibility(cancel,false);
-            ControlsUtils.changeControlVisibility(save,false);
-            ControlsUtils.changeControlVisibility(addAuthorButton,false);
-            ControlsUtils.changeControlVisibility(addGenresButton,false);
-            ControlsUtils.changeControlVisibility(addPublisherButton,false);
+            ControlsUtils.changeControlVisibility(cancel, false);
+            ControlsUtils.changeControlVisibility(save, false);
+            ControlsUtils.changeControlVisibility(addAuthorButton, false);
+            ControlsUtils.changeControlVisibility(addGenresButton, false);
+            ControlsUtils.changeControlVisibility(addPublisherButton, false);
             title.setDisable(true);
             isbn.setDisable(true);
             edition.setDisable(true);
@@ -199,6 +196,7 @@ public class BookDataEntryController extends BaseDataEntryController<ActionEvent
             availability.setDisable(true);
         }
     }
+
     @FXML
     private void back(ActionEvent actionEvent) {
         this.root.fireEvent(new LeavingBorderPaneEvent(LeavingBorderPaneEvent.LEAVING));
@@ -232,16 +230,15 @@ public class BookDataEntryController extends BaseDataEntryController<ActionEvent
         String publisherName = this.publisherSelection.getValue();
         String genreType = this.genresSelection.getValue();
 
-        if(this.session.getSelectedBook()!=null){
-            if(this.bookService.updateBook(book, authorName, authorLastname, publisherName, genreType)){
+        if (this.session.getSelectedBook() != null) {
+            if (this.bookService.updateBook(book, authorName, authorLastname, publisherName, genreType)) {
                 Alerts.showAddingAlert("Book modified", "Book has been modified successfully", this.title.getText());
                 this.clearFields();
                 this.session.setSelectedBook(null);
                 this.cancel(actionEvent);
 
             }
-        }
-        else if (this.bookService.saveBook(book, authorName, authorLastname, publisherName, genreType)) {
+        } else if (this.bookService.saveBook(book, authorName, authorLastname, publisherName, genreType)) {
             Alerts.showAddingAlert("Book added", "Book has been added successfully", this.title.getText());
             this.clearFields();
             this.cancel(actionEvent);

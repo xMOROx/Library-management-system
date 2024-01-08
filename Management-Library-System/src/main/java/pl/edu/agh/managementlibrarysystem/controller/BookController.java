@@ -1,6 +1,8 @@
 package pl.edu.agh.managementlibrarysystem.controller;
 
 import io.github.palexdev.materialfx.controls.MFXButton;
+import javafx.application.Platform;
+import javafx.collections.FXCollections;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.concurrent.Task;
@@ -34,6 +36,7 @@ import pl.edu.agh.managementlibrarysystem.utils.TaskFactory;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 @Controller
@@ -87,7 +90,7 @@ public class BookController extends ControllerWithTableView<BookDTO> {
     private TableColumn<BookDTO, String> availability;
 
 
-    public BookController(ApplicationContext applicationContext, BookService bookService, UserSession session) throws IOException {
+    public BookController(ApplicationContext applicationContext, BookService bookService, UserSession session) {
         super(applicationContext);
         this.bookService = bookService;
         this.session = session;
@@ -100,7 +103,6 @@ public class BookController extends ControllerWithTableView<BookDTO> {
         initializeStageOptions();
 
 
-        this.createNewTask(50, 20);
         this.loadDataEntryButton.disableProperty().setValue(true);
 
 
@@ -109,7 +111,7 @@ public class BookController extends ControllerWithTableView<BookDTO> {
                 event -> {
                     this.applicationContext.publishEvent(
                             new SetItemToBorderPaneEvent<>(this.tableView, this.borderPane, BorderpaneFields.CENTER));
-                    this.initData();
+                    this.createNewTask();
                     this.changeFieldsVisibility(true);
                 });
 
@@ -133,6 +135,8 @@ public class BookController extends ControllerWithTableView<BookDTO> {
 
         this.bookDetailsButton.disableProperty()
                 .bind(this.tableView.getSelectionModel().selectedItemProperty().isNull());
+
+        this.createNewTask();
 
     }
 
@@ -161,19 +165,26 @@ public class BookController extends ControllerWithTableView<BookDTO> {
     }
 
     @Override
-    protected void createNewTask(int maxIterations, int sleepTime) {
-        Task<Integer> task = TaskFactory.countingTaskForProgressBar(maxIterations, sleepTime, progressBar);
+    protected void createNewTask() {
+        Task<Void> task = new Task<>() {
+            @Override
+            protected Void call() {
+                loadDataEntryButton.disableProperty().setValue(true);
+                progressBar.setVisible(true);
+                spinner.setVisible(true);
+                initData();
+                Platform.runLater(() -> allBooksAndRemainingBooks());
+                return null;
+            }
+        };
 
         task.setOnSucceeded(event -> {
             spinner.setVisible(false);
-            this.initData();
-            this.allBooksAndRemainingBooks();
+            this.progressBar.setVisible(false);
             this.loadDataEntryButton.disableProperty().setValue(false);
         });
 
-        Thread thread = new Thread(task);
-        thread.setDaemon(true);
-        thread.start();
+        TaskFactory.startTask(task);
     }
 
     private void allBooksAndRemainingBooks() {
@@ -187,8 +198,10 @@ public class BookController extends ControllerWithTableView<BookDTO> {
 
     @Override
     protected void initData() {
-        data = this.session.getLoggedUser().getPermission() == Permission.NORMAL_USER ?
+        List<BookDTO> temp = this.session.getLoggedUser().getPermission() == Permission.NORMAL_USER ?
                 this.bookService.getAllAvailableBooks() : this.bookService.getAllBooks();
+
+        data = FXCollections.observableArrayList(temp);
         this.tableView.getItems().clear();
         this.tableView.getItems().addAll(data);
     }
@@ -235,8 +248,7 @@ public class BookController extends ControllerWithTableView<BookDTO> {
 
     @FXML
     private void refreshList(ActionEvent actionEvent) {
-        this.initData();
-        this.allBooksAndRemainingBooks();
+        this.createNewTask();
     }
 
     @FXML
@@ -247,21 +259,46 @@ public class BookController extends ControllerWithTableView<BookDTO> {
             return;
         }
 
-
-        this.bookService.deleteBookByIsbn(bookDTO.getIsbn());
-        this.initData();
-        this.allBooksAndRemainingBooks();
+        this.data.remove(bookDTO);
+        this.booksAmount.setText(String.valueOf(Integer.parseInt(this.booksAmount.getText()) - bookDTO.getQuantity()));
+        this.remainingBooksAmount.setText(String.valueOf(Integer.parseInt(this.remainingBooksAmount.getText()) - bookDTO.getRemainingBooks()));
         Alerts.showSuccessAlert("Book deleted", "Book has been deleted");
+
+        Task<Void> task = new Task<>() {
+            @Override
+            protected Void call() {
+                bookService.deleteBookByIsbn(bookDTO.getIsbn());
+                return null;
+            }
+        };
+
+        TaskFactory.startTask(task);
     }
 
     @FXML
     private void deleteSelectedBooks(ActionEvent actionEvent) {
         this.tableView.getSelectionModel().getSelectedItems().forEach(bookDTO -> {
-            this.bookService.deleteBookByIsbn(bookDTO.getIsbn());
+            this.data.remove(bookDTO);
+            this.booksAmount.setText(String.valueOf(Integer.parseInt(this.booksAmount.getText()) - bookDTO.getQuantity()));
+            this.remainingBooksAmount.setText(String.valueOf(Integer.parseInt(this.remainingBooksAmount.getText()) - bookDTO.getRemainingBooks()));
+
+
+            Task<Void> task = new Task<>() {
+                @Override
+                protected Void call() {
+                    bookService.deleteBookByIsbn(bookDTO.getIsbn());
+                    return null;
+                }
+            };
+
+            Thread thread = new Thread(task);
+            thread.setDaemon(true);
+            thread.start();
         });
-        this.initData();
-        this.allBooksAndRemainingBooks();
+
+
         Alerts.showSuccessAlert("Books deleted", "All selected books have been deleted");
+
     }
 
     @FXML
@@ -309,7 +346,12 @@ public class BookController extends ControllerWithTableView<BookDTO> {
         this.allBooksButton.setVisible(!visible);
         this.bookDetailsButton.setVisible(visible);
 
-        this.delete.setVisible(visible);
+        if(visible) {
+            this.delete.setVisible(this.session.getLoggedUser().getPermission() != Permission.NORMAL_USER);
+        } else {
+            this.delete.setVisible(false);
+        }
+
         this.arrow.setVisible(visible);
         this.checkAllCheckbox.setVisible(visible);
         this.remainingBooksAmount.setVisible(visible);

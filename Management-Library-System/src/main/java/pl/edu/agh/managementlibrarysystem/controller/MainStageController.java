@@ -34,11 +34,13 @@ import java.util.ResourceBundle;
 public class MainStageController extends BaseController implements Initializable {
 
     public BorderPane pane;
+
     public UserSession session;
     @FXML
     public MFXButton statistics;
     @FXML
     private MFXButton editUser;
+
     @FXML
     private BorderPane borderpane;
     @FXML
@@ -65,6 +67,9 @@ public class MainStageController extends BaseController implements Initializable
     private MFXButton settings;
     @FXML
     private MFXButton addUser;
+    @FXML
+    private MFXButton recommendedBooks;
+
 
     public MainStageController(ApplicationContext applicationContext, UserSession session) {
         super(applicationContext);
@@ -85,13 +90,22 @@ public class MainStageController extends BaseController implements Initializable
             return;
         }
         User u = session.getLoggedUser();
-        if (u.getPermission() == Permission.NORMAL_USER) {
+        Permission uPermission = u.getPermission();
+
+        if (uPermission == Permission.NORMAL_USER) {
             users.setText("Profile");
             ControlsUtils.changeControlVisibility(addUser, false);
+
         }
-        if (u.getPermission() != Permission.ADMIN) {
+        if (uPermission != Permission.ADMIN) {
             ControlsUtils.changeControlVisibility(editUser, false);
         }
+
+        if (uPermission != Permission.NORMAL_USER) {
+            ControlsUtils.changeControlVisibility(recommendedBooks, false);
+        }
+
+
     }
 
     @FXML
@@ -122,13 +136,18 @@ public class MainStageController extends BaseController implements Initializable
     }
 
     @FXML
+    private void loadRecommendedBooks(ActionEvent actionEvent) {
+        applicationContext.publishEvent(new BorderPaneReadyEvent(pane, new ClassPathResource("fxml/recommendedBooks.fxml")));
+    }
+
+    @FXML
     private void loadUserPanel(ActionEvent actionEvent) {
         if (session.getLoggedUser() == null) {
             return;
         }
         User u = session.getLoggedUser();
         if (u.getPermission() == Permission.NORMAL_USER) {
-            applicationContext.publishEvent(new BorderPaneReadyEvent(pane, new ClassPathResource("fxml/user.fxml")));
+            applicationContext.publishEvent(new BorderPaneReadyEvent(pane, new ClassPathResource("fxml/profile.fxml")));
         } else {
             applicationContext.publishEvent(new BorderPaneReadyEvent(pane, new ClassPathResource("fxml/usersAdmin.fxml")));
         }
@@ -190,4 +209,6 @@ public class MainStageController extends BaseController implements Initializable
             applicationContext.publishEvent(new BorderPaneReadyEvent(pane, new ClassPathResource("fxml/editUsers.fxml")));
         }
     }
+
+
 }

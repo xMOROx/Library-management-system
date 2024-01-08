@@ -1,5 +1,6 @@
 package pl.edu.agh.managementlibrarysystem.controller.popups;
 
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
@@ -56,11 +57,11 @@ public class ChartsController  extends ResizeableBaseController implements Initi
         this.createNewTask(50, 20);
     }
     protected void createNewTask(int maxIterations, int sleepTime) {
-        Task<Integer> task = TaskFactory.countingTaskForProgressBar(maxIterations, sleepTime, progressBar);
+        Task<Integer> task = TaskFactory.countingTask(maxIterations, sleepTime);
 
         task.setOnSucceeded(event -> {
             spinner.setVisible(false);
-            this.initData();
+            Platform.runLater(() -> initData());
         });
 
         Thread thread = new Thread(task);

@@ -3,7 +3,11 @@ package pl.edu.agh.managementlibrarysystem.utils;
 import javafx.concurrent.Task;
 import javafx.scene.control.ProgressBar;
 
+import java.util.List;
+import java.util.function.Consumer;
+
 public abstract class TaskFactory {
+
     public static Task<Integer> countingTask(int maxIterations, int sleepTime) {
         return new Task<>() {
             @Override
@@ -20,13 +24,27 @@ public abstract class TaskFactory {
         };
     }
 
-    public static Task<Integer> countingTaskForProgressBar(int maxIterations, int sleepTime, ProgressBar progressBar) {
-        Task<Integer> task = countingTask(maxIterations, sleepTime);
+    public static Task<Void> loadDataFromDatabase(ProgressBar progressBar, List<Consumer<Void>> consumers) {
+        Task<Void> task = new Task<>() {
+            @Override
+            protected Void call() {
+                consumers.forEach(
+                        consumer -> consumer.accept(null)
+                );
+                return null;
+            }
+        };
+
         progressBar.progressProperty().bind(task.progressProperty());
+        consumers.forEach(
+                consumer -> consumer.accept(null)
+        );
         return task;
     }
 
-    public static Task<Integer> countingTask(int maxIterations) {
-        return countingTask(maxIterations, 100);
+    public static void startTask(Task<Void> task) {
+        Thread thread = new Thread(task);
+        thread.setDaemon(true);
+        thread.start();
     }
 }

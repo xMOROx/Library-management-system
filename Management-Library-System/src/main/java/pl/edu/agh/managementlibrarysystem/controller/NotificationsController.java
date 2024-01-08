@@ -1,6 +1,7 @@
 package pl.edu.agh.managementlibrarysystem.controller;
 
 import io.github.palexdev.materialfx.controls.MFXButton;
+import javafx.collections.FXCollections;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -86,7 +87,7 @@ public class NotificationsController extends ControllerWithTableView<Notificatio
         }
         this.tooltipInitializer();
         this.initializeColumns();
-        this.createNewTask(50, 20);
+        this.createNewTask();
         this.borderPane.addEventHandler(
                 LeavingBorderPaneEvent.LEAVING,
                 event -> {
@@ -98,17 +99,22 @@ public class NotificationsController extends ControllerWithTableView<Notificatio
     }
 
     @Override
-    protected void createNewTask(int maxIterations, int sleepTime) {
-        Task<Integer> task = TaskFactory.countingTaskForProgressBar(maxIterations, sleepTime, progressBar);
-
+    protected void createNewTask() {
+        Task<Void> task = new Task<>() {
+            @Override
+            protected Void call() {
+                spinner.setVisible(true);
+                progressBar.setVisible(true);
+                initData();
+                return null;
+            }
+        };
         task.setOnSucceeded(event -> {
             spinner.setVisible(false);
-            this.initData();
+            progressBar.setVisible(false);
         });
 
-        Thread thread = new Thread(task);
-        thread.setDaemon(true);
-        thread.start();
+        TaskFactory.startTask(task);
     }
 
     @Override
@@ -127,7 +133,7 @@ public class NotificationsController extends ControllerWithTableView<Notificatio
 
     @Override
     protected void initData() {
-        data = this.notificationService.getNotifications(currUser, ignoreResolved.isSelected());
+        data = FXCollections.observableArrayList(this.notificationService.getNotifications(currUser, ignoreResolved.isSelected()));
         this.tableView.getItems().clear();
         this.tableView.getItems().addAll(data);
     }
@@ -149,7 +155,7 @@ public class NotificationsController extends ControllerWithTableView<Notificatio
         NotificationDTO notificationDTO = tableView.getSelectionModel().getSelectedItem();
         String msg = notificationService.deleteNotification(notificationDTO);
         Alerts.showInformationAlert("Notification notification", msg);
-        initData();
+        this.data.remove(tableView.getSelectionModel().getSelectedItem());
     }
 
     @FXML
@@ -162,6 +168,21 @@ public class NotificationsController extends ControllerWithTableView<Notificatio
 
     @FXML
     private void ignoreResolved(MouseEvent actionEvent) {
-        initData();
+        Task<Void> task = new Task<>() {
+            @Override
+            protected Void call() {
+                spinner.setVisible(true);
+                progressBar.setVisible(true);
+                initData();
+                return null;
+            }
+        };
+
+        task.setOnSucceeded(event -> {
+            spinner.setVisible(false);
+            progressBar.setVisible(false);
+        });
+
+        TaskFactory.startTask(task);
     }
 }

@@ -111,7 +111,7 @@ public class LoginController extends BaseController implements Initializable {
 
     @FXML
     private void loadPasswordRetrievalPanel(MouseEvent mouseEvent) {
-
+        //TODO: implement
     }
 
     @FXML

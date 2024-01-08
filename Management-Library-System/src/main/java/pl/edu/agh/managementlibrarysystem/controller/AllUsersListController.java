@@ -1,5 +1,6 @@
 package pl.edu.agh.managementlibrarysystem.controller;
 
+import javafx.collections.FXCollections;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -16,6 +17,7 @@ import pl.edu.agh.managementlibrarysystem.utils.TaskFactory;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+
 @Controller
 public class AllUsersListController extends ControllerWithTableView<UserDTO> implements Initializable {
     private final UserService userService;
@@ -34,23 +36,29 @@ public class AllUsersListController extends ControllerWithTableView<UserDTO> imp
         this.userService = userService;
     }
 
-    public void initialize(URL location, ResourceBundle resources){
+    public void initialize(URL location, ResourceBundle resources) {
         this.tooltipInitializer();
         this.initializeColumns();
-        this.createNewTask(50, 20);
+        this.createNewTask();
     }
-    @Override
-    protected void createNewTask(int maxIterations, int sleepTime) {
-        Task<Integer> task = TaskFactory.countingTaskForProgressBar(maxIterations, sleepTime, progressBar);
 
+    @Override
+    protected void createNewTask() {
+        Task<Void> task = new Task<>() {
+            @Override
+            protected Void call() {
+                spinner.setVisible(true);
+                progressBar.setVisible(true);
+                initData();
+                return null;
+            }
+        };
         task.setOnSucceeded(event -> {
             spinner.setVisible(false);
-            this.initData();
+            progressBar.setVisible(false);
         });
 
-        Thread thread = new Thread(task);
-        thread.setDaemon(true);
-        thread.start();
+        TaskFactory.startTask(task);
     }
 
     @Override
@@ -68,14 +76,25 @@ public class AllUsersListController extends ControllerWithTableView<UserDTO> imp
 
     @Override
     protected void initData() {
-        data = this.userService.getAllUsers();
+        data = FXCollections.observableArrayList(this.userService.getAllUsers());
         this.tableView.getItems().clear();
         this.tableView.getItems().addAll(data);
     }
 
     @FXML
     private void deleteUser(MouseEvent mouseEvent) {
-        userService.deleteByUserId(tableView.getSelectionModel().getSelectedItem().getId());
-        initData();
+        this.data.remove(tableView.getSelectionModel().getSelectedItem());
+
+        Task<Void> task = new Task<>() {
+            @Override
+            protected Void call() {
+                userService.deleteByUserId(tableView.getSelectionModel().getSelectedItem().getId());
+                return null;
+            }
+        };
+
+        Thread thread = new Thread(task);
+        thread.setDaemon(true);
+        thread.start();
     }
 }

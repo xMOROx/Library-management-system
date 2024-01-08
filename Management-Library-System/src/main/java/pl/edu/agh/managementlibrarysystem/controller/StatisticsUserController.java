@@ -34,25 +34,25 @@ public class StatisticsUserController extends StatisticsController {
         tooltipInitializer();
         initializeStageOptions();
     }
-    public void initializeStatistics() {
-        String description = book.getDescription() == null ? "No description" : book.getDescription();
-        String tableOfContent = book.getTableOfContent() == null ? "No table of content" : book.getTableOfContent();
-
-        data.add("Book ISBN:              " + book.getIsbn());
-        data.add("Book Title:              " + book.getTitle());
-        data.add("Authors:          " + book.getAuthors());
-        data.add("Publisher:          " + book.getPublisher());
-        data.add("Genres:          " + book.getGenres());
-        data.add("Edition:          " + book.getEdition());
-        data.add("Quantity:          " + book.getQuantity());
-        data.add("Remaining amount:          " + book.getRemainingBooks());
-        data.add("Cover Type:          " + book.getCover());
-        data.add("Description:          " + description);
-        data.add("Table of contents:          " + tableOfContent);
-        data.add("Available:          " + (book.getAvailability().equalsIgnoreCase("AVAILABLE") ? "YES" : "NO"));
-
-        this.bookListView.setItems(data);
-    }
+//    public void initializeStatistics() {
+//        String description = book.getDescription() == null ? "No description" : book.getDescription();
+//        String tableOfContent = book.getTableOfContent() == null ? "No table of content" : book.getTableOfContent();
+//
+//        data.add("Book ISBN:              " + book.getIsbn());
+//        data.add("Book Title:              " + book.getTitle());
+//        data.add("Authors:          " + book.getAuthors());
+//        data.add("Publisher:          " + book.getPublisher());
+//        data.add("Genres:          " + book.getGenres());
+//        data.add("Edition:          " + book.getEdition());
+//        data.add("Quantity:          " + book.getQuantity());
+//        data.add("Remaining amount:          " + book.getRemainingBooks());
+//        data.add("Cover Type:          " + book.getCover());
+//        data.add("Description:          " + description);
+//        data.add("Table of contents:          " + tableOfContent);
+//        data.add("Available:          " + (book.getAvailability().equalsIgnoreCase("AVAILABLE") ? "YES" : "NO"));
+//
+//        this.bookListView.setItems(data);
+//    }
     protected void initializeStageOptions() {
         if (session.getLoggedUser() == null) {
             return;
