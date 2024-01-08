@@ -78,12 +78,18 @@
                   </Label>
                </children>
             </HBox>
-            <TableView prefHeight="200.0" prefWidth="200.0">
-              <columns>
-                <TableColumn prefWidth="75.0" text="C1" />
-                <TableColumn prefWidth="75.0" text="C2" />
-              </columns>
-            </TableView>
+             <TableView fx:id="tableView" prefHeight="349.0" prefWidth="1007.0">
+                 <columns>
+                     <TableColumn fx:id="bookISBN" prefWidth="166.0" text="ISBN" />
+                     <TableColumn fx:id="bookTitle" prefWidth="197.0" text="Book Title" />
+                     <TableColumn fx:id="bookAuthors" prefWidth="206.0" text="Authors" />
+                     <TableColumn fx:id="bookGenres" prefWidth="216.0" text="Genres" />
+                     <TableColumn fx:id="bookEdition" prefWidth="110.0" text="Edition" />
+                     <TableColumn fx:id="bookDays" prefWidth="110.0" text="Days" />
+                     <TableColumn fx:id="bookIssued" prefWidth="110.0" text="Issued" />
+                     <TableColumn fx:id="bookReturned" prefWidth="110.0" text="Returned" />
+                 </columns>
+             </TableView>
             <HBox alignment="CENTER" prefHeight="38.0" prefWidth="957.0" spacing="5.0" style="-fx-border-color: #C5CAE9; -fx-background-color: EEEEEE;">
                <children>
                   <Label text="Other statistics">

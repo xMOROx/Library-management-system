@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import pl.edu.agh.managementlibrarysystem.model.ReturnedBook;
+import pl.edu.agh.managementlibrarysystem.model.User;
 
 import java.util.List;
 
@@ -15,4 +16,6 @@ public interface ReturnedBookRepository extends JpaRepository<ReturnedBook, Long
 
     @Query(FIND_ALL_READ_BOOK_AVAILABLE_TO_VOTE_BY_USER_ID)
     List<ReturnedBook> findAllReadBookAvailableToVoteByUserId(Long id);
+
+    List<ReturnedBook> findAllByUserId(Long user_id);
 }
