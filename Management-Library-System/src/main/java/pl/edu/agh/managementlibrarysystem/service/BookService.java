@@ -184,6 +184,12 @@ public class BookService {
                 .orElse(null);
     }
 
+    public BookDetailsDTO getBookDetails(Long id) {
+        return this.bookRepository.findById(id)
+                .map(this.bookDetailsMapper::map)
+                .orElse(null);
+    }
+
     public List<ReadBookDTO> getAllReadBookForUser(User loggedUser) {
         return this.readBooksRepository.findAllByUserId(loggedUser.getId())
                 .stream()

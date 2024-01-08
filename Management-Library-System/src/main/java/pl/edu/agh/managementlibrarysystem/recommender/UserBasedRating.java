@@ -20,7 +20,7 @@ public class UserBasedRating extends SimilarityRatingCal {
     protected UserBasedRating(ReadBookRepository readBookRepository,
                               UserRepository userRepository,
                               @Value("50") int similarityNum,
-                              @Value("2") int minimalRater) {
+                              @Value("1") int minimalRater) {
         super(readBookRepository, userRepository);
         this.similarityNum = similarityNum;
         this.minimalRater = minimalRater;

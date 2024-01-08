@@ -88,7 +88,7 @@ public class ProfileController extends ControllerWithTableView<ReadBookDTO> impl
             spinner.setVisible(false);
         });
 
-        TaskFactory.startThread(task);
+        TaskFactory.startTask(task);
     }
 
     @Override

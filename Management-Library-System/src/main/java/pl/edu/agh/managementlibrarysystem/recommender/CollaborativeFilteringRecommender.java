@@ -12,6 +12,7 @@ import java.util.List;
 public class CollaborativeFilteringRecommender {
     private final SimilarityRatingCal userBasedRating;
     private final SimilarityRatingCal itemBasedRating;
+    private final int MAX_RECOMMENDATIONS = 10;
 
     public CollaborativeFilteringRecommender(@Qualifier("userBasedRating") SimilarityRatingCal userBasedRating,
                                              @Qualifier("itemBasedRating") SimilarityRatingCal itemBasedRating) {
@@ -21,7 +22,20 @@ public class CollaborativeFilteringRecommender {
 
     public List<RatingLookUp> recommend(User user) {
         log.info("User based rating");
-        return userBasedRating.getSimilarRatings(user);
+        List<RatingLookUp> similarRatings = userBasedRating
+                .getSimilarRatings(user);
+        similarRatings.sort((r1, r2) -> Double.compare(r2.rating(), r1.rating()));
+
+        for (int i = 0; i < similarRatings.size(); i++) {
+            for (int j = i + 1; j < similarRatings.size(); j++) {
+                if (similarRatings.get(i).id().equals(similarRatings.get(j).id())) {
+                    similarRatings.remove(j);
+                    j--;
+                }
+            }
+        }
+
+        return similarRatings.subList(0, MAX_RECOMMENDATIONS);
     }
 
 

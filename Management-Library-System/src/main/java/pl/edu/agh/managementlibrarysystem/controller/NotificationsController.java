@@ -114,7 +114,7 @@ public class NotificationsController extends ControllerWithTableView<Notificatio
             progressBar.setVisible(false);
         });
 
-        TaskFactory.startThread(task);
+        TaskFactory.startTask(task);
     }
 
     @Override
@@ -183,6 +183,6 @@ public class NotificationsController extends ControllerWithTableView<Notificatio
             progressBar.setVisible(false);
         });
 
-        TaskFactory.startThread(task);
+        TaskFactory.startTask(task);
     }
 }

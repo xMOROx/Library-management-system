@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane fx:id="borderPane" prefHeight="651.0" prefWidth="1000.0" stylesheets="@../css/books.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.agh.managementlibrarysystem.controller.RecommendedBooksControllers">
+    <top>
+        <BorderPane maxHeight="67.0" prefHeight="100.0" prefWidth="1000.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
+            <right>
+                <HBox alignment="TOP_RIGHT" prefHeight="37.0" prefWidth="127.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
+                    <Label fx:id="minimize" contentDisplay="GRAPHIC_ONLY" onMouseClicked="#minimize" />
+                    <Label fx:id="fullscreen" contentDisplay="GRAPHIC_ONLY" layoutX="194.0" layoutY="10.0" onMouseClicked="#fullscreen" />
+                    <Label fx:id="unfullscreen" contentDisplay="GRAPHIC_ONLY" layoutX="194.0" layoutY="10.0" onMouseClicked="#unfullscreen" />
+                    <Label fx:id="close" contentDisplay="GRAPHIC_ONLY" layoutX="194.0" layoutY="10.0" onMouseClicked="#close" />
+                </HBox>
+            </right>
+            <center>
+                <Label text="Library Management System" textFill="#a1a1a1" BorderPane.alignment="CENTER">
+                    <font>
+                        <Font name="Segoe UI Semilight" size="23.0" />
+                    </font>
+                </Label>
+            </center>
+            <bottom>
+                <Pane prefHeight="40.0" prefWidth="600.0" style="-fx-background-color: #2b579a;" BorderPane.alignment="CENTER">
+                    <Label layoutX="6.0" layoutY="7.0" text="Number of recommended books: " textFill="WHITE">
+                        <font>
+                            <Font name="System Bold" size="18.0" />
+                        </font>
+                    </Label>
+                    <Label layoutX="891.0" layoutY="7.0" text="Current: " textFill="WHITE">
+                        <font>
+                            <Font name="System Bold" size="18.0" />
+                        </font>
+                    </Label>
+               <Label fx:id="totalNumberOfBooks" layoutX="290.0" layoutY="7.0" text="0" textFill="WHITE">
+                  <font>
+                     <Font name="System Bold" size="18.0" />
+                  </font>
+               </Label>
+               <Label fx:id="currentNumberOfBooks" layoutX="963.0" layoutY="7.0" text="0" textFill="WHITE">
+                  <font>
+                     <Font name="System Bold" size="18.0" />
+                  </font>
+               </Label>
+                </Pane>
+            </bottom>
+        </BorderPane>
+    </top>
+    <center>
+        <AnchorPane fx:id="imageContainer" prefHeight="347.0" prefWidth="1000.0" style="-fx-background-color: #cccccc;" BorderPane.alignment="CENTER">
+         <ImageView fx:id="currentImage" fitWidth="382.0" layoutX="309.0" pickOnBounds="true" preserveRatio="true" />
+            <MFXButton fx:id="previous" buttonType="RAISED" disable="true" layoutX="4.0" layoutY="100.0" onAction="#previous" prefHeight="150.0" prefWidth="48.0" style="-fx-background-color: WHITE; -fx-text-fill: BLACK" text="&lt;" />
+            <MFXButton fx:id="next" buttonType="RAISED" disable="true" layoutX="948.0" layoutY="100.0" onAction="#next" prefHeight="150.0" prefWidth="48.0" style="-fx-background-color: WHITE; -fx-text-fill: BLACK" text="&gt;" />
+        </AnchorPane>
+    </center>
+    <bottom>
+        <ListView fx:id="bookInformationContainer" prefHeight="240.0" prefWidth="1000.0" BorderPane.alignment="CENTER" />
+    </bottom>
+</BorderPane>

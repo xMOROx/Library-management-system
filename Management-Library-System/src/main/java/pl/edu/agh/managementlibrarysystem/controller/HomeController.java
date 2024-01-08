@@ -22,7 +22,6 @@ import java.util.ResourceBundle;
 public class HomeController extends ResizeableBaseController implements Initializable {
     private final UserSession userSession;
     private final NotificationService notificationService;
-    private final CollaborativeFilteringRecommender collaborativeFilteringRecommender;
     @FXML
     private Label numberOfNotifications;
     @FXML
@@ -39,11 +38,10 @@ public class HomeController extends ResizeableBaseController implements Initiali
     private Label userRole;
 
     @Autowired
-    public HomeController(UserSession userSession, NotificationService notificationService, ApplicationContext applicationContext, CollaborativeFilteringRecommender collaborativeFilteringRecommender) {
+    public HomeController(UserSession userSession, NotificationService notificationService, ApplicationContext applicationContext) {
         super(applicationContext);
         this.userSession = userSession;
         this.notificationService = notificationService;
-        this.collaborativeFilteringRecommender = collaborativeFilteringRecommender;
     }
 
     @Override

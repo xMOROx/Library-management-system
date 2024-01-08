@@ -16,7 +16,6 @@ import pl.edu.agh.managementlibrarysystem.service.UserService;
 import pl.edu.agh.managementlibrarysystem.utils.TaskFactory;
 
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
 
 @Controller
@@ -59,7 +58,7 @@ public class AllUsersListController extends ControllerWithTableView<UserDTO> imp
             progressBar.setVisible(false);
         });
 
-        TaskFactory.startThread(task);
+        TaskFactory.startTask(task);
     }
 
     @Override

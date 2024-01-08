@@ -184,7 +184,7 @@ public class BookController extends ControllerWithTableView<BookDTO> {
             this.loadDataEntryButton.disableProperty().setValue(false);
         });
 
-        TaskFactory.startThread(task);
+        TaskFactory.startTask(task);
     }
 
     private void allBooksAndRemainingBooks() {
@@ -272,7 +272,7 @@ public class BookController extends ControllerWithTableView<BookDTO> {
             }
         };
 
-        TaskFactory.startThread(task);
+        TaskFactory.startTask(task);
     }
 
     @FXML

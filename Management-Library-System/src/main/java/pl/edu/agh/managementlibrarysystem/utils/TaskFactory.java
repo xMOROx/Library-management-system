@@ -42,7 +42,7 @@ public abstract class TaskFactory {
         return task;
     }
 
-    public static void startThread(Task<Void> task) {
+    public static void startTask(Task<Void> task) {
         Thread thread = new Thread(task);
         thread.setDaemon(true);
         thread.start();

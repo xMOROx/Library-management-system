@@ -24,7 +24,6 @@ import pl.edu.agh.managementlibrarysystem.utils.Alerts;
 import pl.edu.agh.managementlibrarysystem.utils.TaskFactory;
 
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
 
 @Controller
@@ -145,7 +144,7 @@ public class IssuedBookController extends ControllerWithTableView<IssuedBookDTO>
             progressBar.setVisible(false);
         });
 
-        TaskFactory.startThread(task);
+        TaskFactory.startTask(task);
     }
 
     @Override
@@ -194,7 +193,7 @@ public class IssuedBookController extends ControllerWithTableView<IssuedBookDTO>
             Alerts.showAlert("Book issued", "Book issued to user", "Book issued to user successfully");
         });
 
-        TaskFactory.startThread(task);
+        TaskFactory.startTask(task);
 
     }
 }
