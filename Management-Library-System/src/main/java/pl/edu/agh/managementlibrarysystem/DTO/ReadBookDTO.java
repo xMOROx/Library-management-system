@@ -7,13 +7,15 @@ import java.util.Date;
 
 @Value
 @Builder
-public class ReturnedBookDTO {
+public class ReadBookDTO {
     String isbn;
     String title;
     String authors;
+    String publisher;
     String genres;
-    int edition;
+    Date issuedDate;
+    Date returnedDate;
     int days;
-    Date issued;
-    Date returned;
+    double fee;
+    int edition;
 }

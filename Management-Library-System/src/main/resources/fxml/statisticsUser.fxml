@@ -4,7 +4,6 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
@@ -54,11 +53,6 @@
                         </HBox.margin>
                         <Image url="@../images/spinner.gif" />
                     </ImageView>
-                    <ProgressBar fx:id="progressBar" maxWidth="10000.0" prefHeight="28.0" prefWidth="571.0" progress="1.0" scaleY="0.4" stylesheets="@../css/books.css" HBox.hgrow="ALWAYS">
-                        <HBox.margin>
-                            <Insets left="3.0" right="5.0" />
-                        </HBox.margin>
-                    </ProgressBar>
                <MFXButton onMouseClicked="#openCharts" prefHeight="26.0" prefWidth="167.0" text="Charts" />
                     <Region prefHeight="81.0" prefWidth="182.0" HBox.hgrow="ALWAYS" />
                 </HBox>
@@ -80,14 +74,16 @@
             </HBox>
              <TableView fx:id="tableView" prefHeight="349.0" prefWidth="1007.0">
                  <columns>
-                     <TableColumn fx:id="bookISBN" prefWidth="166.0" text="ISBN" />
-                     <TableColumn fx:id="bookTitle" prefWidth="197.0" text="Book Title" />
-                     <TableColumn fx:id="bookAuthors" prefWidth="206.0" text="Authors" />
-                     <TableColumn fx:id="bookGenres" prefWidth="216.0" text="Genres" />
-                     <TableColumn fx:id="bookEdition" prefWidth="110.0" text="Edition" />
-                     <TableColumn fx:id="bookDays" prefWidth="110.0" text="Days" />
-                     <TableColumn fx:id="bookIssued" prefWidth="110.0" text="Issued" />
-                     <TableColumn fx:id="bookReturned" prefWidth="110.0" text="Returned" />
+                     <TableColumn fx:id="bookISBN" prefWidth="117.0" text="ISBN" />
+                     <TableColumn fx:id="bookTitle" prefWidth="96.0" text="Book Title" />
+                     <TableColumn fx:id="bookAuthors" prefWidth="107.0" text="Authors" />
+                     <TableColumn fx:id="bookPublisher" prefWidth="116.0" text="Publisher" />
+                     <TableColumn fx:id="bookGenres" prefWidth="155.0" text="Genres" />
+                     <TableColumn fx:id="bookIssued" prefWidth="120.0" text="Issued" />
+                     <TableColumn fx:id="bookReturned" minWidth="0.0" prefWidth="120.0" text="Returned" />
+                     <TableColumn fx:id="bookDays" minWidth="0.0" prefWidth="50.0" text="Days" />
+                     <TableColumn fx:id="bookFee" prefWidth="40.0" text="Fee" />
+                     <TableColumn fx:id="bookEdition" prefWidth="78.0" text="Edition" />
                  </columns>
              </TableView>
             <HBox alignment="CENTER" prefHeight="38.0" prefWidth="957.0" spacing="5.0" style="-fx-border-color: #C5CAE9; -fx-background-color: EEEEEE;">
@@ -99,7 +95,7 @@
                   </Label>
                </children>
             </HBox>
-            <ListView prefHeight="200.0" prefWidth="200.0" />
+            <ListView fx:id="statisitcsList" prefHeight="200.0" prefWidth="200.0" />
          </children></VBox>
    </center>
 

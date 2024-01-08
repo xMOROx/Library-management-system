@@ -1,23 +1,16 @@
 package pl.edu.agh.managementlibrarysystem.controller;
 
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.chart.BarChart;
 import javafx.scene.control.ListView;
-import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.ImageView;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
-import pl.edu.agh.managementlibrarysystem.DTO.BookDTO;
 import pl.edu.agh.managementlibrarysystem.DTO.ReadBookDTO;
-import pl.edu.agh.managementlibrarysystem.DTO.ReturnedBookDTO;
-import pl.edu.agh.managementlibrarysystem.controller.abstraction.ResizeableBaseController;
 import pl.edu.agh.managementlibrarysystem.controller.abstraction.StatisticsController;
 import pl.edu.agh.managementlibrarysystem.model.User;
 import pl.edu.agh.managementlibrarysystem.model.util.Permission;
@@ -27,33 +20,48 @@ import pl.edu.agh.managementlibrarysystem.session.UserSession;
 import pl.edu.agh.managementlibrarysystem.utils.TaskFactory;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 @Controller
 public class StatisticsUserController extends StatisticsController {
 
+    @FXML
+    public TableView<ReadBookDTO> tableView;
+    @FXML
+    public TableColumn<ReadBookDTO, String> bookISBN;
+    @FXML
+    public TableColumn<ReadBookDTO, String> bookTitle;
+    @FXML
+    public TableColumn<ReadBookDTO, String> bookAuthors;
+    @FXML
+    public TableColumn<ReadBookDTO, String> bookPublisher;
+    @FXML
+    public TableColumn<ReadBookDTO, String> bookGenres;
+    @FXML
+    public TableColumn<ReadBookDTO, Date> bookIssued;
+    @FXML
+    public TableColumn<ReadBookDTO, Date> bookReturned;
+    @FXML
+    public TableColumn<ReadBookDTO, Integer> bookDays;
+    @FXML
+    public TableColumn<ReadBookDTO, Double> bookFee;
+    @FXML
+    public TableColumn<ReadBookDTO, Integer> bookEdition;
+    @FXML
+    public ListView<String> statisitcsList;
 
-    public TableView<ReturnedBookDTO> tableView;
-    public TableColumn<ReturnedBookDTO, String> bookISBN;
-    public TableColumn<ReturnedBookDTO, String> bookTitle;
-    public TableColumn<ReturnedBookDTO, String> bookAuthors;
-    public TableColumn<ReturnedBookDTO, String> bookGenres;
-    public TableColumn<ReturnedBookDTO, Integer> bookEdition;
-    public TableColumn<ReturnedBookDTO, Integer> bookDays;
-    public TableColumn<ReturnedBookDTO, Date> bookIssued;
-    public TableColumn<ReturnedBookDTO, Date> bookReturned;
-    private final BookService bookService;
 
-    private List<ReturnedBookDTO> data;
+    private List<ReadBookDTO> data;
+    private List<String> otherStatistics;
 
 
     public StatisticsUserController(ApplicationContext applicationContext,
                                     StatisticsService statisticsService,
-                                    BookService bookService,
                                     UserSession session) {
         super(applicationContext,statisticsService,session);
-        this.bookService = bookService;
+        this.otherStatistics = new ArrayList<>();
     }
 
     @Override
@@ -69,6 +77,7 @@ public class StatisticsUserController extends StatisticsController {
             protected Void call() {
                 spinner.setVisible(true);
                 initData();
+                initStatistics();
                 return null;
             }
         };
@@ -85,25 +94,15 @@ public class StatisticsUserController extends StatisticsController {
         this.tableView.getItems().clear();
         this.tableView.getItems().addAll(data);
     }
-//    public void initializeStatistics() {
-//        String description = book.getDescription() == null ? "No description" : book.getDescription();
-//        String tableOfContent = book.getTableOfContent() == null ? "No table of content" : book.getTableOfContent();
-//
-//        data.add("Book ISBN:              " + book.getIsbn());
-//        data.add("Book Title:              " + book.getTitle());
-//        data.add("Authors:          " + book.getAuthors());
-//        data.add("Publisher:          " + book.getPublisher());
-//        data.add("Genres:          " + book.getGenres());
-//        data.add("Edition:          " + book.getEdition());
-//        data.add("Quantity:          " + book.getQuantity());
-//        data.add("Remaining amount:          " + book.getRemainingBooks());
-//        data.add("Cover Type:          " + book.getCover());
-//        data.add("Description:          " + description);
-//        data.add("Table of contents:          " + tableOfContent);
-//        data.add("Available:          " + (book.getAvailability().equalsIgnoreCase("AVAILABLE") ? "YES" : "NO"));
-//
-//        this.bookListView.setItems(data);
-//    }
+    public void initStatistics() {
+        List<String> stats = statisticsService.getBasicUserStatistics(session.getLoggedUser());
+        otherStatistics.add("Read books:        "+ stats.get(0));
+        otherStatistics.add("Ratings given:     "+ stats.get(1));
+        otherStatistics.add("Reviews given:    "+stats.get(2));
+        otherStatistics.add("Total fees:         "+stats.get(3));
+        otherStatistics.add("Ratings average: "+stats.get(4));
+        this.statisitcsList.setItems(FXCollections.observableArrayList(otherStatistics));
+    }
     protected void initializeStageOptions() {
         if (session.getLoggedUser() == null) {
             return;
@@ -117,10 +116,14 @@ public class StatisticsUserController extends StatisticsController {
         this.bookISBN.setCellValueFactory(new PropertyValueFactory<>("isbn"));
         this.bookTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
         this.bookAuthors.setCellValueFactory(new PropertyValueFactory<>("authors"));
+        this.bookPublisher.setCellValueFactory(new PropertyValueFactory<>("publisher"));
         this.bookGenres.setCellValueFactory(new PropertyValueFactory<>("genres"));
-        this.bookEdition.setCellValueFactory(new PropertyValueFactory<>("edition"));
+        this.bookIssued.setCellValueFactory(new PropertyValueFactory<>("issuedDate"));
+        this.bookReturned.setCellValueFactory(new PropertyValueFactory<>("returnedDate"));
         this.bookDays.setCellValueFactory(new PropertyValueFactory<>("days"));
-        this.bookIssued.setCellValueFactory(new PropertyValueFactory<>("issued"));
-        this.bookReturned.setCellValueFactory(new PropertyValueFactory<>("returned"));
+        this.bookFee.setCellValueFactory(new PropertyValueFactory<>("fee"));
+        this.bookEdition.setCellValueFactory(new PropertyValueFactory<>("edition"));
+
+        ;
     }
 }
