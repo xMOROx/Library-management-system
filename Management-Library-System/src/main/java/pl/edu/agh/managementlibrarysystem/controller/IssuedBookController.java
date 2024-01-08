@@ -71,6 +71,7 @@ public class IssuedBookController extends ControllerWithTableView<IssuedBookDTO>
 
         if (session.getLoggedUser().getPermission() == Permission.NORMAL_USER) {
             this.contextMenu.getItems().remove(0);
+            this.userID.setVisible(false);
         }
     }
 

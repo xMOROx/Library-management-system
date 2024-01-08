@@ -3,7 +3,6 @@ package pl.edu.agh.managementlibrarysystem.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
 import java.util.Set;
 
 @Setter
@@ -24,7 +23,7 @@ public class Book {
             inverseJoinColumns = @JoinColumn(name = "author_id")
     )
     private Set<Author> authors;
-    @OneToMany(mappedBy = "books", cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = ReadBook.class)
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = ReadBook.class)
     private Set<ReadBook> readBooks;
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = IssuedBook.class)
     private Set<IssuedBook> issuedBooks;
@@ -56,11 +55,11 @@ public class Book {
     private String availability;
     @Column(name = "cover", columnDefinition = "varchar(255) default 'hard'")
     private String cover;
-    @Column(name = "description", columnDefinition = "varchar(255) default 'No description'")
+    @Column(name = "description", columnDefinition = "TEXT default 'No description'")
     private String description;
     @Column(name = "image", columnDefinition = "varchar(255) default 'No image'")
     private String image;
-    @Column(name = "table_of_content", columnDefinition = "varchar(255)")
+    @Column(name = "table_of_content", columnDefinition = "TEXT default 'No table of content'")
     private String tableOfContent;
 
     public static String getAuthorsAsString(Book book) {
@@ -73,6 +72,7 @@ public class Book {
         return bookAuthors
                 .stream()
                 .reduce("", (authors, author) -> authors + author.getFirstname() + " " + author.getLastname() + (bookAuthors.size() > 1 ? ", " : ""), String::concat);
+
     }
 
     public static String getGenresAsString(Book book) {

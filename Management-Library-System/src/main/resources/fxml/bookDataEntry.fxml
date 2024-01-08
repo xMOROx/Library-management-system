@@ -11,9 +11,10 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import org.controlsfx.control.SearchableComboBox?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<BorderPane fx:id="root" prefHeight="519.0" prefWidth="993.0" style="-fx-background-color: white;" stylesheets="@../css/bookData.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.agh.managementlibrarysystem.controller.entry.BookDataEntryController">
+<BorderPane fx:id="root" prefHeight="519.0" prefWidth="993.0" style="-fx-background-color: white;" stylesheets="@../css/bookData.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.agh.managementlibrarysystem.controller.entry.BookDataEntryController">
     <top>
         <VBox prefHeight="519.0" prefWidth="993.0" BorderPane.alignment="CENTER">
             <HBox alignment="CENTER_LEFT" prefHeight="51.0" prefWidth="993.0" spacing="30.0">
@@ -92,20 +93,19 @@
                         <Font name="Segoe UI Semilight" size="18.0" />
                     </font>
                 </Label>
-
-                <ComboBox fx:id="authorSelection" layoutX="143.0" layoutY="318.0" prefWidth="150.0" />
+                <SearchableComboBox fx:id="authorSelection" layoutX="143.0" layoutY="318.0" prefHeight="25.0" prefWidth="151.0" />
                 <Label layoutX="43.0" layoutY="317.0" prefHeight="27.0" prefWidth="100.0" text="Author">
                     <font>
                         <Font name="Segoe UI Semilight" size="18.0" />
                     </font>
                 </Label>
-                <ComboBox fx:id="publisherSelection" layoutX="143.0" layoutY="354.0" prefWidth="150.0" />
+            <SearchableComboBox fx:id="publisherSelection" layoutX="143.0" layoutY="354.0" prefHeight="25.0" prefWidth="151.0" />
                 <Label layoutX="43.0" layoutY="353.0" prefHeight="27.0" prefWidth="100.0" text="Publisher">
                     <font>
                         <Font name="Segoe UI Semilight" size="18.0" />
                     </font>
                 </Label>
-                <ComboBox fx:id="genresSelection" layoutX="143.0" layoutY="390.0" prefWidth="150.0" />
+            <SearchableComboBox fx:id="genresSelection" layoutX="143.0" layoutY="390.0" prefHeight="25.0" prefWidth="151.0" />
                 <Label layoutX="43.0" layoutY="389.0" prefHeight="27.0" prefWidth="100.0" text="Gengre(s)">
                     <font>
                         <Font name="Segoe UI Semilight" size="18.0" />
@@ -123,12 +123,12 @@
                     </font>
                 </MFXButton>
                 <BorderPane fx:id="helperView" layoutX="458.0" layoutY="-1.0" prefHeight="470.0" prefWidth="535.0" />
-            <MFXTextField fx:id="imageURL" layoutX="143.0" layoutY="229.0" prefHeight="25.0" prefWidth="315.0" />
-            <Label layoutX="51.0" layoutY="247.0" prefHeight="27.0" prefWidth="92.0" text="Image URL">
-               <font>
-                  <Font name="Segoe UI Semilight" size="18.0" />
-               </font>
-            </Label>
+                <MFXTextField fx:id="imageURL" layoutX="143.0" layoutY="229.0" prefHeight="25.0" prefWidth="315.0" />
+                <Label layoutX="51.0" layoutY="247.0" prefHeight="27.0" prefWidth="92.0" text="Image URL">
+                    <font>
+                        <Font name="Segoe UI Semilight" size="18.0" />
+                    </font>
+                </Label>
 
             </Pane>
         </VBox>

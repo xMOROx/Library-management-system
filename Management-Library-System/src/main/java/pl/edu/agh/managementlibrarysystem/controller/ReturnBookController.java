@@ -184,7 +184,11 @@ public class ReturnBookController extends ResizeableBaseController implements In
 
     @FXML
     private void submitBook(ActionEvent actionEvent) {
-//        TODO: repair to not allow returning book from other user - when normal user is logged in
+        if (!bookService.checkIfBookIsIssuedByUser(this.bookId, this.userId)) {
+            Alerts.showErrorAlert("Book not returned", "Book has not been taken yet");
+            return;
+        }
+
         if (!bookService.returnBook(this.bookId, this.userId)) {
             Alerts.showErrorAlert("Book not returned", "Book has not been taken yet");
             return;

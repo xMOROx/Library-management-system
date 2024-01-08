@@ -202,4 +202,8 @@ public class BookService {
     public boolean reviewBook(long bookId, long userId, String review, double rating) {
         return this.readBooksRepository.reviewBook(bookId, userId, review, rating);
     }
+
+    public boolean checkIfBookIsIssuedByUser(Long bookId, Long userId) {
+        return this.issuedBooksRepository.findByBookIdAndUserId(bookId, userId).isPresent();
+    }
 }

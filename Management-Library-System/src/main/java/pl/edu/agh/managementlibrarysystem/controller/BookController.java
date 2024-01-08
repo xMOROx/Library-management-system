@@ -26,6 +26,7 @@ import pl.edu.agh.managementlibrarysystem.event.SetItemToBorderPaneEvent;
 import pl.edu.agh.managementlibrarysystem.event.fxml.LeavingBorderPaneEvent;
 import pl.edu.agh.managementlibrarysystem.model.User;
 import pl.edu.agh.managementlibrarysystem.model.util.Permission;
+import pl.edu.agh.managementlibrarysystem.recommender.CollaborativeFilteringRecommender;
 import pl.edu.agh.managementlibrarysystem.service.BookService;
 import pl.edu.agh.managementlibrarysystem.session.UserSession;
 import pl.edu.agh.managementlibrarysystem.utils.Alerts;
@@ -87,7 +88,8 @@ public class BookController extends ControllerWithTableView<BookDTO> {
     private TableColumn<BookDTO, String> availability;
 
 
-    public BookController(ApplicationContext applicationContext, BookService bookService, UserSession session) throws IOException {
+
+    public BookController(ApplicationContext applicationContext, BookService bookService, UserSession session) {
         super(applicationContext);
         this.bookService = bookService;
         this.session = session;

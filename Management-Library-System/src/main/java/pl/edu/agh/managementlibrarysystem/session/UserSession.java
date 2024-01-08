@@ -13,6 +13,5 @@ import pl.edu.agh.managementlibrarysystem.model.User;
 @Scope("singleton")
 public class UserSession {
     private User loggedUser;
-
     private BookDTO selectedBook;
 }

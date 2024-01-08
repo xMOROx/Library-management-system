@@ -38,4 +38,13 @@ public class ReadBookRepositoryImpl {
 
         return true;
     }
+
+    public boolean checkIfUserReviewedBook(long bookId, long userId) {
+        String query = "SELECT COUNT(*) FROM read_books WHERE book_id = ? AND user_id = ?";
+
+        return ((Number) this.entityManager.createNativeQuery(query)
+                .setParameter(1, bookId)
+                .setParameter(2, userId)
+                .getSingleResult()).intValue() > 0;
+    }
 }

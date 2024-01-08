@@ -18,14 +18,14 @@ public class ReadBook {
     @ManyToOne
     @MapsId("bookId")
     @JoinColumn(name = "book_id")
-    private Book books;
+    private Book book;
     @ManyToOne
     @MapsId("userId")
     @JoinColumn(name = "user_id")
     private User user;
     @Column(name = "review", length = 1000, columnDefinition = "TEXT")
     private String review;
-    @Column(name = "rating", columnDefinition = "double(3,2) default 0")
-//    Min = 1, Max = 5
+    @Column(name = "rating", columnDefinition = "double(3,2) default -1")
+//    Min = 0, Max = 5
     private double rating;
 }
