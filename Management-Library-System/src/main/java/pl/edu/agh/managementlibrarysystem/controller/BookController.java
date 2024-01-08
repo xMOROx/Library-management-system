@@ -3,6 +3,7 @@ package pl.edu.agh.managementlibrarysystem.controller;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.concurrent.Task;
@@ -12,6 +13,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
 import org.kordamp.ikonli.javafx.FontIcon;
@@ -44,8 +47,6 @@ public class BookController extends ControllerWithTableView<BookDTO> {
 
     private final BookService bookService;
     private final UserSession session;
-    @FXML
-    private ContextMenu contextMenu;
     @FXML
     private FontIcon searchIcon;
     @FXML
@@ -251,6 +252,7 @@ public class BookController extends ControllerWithTableView<BookDTO> {
         this.createNewTask();
     }
 
+
     @FXML
     private void deleteBook(ActionEvent actionEvent) {
         BookDTO bookDTO = this.tableView.getSelectionModel().getSelectedItem();
@@ -346,7 +348,7 @@ public class BookController extends ControllerWithTableView<BookDTO> {
         this.allBooksButton.setVisible(!visible);
         this.bookDetailsButton.setVisible(visible);
 
-        if(visible) {
+        if (visible) {
             this.delete.setVisible(this.session.getLoggedUser().getPermission() != Permission.NORMAL_USER);
         } else {
             this.delete.setVisible(false);

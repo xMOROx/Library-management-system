@@ -20,12 +20,7 @@ public class CollaborativeFilteringRecommender {
         this.itemBasedRating = itemBasedRating;
     }
 
-    public List<RatingLookUp> recommend(User user) {
-        log.info("User based rating");
-        List<RatingLookUp> similarRatings = userBasedRating
-                .getSimilarRatings(user);
-        similarRatings.sort((r1, r2) -> Double.compare(r2.rating(), r1.rating()));
-
+    private void removeDuplicates(List<RatingLookUp> similarRatings) {
         for (int i = 0; i < similarRatings.size(); i++) {
             for (int j = i + 1; j < similarRatings.size(); j++) {
                 if (similarRatings.get(i).id().equals(similarRatings.get(j).id())) {
@@ -34,6 +29,15 @@ public class CollaborativeFilteringRecommender {
                 }
             }
         }
+    }
+
+    public List<RatingLookUp> recommend(User user) {
+        log.info("User based rating");
+        List<RatingLookUp> similarRatings = userBasedRating
+                .getSimilarRatings(user);
+        similarRatings.sort((r1, r2) -> Double.compare(r2.rating(), r1.rating()));
+
+        removeDuplicates(similarRatings);
 
         return similarRatings.subList(0, MAX_RECOMMENDATIONS);
     }
