@@ -1,5 +1,6 @@
 package pl.edu.agh.managementlibrarysystem.controller.abstraction;
 
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ProgressBar;
@@ -31,7 +32,7 @@ public abstract class ControllerWithTableView<T> extends ResizeableBaseControlle
     @FXML
     protected TableView<T> tableView;
 
-    protected List<T> data;
+    protected ObservableList<T> data;
 
     public ControllerWithTableView(ApplicationContext applicationContext) {
         super(applicationContext);
@@ -49,7 +50,7 @@ public abstract class ControllerWithTableView<T> extends ResizeableBaseControlle
         });
     }
 
-    protected abstract void createNewTask(int maxIterations, int sleepTime);
+    protected abstract void createNewTask();
 
     protected abstract void initializeColumns();
 

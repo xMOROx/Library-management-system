@@ -1,6 +1,9 @@
 package pl.edu.agh.managementlibrarysystem.controller;
 
 import io.github.palexdev.materialfx.controls.MFXButton;
+import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -20,6 +23,7 @@ import pl.edu.agh.managementlibrarysystem.model.User;
 import pl.edu.agh.managementlibrarysystem.service.BookService;
 import pl.edu.agh.managementlibrarysystem.service.NotificationService;
 import pl.edu.agh.managementlibrarysystem.session.UserSession;
+import pl.edu.agh.managementlibrarysystem.utils.TaskFactory;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -66,12 +70,25 @@ public class ProfileController extends ControllerWithTableView<ReadBookDTO> impl
     public void initialize(URL location, ResourceBundle resources) {
         this.tooltipInitializer();
         this.initializeColumns();
-        this.initData();
+        this.createNewTask();
     }
 
     @Override
-    protected void createNewTask(int maxIterations, int sleepTime) {
+    protected void createNewTask() {
+        Task<Void> task = new Task<>() {
+            @Override
+            protected Void call() {
+                spinner.setVisible(true);
+                initData();
+                return null;
+            }
+        };
 
+        task.setOnSucceeded(event -> {
+            spinner.setVisible(false);
+        });
+
+        TaskFactory.startThread(task);
     }
 
     @Override
@@ -92,12 +109,16 @@ public class ProfileController extends ControllerWithTableView<ReadBookDTO> impl
     @Override
     protected void initData() {
         User currUser = userSession.getLoggedUser();
-        this.firstName.setText(currUser.getFirstname());
-        this.lastName.setText(currUser.getLastname());
-        this.email.setText(currUser.getEmail());
-        this.totalFees.setText(String.valueOf(this.bookService.getTotalFeesByUserId(currUser.getId())));
-        this.notifications.setText(String.valueOf(notificationService.getAmount(currUser.getEmail())));
-        data = this.bookService.getAllReadBookForUser(currUser);
+        Platform.runLater(
+                () -> {
+                    this.firstName.setText(currUser.getFirstname());
+                    this.lastName.setText(currUser.getLastname());
+                    this.email.setText(currUser.getEmail());
+                    this.totalFees.setText(String.valueOf(this.bookService.getTotalFeesByUserId(currUser.getId())));
+                    this.notifications.setText(String.valueOf(notificationService.getAmount(currUser.getEmail())));
+                }
+        );
+        data = FXCollections.observableArrayList(this.bookService.getAllReadBookForUser(currUser));
         this.tableView.getItems().clear();
         this.tableView.getItems().addAll(data);
     }

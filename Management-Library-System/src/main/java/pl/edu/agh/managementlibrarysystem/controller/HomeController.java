@@ -67,17 +67,7 @@ public class HomeController extends ResizeableBaseController implements Initiali
             notificationText2.setVisible(false);
             numberOfNotifications.setVisible(false);
         }
-        Task<Void> task = new Task<>() {
-            @Override
-            protected Void call() {
-                collaborativeFilteringRecommender.recommend(user);
-                return null;
-            }
-        };
 
-        Thread thread = new Thread(task);
-        thread.setDaemon(true);
-        thread.start();
     }
 
 }

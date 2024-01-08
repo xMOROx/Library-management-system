@@ -104,15 +104,12 @@ public class NotificationService {
 
     public String deleteNotification(NotificationDTO notificationDTO) {
         Long id = notificationDTO.getNotificationID();
-        String msg = "";
 
         if (notificationRepository.findById(id).isPresent()) {
             notificationRepository.deleteById(id);
-            msg = "deleted successfully!";
+           return "deleted successfully!";
 
-        } else {
-            msg = "couldn't delete notification";
         }
-        return msg;
+        return "couldn't delete notification";
     }
 }

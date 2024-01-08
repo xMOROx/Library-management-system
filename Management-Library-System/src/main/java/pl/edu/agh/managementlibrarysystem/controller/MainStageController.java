@@ -127,7 +127,7 @@ public class MainStageController extends BaseController implements Initializable
         }
         User u = session.getLoggedUser();
         if (u.getPermission() == Permission.NORMAL_USER) {
-            applicationContext.publishEvent(new BorderPaneReadyEvent(pane, new ClassPathResource("fxml/user.fxml")));
+            applicationContext.publishEvent(new BorderPaneReadyEvent(pane, new ClassPathResource("fxml/profile.fxml")));
         } else {
             applicationContext.publishEvent(new BorderPaneReadyEvent(pane, new ClassPathResource("fxml/usersAdmin.fxml")));
         }

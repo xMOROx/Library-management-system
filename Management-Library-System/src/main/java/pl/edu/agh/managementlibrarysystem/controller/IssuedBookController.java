@@ -1,5 +1,6 @@
 package pl.edu.agh.managementlibrarysystem.controller;
 
+import javafx.collections.FXCollections;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.concurrent.Task;
@@ -23,6 +24,7 @@ import pl.edu.agh.managementlibrarysystem.utils.Alerts;
 import pl.edu.agh.managementlibrarysystem.utils.TaskFactory;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 @Controller
@@ -65,7 +67,7 @@ public class IssuedBookController extends ControllerWithTableView<IssuedBookDTO>
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         super.initialize(location, resources);
-        this.createNewTask(80, 20);
+        this.createNewTask();
 
         this.tableView.setPlaceholder(new Text("No issued books"));
 
@@ -125,27 +127,33 @@ public class IssuedBookController extends ControllerWithTableView<IssuedBookDTO>
     }
 
     @Override
-    protected void createNewTask(int maxIterations, int sleepTime) {
-        Task<Integer> task = TaskFactory.countingTaskForProgressBar(maxIterations, sleepTime, progressBar);
+    protected void createNewTask() {
+        Task<Void> task = new Task<>() {
+            @Override
+            protected Void call() {
+                spinner.setVisible(true);
+                progressBar.setVisible(true);
+                initData();
+                return null;
+            }
+        };
+
 
         task.setOnRunning(event -> updateFee());
-
         task.setOnSucceeded(event -> {
             spinner.setVisible(false);
-            initData();
+            progressBar.setVisible(false);
         });
 
-        Thread thread = new Thread(task);
-        thread.setDaemon(true);
-        thread.start();
+        TaskFactory.startThread(task);
     }
 
     @Override
     protected void initData() {
         if (session.getLoggedUser().getPermission() == Permission.NORMAL_USER) {
-            data = this.bookService.getIssuedBooksByUserId(session.getLoggedUser().getId());
+            data = FXCollections.observableArrayList(this.bookService.getIssuedBooksByUserId(session.getLoggedUser().getId()));
         } else {
-            data = this.bookService.getIssuedBooks();
+            data = FXCollections.observableArrayList(this.bookService.getIssuedBooks());
         }
 
         this.tableView.getItems().clear();
@@ -174,7 +182,19 @@ public class IssuedBookController extends ControllerWithTableView<IssuedBookDTO>
         }
 
         issuedBookDTO.setIsTaken("yes");
-        this.bookService.issueBookToUser(issuedBookDTO);
-        this.initData();
+        Task<Void> task = new Task<>() {
+            @Override
+            protected Void call() {
+                bookService.issueBookToUser(issuedBookDTO);
+                return null;
+            }
+        };
+
+        task.setOnSucceeded(event -> {
+            Alerts.showAlert("Book issued", "Book issued to user", "Book issued to user successfully");
+        });
+
+        TaskFactory.startThread(task);
+
     }
 }
