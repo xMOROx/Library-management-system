@@ -38,12 +38,15 @@ public class RecommendedBooksControllers extends ResizeableBaseController implem
     private final ImageLoader imageLoader;
     private final UserSession userSession;
     private final ObservableList<BookDetailsDTO> bookDetailsDTOS = FXCollections.observableArrayList();
+
     @FXML
     private BorderPane borderPane;
     @FXML
     private AnchorPane imageContainer;
     @FXML
     private ImageView currentImage;
+    @FXML
+    private ImageView spinner;
     @FXML
     private ListView<String> bookInformationContainer;
     @FXML
@@ -76,6 +79,7 @@ public class RecommendedBooksControllers extends ResizeableBaseController implem
         Task<Void> task = new Task<>() {
             @Override
             protected Void call() {
+                spinner.setVisible(true);
                 recommendedBooks = collaborativeFilteringRecommender.recommend(user);
                 Platform.runLater(
                         () -> {
@@ -98,6 +102,7 @@ public class RecommendedBooksControllers extends ResizeableBaseController implem
         task.setOnSucceeded(event -> {
                     next.setDisable(false);
                     previous.setDisable(false);
+                    spinner.setVisible(false);
                 }
         );
 

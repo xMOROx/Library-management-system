@@ -3,6 +3,7 @@
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
@@ -59,6 +60,9 @@
          <ImageView fx:id="currentImage" fitWidth="382.0" layoutX="309.0" pickOnBounds="true" preserveRatio="true" />
             <MFXButton fx:id="previous" buttonType="RAISED" disable="true" layoutX="4.0" layoutY="100.0" onAction="#previous" prefHeight="150.0" prefWidth="48.0" style="-fx-background-color: WHITE; -fx-text-fill: BLACK" text="&lt;" />
             <MFXButton fx:id="next" buttonType="RAISED" disable="true" layoutX="948.0" layoutY="100.0" onAction="#next" prefHeight="150.0" prefWidth="48.0" style="-fx-background-color: WHITE; -fx-text-fill: BLACK" text="&gt;" />
+            <ImageView fx:id="spinner" fitHeight="292.0" fitWidth="488.0" layoutX="320.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                <Image url="@../images/image-spinner.gif" />
+            </ImageView>
         </AnchorPane>
     </center>
     <bottom>
