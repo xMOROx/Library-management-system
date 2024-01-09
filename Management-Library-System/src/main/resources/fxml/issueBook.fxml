@@ -3,6 +3,7 @@
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import io.github.palexdev.materialfx.controls.MFXTextField?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
@@ -124,11 +125,7 @@
                             <Font size="14.0" />
                         </font>
                     </MFXTextField>
-                    <MFXTextField fx:id="numberOfDaysTextField" floatMode="ABOVE" maxWidth="360.0" minWidth="360.0" onKeyPressed="#enterNumberOfDays" prefHeight="31.0" prefWidth="360.0" promptText="Enter numer of days">
-                        <font>
-                            <Font size="14.0" />
-                        </font>
-                    </MFXTextField>
+               <DatePicker fx:id="datePicker" prefHeight="31.0" prefWidth="360.0" promptText="Select return date" />
 
                     <Label fx:id="errorUserLabel" textFill="RED" />
                 </VBox>

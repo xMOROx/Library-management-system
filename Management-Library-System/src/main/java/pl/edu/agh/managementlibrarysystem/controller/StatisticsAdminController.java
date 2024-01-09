@@ -1,7 +1,6 @@
 package pl.edu.agh.managementlibrarysystem.controller;
 
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
@@ -14,7 +13,6 @@ import pl.edu.agh.managementlibrarysystem.DTO.ReadBookDTO;
 import pl.edu.agh.managementlibrarysystem.controller.abstraction.StatisticsController;
 import pl.edu.agh.managementlibrarysystem.model.User;
 import pl.edu.agh.managementlibrarysystem.model.util.Permission;
-import pl.edu.agh.managementlibrarysystem.service.BookService;
 import pl.edu.agh.managementlibrarysystem.service.StatisticsService;
 import pl.edu.agh.managementlibrarysystem.session.UserSession;
 import pl.edu.agh.managementlibrarysystem.utils.TaskFactory;
@@ -24,8 +22,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
+
 @Controller
-public class StatisticsUserController extends StatisticsController {
+public class StatisticsAdminController extends StatisticsController {
 
     @FXML
     public TableView<ReadBookDTO> tableView;
@@ -57,9 +56,9 @@ public class StatisticsUserController extends StatisticsController {
     private List<String> otherStatistics;
 
 
-    public StatisticsUserController(ApplicationContext applicationContext,
-                                    StatisticsService statisticsService,
-                                    UserSession session) {
+    public StatisticsAdminController(ApplicationContext applicationContext,
+                                     StatisticsService statisticsService,
+                                     UserSession session) {
         super(applicationContext,statisticsService,session);
         this.otherStatistics = new ArrayList<>();
     }

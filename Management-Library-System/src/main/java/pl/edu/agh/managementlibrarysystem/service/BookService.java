@@ -2,6 +2,7 @@ package pl.edu.agh.managementlibrarysystem.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cglib.core.Local;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import pl.edu.agh.managementlibrarysystem.DTO.*;
@@ -14,6 +15,7 @@ import pl.edu.agh.managementlibrarysystem.repository.ReviewBookRepository;
 import pl.edu.agh.managementlibrarysystem.repository.ReadBookRepository;
 import pl.edu.agh.managementlibrarysystem.utils.Alerts;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
