@@ -23,10 +23,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import pl.edu.agh.managementlibrarysystem.DTO.UserDTO;
 import pl.edu.agh.managementlibrarysystem.controller.abstraction.BaseController;
-import pl.edu.agh.managementlibrarysystem.event.fxml.LeavingBorderPaneEvent;
 import pl.edu.agh.managementlibrarysystem.model.User;
 import pl.edu.agh.managementlibrarysystem.model.util.Permission;
-import pl.edu.agh.managementlibrarysystem.repository.UserRepository;
 import pl.edu.agh.managementlibrarysystem.service.UserService;
 import pl.edu.agh.managementlibrarysystem.session.UserSession;
 import pl.edu.agh.managementlibrarysystem.utils.Alerts;
@@ -149,9 +147,10 @@ public class EditUserController extends BaseController implements Initializable 
             return;
         }
         passwordBool.set(userService.findByEmail(currUserDTO.getEmail()).isPresent() && passwordEncoder.matches(password.getText(), userService.findByEmail(currUserDTO.getEmail()).get().getPassword()));
+        updateErrorList();
     }
     private void validateNewPassword(){
-        repeatPasswordBool.bind(Bindings.createBooleanBinding(() -> password.getText().length()>=8, repeatPassword.textProperty(), password.textProperty()));
+        repeatPasswordBool.bind(Bindings.createBooleanBinding(() -> repeatPassword.getText().length()>=8, repeatPassword.textProperty()));
         name.focusedProperty().addListener((observable, oldValue, newValue) -> {
         });
     }
@@ -165,10 +164,10 @@ public class EditUserController extends BaseController implements Initializable 
     }
     @FXML
     private void userHasBeenChosen(){
-        if(chooseUser.getValue().equals("Choose user")){
+        if(chooseUser.getValue()==null || chooseUser.getValue().equals("Choose user")){
            return;
         }
-        long id =0L;
+        long id;
         try{
             id = Long.parseLong(chooseUser.getValue());
         }
@@ -176,7 +175,7 @@ public class EditUserController extends BaseController implements Initializable 
             e.printStackTrace();
             return;
         }
-        currUserDTO = userService.findById(Long.parseLong(chooseUser.getValue()));
+        currUserDTO = userService.findById(id);
         try{
             this.name.setText(currUserDTO.getFullname().split(" ")[0]);
             this.surname.setText(currUserDTO.getFullname().split(" ")[1]);

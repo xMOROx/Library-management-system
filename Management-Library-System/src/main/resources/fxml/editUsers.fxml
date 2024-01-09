@@ -12,32 +12,44 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="borderPane" prefHeight="651.0" prefWidth="1000.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.agh.managementlibrarysystem.controller.EditUserController">
+<?import javafx.scene.layout.Region?>
+<BorderPane prefHeight="651.0" prefWidth="1000.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.agh.managementlibrarysystem.controller.EditUserController">
     <top>
-        <VBox prefHeight="123.0" prefWidth="953.0" BorderPane.alignment="CENTER">
-            <BorderPane maxHeight="67.0" prefHeight="67.0" prefWidth="957.0" style="-fx-background-color: white;">
+        <VBox prefHeight="123.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
+            <BorderPane prefHeight="67.0" prefWidth="1000.0" style="-fx-background-color: white;">
                 <right>
+                    <HBox alignment="TOP_RIGHT" prefHeight="37.0" prefWidth="127.0" style="-fx-background-color: white;"
+                          BorderPane.alignment="CENTER">
+                        <Label fx:id="minimize" contentDisplay="GRAPHIC_ONLY" onMouseClicked="#minimize"/>
+                        <Label fx:id="close" contentDisplay="GRAPHIC_ONLY" layoutX="182.0" layoutY="10.0"
+                               onMouseClicked="#close"/>
+                    </HBox>
                 </right>
                 <center>
                     <Label text="Library Management System" textFill="#a1a1a1" BorderPane.alignment="CENTER">
                         <font>
-                            <Font name="Segoe UI Semilight" size="23.0" />
+                            <Font name="Segoe UI Semilight" size="23.0"/>
                         </font>
+                        <BorderPane.margin>
+                            <Insets top="2.0"/>
+                        </BorderPane.margin>
                     </Label>
                 </center>
             </BorderPane>
-            <VBox prefHeight="117.0" prefWidth="953.0" style="-fx-background-color: white;">
-                <HBox alignment="BOTTOM_LEFT" prefHeight="117.0" prefWidth="953.0" spacing="10.0">
-                    <Label fx:id="word" text="Edit users" textFill="#2b579a">
+            <VBox prefHeight="117.0" prefWidth="1000.0" style="-fx-background-color: white;">
+                <HBox prefHeight="81.0" prefWidth="953.0" spacing="10.0">
+                    <Label prefHeight="73.0" prefWidth="255.0" style="-fx-text-fill: #2b579a;" text="Issue Book">
                         <font>
-                            <Font name="Segoe UI Semilight" size="46.0" />
+                            <Font name="Segoe UI Semilight" size="46.0"/>
                         </font>
-                        <HBox.margin>
-                            <Insets left="2.0" />
-                        </HBox.margin>
+                        <padding>
+                            <Insets left="10.0"/>
+                        </padding>
                     </Label>
+                    <Region prefHeight="81.0" prefWidth="129.0" HBox.hgrow="ALWAYS"/>
                 </HBox>
             </VBox>
+            <HBox prefHeight="35.0" prefWidth="1000.0" style="-fx-background-color: #efefefef;"/>
         </VBox>
     </top>
     <center>
