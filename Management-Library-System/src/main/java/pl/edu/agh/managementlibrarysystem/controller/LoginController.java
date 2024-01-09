@@ -106,7 +106,9 @@ public class LoginController extends BaseController implements Initializable {
 
     @FXML
     private void signIn(KeyEvent keyEvent) {
-
+        if (keyEvent.getCode() == KeyCode.ENTER) {
+            login.fire();
+        }
     }
 
     @FXML

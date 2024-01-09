@@ -44,7 +44,6 @@ public class EditUserController extends BaseController implements Initializable 
     private final Pattern patternEmail;
     private final ObservableList<String> data = FXCollections.observableArrayList();
     private final PasswordEncoder passwordEncoder;
-    private final UserRepository userRepository;
     private final UserSession session;
     private UserDTO currUserDTO;
     @FXML
@@ -72,10 +71,9 @@ public class EditUserController extends BaseController implements Initializable 
     private BooleanProperty emailBool;
     private BooleanProperty passwordBool;
     private BooleanProperty repeatPasswordBool;
-    public EditUserController(ApplicationContext applicationContext, UserService userService, PasswordEncoder passwordEncoder, UserRepository userRepository,UserSession session) {
+    public EditUserController(ApplicationContext applicationContext, UserService userService, PasswordEncoder passwordEncoder,UserSession session) {
         super(applicationContext);
         this.passwordEncoder = passwordEncoder;
-        this.userRepository = userRepository;
         this.patternEmail = Pattern.compile(".+@.+\\..+", Pattern.CASE_INSENSITIVE);
         this.userService = userService;
         this.session = session;
@@ -150,10 +148,9 @@ public class EditUserController extends BaseController implements Initializable 
         if(currUserDTO==null){
             return;
         }
-        passwordBool.set(userRepository.findByEmail(currUserDTO.getEmail()).isPresent() && passwordEncoder.matches(password.getText(), userRepository.findByEmail(currUserDTO.getEmail()).get().getPassword()));
+        passwordBool.set(userService.findByEmail(currUserDTO.getEmail()).isPresent() && passwordEncoder.matches(password.getText(), userService.findByEmail(currUserDTO.getEmail()).get().getPassword()));
     }
     private void validateNewPassword(){
-
         repeatPasswordBool.bind(Bindings.createBooleanBinding(() -> password.getText().length()>=8, repeatPassword.textProperty(), password.textProperty()));
         name.focusedProperty().addListener((observable, oldValue, newValue) -> {
         });
@@ -171,7 +168,7 @@ public class EditUserController extends BaseController implements Initializable 
         if(chooseUser.getValue().equals("Choose user")){
            return;
         }
-        Long id =0L;
+        long id =0L;
         try{
             id = Long.parseLong(chooseUser.getValue());
         }
@@ -234,13 +231,6 @@ public class EditUserController extends BaseController implements Initializable 
         userService.updateUser(this.currUserDTO.getId(),this.name.getText(),this.surname.getText(),this.email.getText(),passwordEncoder.encode(this.repeatPassword.getText()),permission);
         Alerts.showInformationAlert("Update User attempt","user has been updated");
     }
-    @FXML
-    private void fullscreen(MouseEvent mouseEvent) {
-    }
-    @FXML
-    private void unfullscreen(MouseEvent mouseEvent) {
-    }
-
     @FXML
     private void passwordKeyPressed(KeyEvent keyEvent) {
         if (keyEvent.getCode() == KeyCode.ENTER) {

@@ -61,19 +61,30 @@ public class UserService {
         return userOptional;
 
     }
+
     @Transactional
-    public List<UserDTO> getAllUsers(){
+    public List<UserDTO> getAllUsers() {
         return repository.findAll().stream()
                 .map(this.userMapper::mapToDto)
                 .toList();
     }
+
     @Transactional
-    public void deleteByUserId(Long id){
+    public void deleteByUserId(Long id) {
         repository.deleteById(id);
     }
+
     @Transactional
-    public void updateUser(Long id, String firstname, String lastname, String email, String password, Permission permission){
-        repository.updateUser(id,firstname,lastname,email,password,permission);
+    public void updateUser(Long id, String firstname, String lastname, String email, String password, Permission permission) {
+        repository.updateUser(id, firstname, lastname, email, password, permission);
     }
 
+    public Optional<User> findByEmail(String email) {
+        return repository.findByEmail(email);
+    }
+
+
+    public void changePassword(User user) {
+        repository.save(user);
+    }
 }

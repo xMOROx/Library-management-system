@@ -7,7 +7,7 @@
 <?import javafx.scene.text.Font?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<BorderPane fx:id="borderpane" onMouseDragged="#stageDragged" onMousePressed="#stagePressed" prefHeight="651.0" prefWidth="1141.0" style="-fx-border-color: #2b579a;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.agh.managementlibrarysystem.controller.MainStageController">
+<BorderPane fx:id="borderpane" prefHeight="651.0" prefWidth="1141.0" style="-fx-border-color: #2b579a;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.agh.managementlibrarysystem.controller.MainStageController">
     <left>
         <VBox fx:id="homeButtonsPanel" maxWidth="140.0" minWidth="140.0" prefHeight="651.0" prefWidth="140.0" stylesheets="@../css/main.css" BorderPane.alignment="CENTER">
             <MFXButton fx:id="back" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" onAction="#logout" prefHeight="43.0" prefWidth="43.0" style="-fx-border-color: #ffffff; -fx-border-radius: 2000; -fx-border-width: 2;" stylesheets="@../css/main.css">

@@ -1,0 +1,13 @@
+.mfx-button{
+    -fx-background-radius: 0;
+    -fx-background-color:  #2b579a;
+    -fx-text-fill: #ffffff;
+}
+
+.mfx-button:hover{
+    -fx-background-color: #219297;
+}
+
+.mfx-button:focused{
+    -fx-background-color: #2b579a;
+}

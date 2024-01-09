@@ -17,12 +17,6 @@
         <VBox prefHeight="123.0" prefWidth="953.0" BorderPane.alignment="CENTER">
             <BorderPane maxHeight="67.0" prefHeight="67.0" prefWidth="957.0" style="-fx-background-color: white;">
                 <right>
-                    <HBox alignment="TOP_RIGHT" prefHeight="37.0" prefWidth="127.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
-                        <Label fx:id="minimize" contentDisplay="GRAPHIC_ONLY" onMouseClicked="#minimize" />
-                        <Label fx:id="fullscreen" contentDisplay="GRAPHIC_ONLY" layoutX="194.0" layoutY="10.0" onMouseClicked="#fullscreen" />
-                        <Label fx:id="unfullscreen" contentDisplay="GRAPHIC_ONLY" layoutX="194.0" layoutY="10.0" onMouseClicked="#unfullscreen" />
-                        <Label fx:id="close" contentDisplay="GRAPHIC_ONLY" layoutX="194.0" layoutY="10.0" onMouseClicked="#close" />
-                    </HBox>
                 </right>
                 <center>
                     <Label text="Library Management System" textFill="#a1a1a1" BorderPane.alignment="CENTER">

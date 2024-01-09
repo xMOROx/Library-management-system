@@ -92,6 +92,7 @@ public class MainStageController extends BaseController implements Initializable
         if (uPermission == Permission.NORMAL_USER) {
             users.setText("Profile");
             ControlsUtils.changeControlVisibility(addUser, false);
+            ControlsUtils.changeControlVisibility(settings, false);
 
         }
         if (uPermission != Permission.ADMIN) {
@@ -103,15 +104,6 @@ public class MainStageController extends BaseController implements Initializable
         }
 
 
-    }
-
-    @FXML
-    private void stageDragged(MouseEvent mouseEvent) {
-
-    }
-
-    @FXML
-    private void stagePressed(MouseEvent mouseEvent) {
     }
 
     @FXML
@@ -128,7 +120,7 @@ public class MainStageController extends BaseController implements Initializable
     }
 
     @FXML
-    private void loadBooksPanel(ActionEvent actionEvent) throws IOException {
+    private void loadBooksPanel(ActionEvent actionEvent){
         applicationContext.publishEvent(new BorderPaneReadyEvent(pane, new ClassPathResource("fxml/books.fxml")));
     }
 
@@ -172,6 +164,11 @@ public class MainStageController extends BaseController implements Initializable
 
     @FXML
     private void loadSettingsPanel(ActionEvent actionEvent) {
+        if (this.session.getLoggedUser().getPermission() == Permission.ADMIN) {
+            applicationContext.publishEvent(new BorderPaneReadyEvent(pane, new ClassPathResource("fxml/adminSettings.fxml")));
+        } else {
+            applicationContext.publishEvent(new BorderPaneReadyEvent(pane, new ClassPathResource("fxml/settings.fxml")));
+        }
 
     }
 
