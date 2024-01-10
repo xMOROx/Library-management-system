@@ -250,7 +250,7 @@ public class AddNotificationController extends BaseDataEntryController<ActionEve
         );
 
         Alerts.showInformationAlert("Notification notification", msg);
-        if(msg.split(" ")[0].equals("Error")){
+        if(msg.split(" ")[0].equals("Error:")){
             return;
         }
         if(sendEmailCheckbox.isSelected()){
