@@ -32,8 +32,21 @@ public class NotificationService {
     //returns a string that answers whether a notification
     public String makeNewNotification(String isbn, String email, Date sendingDate, Type type, boolean accepted) {
         String msg = "";
-        Optional<Book> book = bookRepository.findByIsbn(isbn);
         Optional<User> user = userRepository.findByEmail(email);
+        if(isbn==null){
+            if(user.isPresent()){
+            Notification notification = new Notification();
+            notification.setUser(user.get());
+            notification.setBooks(null);
+            notification.setSendingDate(sendingDate);
+            notification.setType(type);
+            notification.setAccepted(accepted);
+            notificationRepository.save(notification);
+            return "Notification added successfully!";
+            }
+            return "Couldn't make notification because no such user exists";
+        }
+        Optional<Book> book = bookRepository.findByIsbn(isbn);
         if (book.isPresent() && user.isPresent()) {
             Optional<IssuedBook> issuedBook = issuedBooksRepository.findIssuedBookByUserIdAndBookIsbn(user.get().getId(), book.get().getIsbn());
             if (issuedBook.isPresent() && issuedBook.get().getBook().equals(book.get())) {

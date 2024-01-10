@@ -9,7 +9,9 @@ import java.util.Arrays;
 
 public enum Type {
     BOOKS_ARE_DUE("Books are due"),
-    RETURN_DATE_IS_CLOSE("Return date is approaching");
+    RETURN_DATE_IS_CLOSE("Return date is approaching"),
+    NEW_BOOKS_ARE_AVAILABLE("New books are available"),
+    NO_RECENT_ACTIVITY("No recent activity");
     private final String type;
     Type(String type){
         this.type = type;

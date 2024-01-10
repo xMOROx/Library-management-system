@@ -1,135 +1,134 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import io.github.palexdev.materialfx.controls.*?>
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
-<BorderPane fx:id="root" prefHeight="651.0" prefWidth="1000.0" style="-fx-background-color: white;"
-            xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="pl.edu.agh.managementlibrarysystem.controller.AddNotificationController">
+
+<BorderPane fx:id="root" prefHeight="651.0" prefWidth="1000.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.agh.managementlibrarysystem.controller.AddNotificationController">
     <center>
         <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
             <BorderPane.margin>
-                <Insets bottom="4.0" left="4.0" right="4.0" top="4.0"/>
+                <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
             </BorderPane.margin>
-            <HBox alignment="CENTER" prefHeight="38.0" prefWidth="957.0" spacing="5.0"
-                  style="-fx-border-color: #C5CAE9; -fx-background-color: EEEEEE;">
+            <HBox alignment="CENTER" prefHeight="38.0" prefWidth="957.0" spacing="5.0" style="-fx-border-color: #C5CAE9; -fx-background-color: EEEEEE;">
                 <VBox.margin>
-                    <Insets left="1.0" right="1.0"/>
+                    <Insets left="1.0" right="1.0" />
                 </VBox.margin>
-                <FontIcon iconLiteral="far-bell" iconSize="32"/>
+                <FontIcon iconLiteral="far-bell" iconSize="32" />
                 <Label text="Notification">
                     <font>
-                        <Font size="18.0"/>
+                        <Font size="18.0" />
                     </font>
                 </Label>
             </HBox>
-            <HBox alignment="CENTER_LEFT" prefHeight="52.0" prefWidth="992.0">
-                <MFXButton fx:id="backBtn" contentDisplay="GRAPHIC_ONLY" onAction="#back" prefHeight="40.0"
-                           prefWidth="40.0" rippleColor="white"
-                           style="-fx-background-color: white; -fx-background-radius: 20000; -fx-border-color: black; -fx-border-radius: 20000;"
-                           text="Button">
-                    <graphic>
-                        <FontIcon iconLiteral="fas-arrow-left" iconSize="16"/>
-                    </graphic>
-                </MFXButton>
-            </HBox>
             <HBox prefHeight="130.0" prefWidth="990.0" style="-fx-border-color: #EEEEEE;" VBox.vgrow="ALWAYS">
                 <VBox.margin>
-                    <Insets left="1.0" right="1.0" top="2.0"/>
+                    <Insets left="1.0" right="1.0" top="2.0" />
                 </VBox.margin>
                 <VBox alignment="CENTER" prefHeight="160.0" prefWidth="478.5">
-                    <MFXTextField fx:id="bookSearchField" floatMode="ABOVE" maxWidth="360.0" minWidth="360.0"
-                                  onKeyPressed="#searchBook" prefHeight="31.0" prefWidth="360.0"
-                                  promptText="Enter book ISBN / barcode to search">
+                    <MFXTextField fx:id="bookSearchField" floatMode="ABOVE" maxWidth="360.0" minWidth="360.0" onKeyPressed="#searchBook" prefHeight="31.0" prefWidth="360.0" promptText="Enter book ISBN / barcode to search">
                         <font>
-                            <Font size="14.0"/>
+                            <Font size="14.0" />
                         </font>
                     </MFXTextField>
                 </VBox>
-                <VBox alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="160.0" prefWidth="478.5"
-                      spacing="10.0">
-                    <Text fx:id="bookTitle" strokeType="OUTSIDE" strokeWidth="0.0" text="Book Title"
-                          textAlignment="CENTER" wrappingWidth="470.0">
+                <VBox alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="160.0" prefWidth="478.5" spacing="10.0">
+                    <Text fx:id="bookTitle" strokeType="OUTSIDE" strokeWidth="0.0" text="Book Title" textAlignment="CENTER" wrappingWidth="470.0">
                         <font>
-                            <Font size="14.0"/>
+                            <Font size="14.0" />
                         </font>
                     </Text>
-                    <Text fx:id="bookAuthors" layoutX="237.0" layoutY="96.0" strokeType="OUTSIDE" strokeWidth="0.0"
-                          text="Book Author" textAlignment="CENTER" wrappingWidth="470.0">
+                    <Text fx:id="bookAuthors" layoutX="237.0" layoutY="96.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Book Author" textAlignment="CENTER" wrappingWidth="470.0">
                         <font>
-                            <Font size="14.0"/>
+                            <Font size="14.0" />
                         </font>
                     </Text>
-                    <Text fx:id="bookPublisher" layoutX="237.0" layoutY="105.0" strokeType="OUTSIDE" strokeWidth="0.0"
-                          text="Book Publisher" textAlignment="CENTER" wrappingWidth="470.0">
+                    <Text fx:id="bookPublisher" layoutX="237.0" layoutY="105.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Book Publisher" textAlignment="CENTER" wrappingWidth="470.0">
                         <font>
-                            <Font size="14.0"/>
+                            <Font size="14.0" />
                         </font>
                     </Text>
-                    <Text fx:id="availability" layoutX="211.0" layoutY="95.0" strokeType="OUTSIDE" strokeWidth="0.0"
-                          text="Availability">
+                    <Text fx:id="availability" layoutX="211.0" layoutY="95.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Availability">
                         <font>
-                            <Font size="14.0"/>
+                            <Font size="14.0" />
                         </font>
                     </Text>
                 </VBox>
             </HBox>
-            <HBox layoutX="11.0" layoutY="50.0" prefHeight="139.0" prefWidth="990.0" style="-fx-border-color: #EEEEEE;"
-                  VBox.vgrow="ALWAYS">
+            <HBox layoutX="11.0" layoutY="50.0" prefHeight="139.0" prefWidth="990.0" style="-fx-border-color: #EEEEEE;" VBox.vgrow="ALWAYS">
                 <VBox.margin>
-                    <Insets left="1.0" right="1.0" top="2.0"/>
+                    <Insets left="1.0" right="1.0" top="2.0" />
                 </VBox.margin>
                 <VBox alignment="CENTER" prefHeight="160.0" prefWidth="478.5" spacing="10.0">
-                    <MFXTextField fx:id="userSearchTextField" floatMode="ABOVE" maxWidth="360.0" minWidth="360.0"
-                                  onKeyPressed="#searchUser" prefHeight="31.0" prefWidth="360.0"
-                                  promptText="Enter user ID to search">
+                    <MFXTextField fx:id="userSearchTextField" floatMode="ABOVE" maxWidth="360.0" minWidth="360.0" onKeyPressed="#searchUser" prefHeight="31.0" prefWidth="360.0" promptText="Enter user ID to search">
                         <font>
-                            <Font size="14.0"/>
+                            <Font size="14.0" />
                         </font>
                     </MFXTextField>
                 </VBox>
-                <VBox alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="160.0" prefWidth="478.5"
-                      spacing="10.0">
+                <VBox alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="160.0" prefWidth="478.5" spacing="10.0">
                     <Text fx:id="userFullName" strokeType="OUTSIDE" strokeWidth="0.0" text="User Full Name">
                         <font>
-                            <Font size="14.0"/>
+                            <Font size="14.0" />
                         </font>
                     </Text>
-                    <Text fx:id="userEmail" layoutX="237.0" layoutY="96.0" strokeType="OUTSIDE" strokeWidth="0.0"
-                          text="Email Address">
+                    <Text fx:id="userEmail" layoutX="237.0" layoutY="96.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email Address">
                         <font>
-                            <Font size="14.0"/>
+                            <Font size="14.0" />
                         </font>
                     </Text>
                 </VBox>
             </HBox>
-            <VBox alignment="CENTER" prefHeight="160.0" prefWidth="478.5" spacing="10.0">
-                <MFXTextField fx:id="dateTextField" floatMode="ABOVE" maxWidth="360.0" minWidth="360.0"
-                              onKeyPressed="#enterDate" prefHeight="31.0" prefWidth="360.0" promptText="Enter Date">
+         <HBox alignment="CENTER">
+            <children>
+               <VBox fx:id="toHide1">
+                  <children>
+                     <Region prefHeight="200.0" prefWidth="350.0" />
+                  </children>
+               </VBox>
+                  <VBox alignment="CENTER" prefHeight="160.0" prefWidth="236.0" spacing="10.0">
+                      <ComboBox fx:id="type" prefHeight="25.0" prefWidth="150.0" promptText="Choose Type" visibleRowCount="2" />
+                  <HBox alignment="CENTER">
+                     <children>
+                            <CheckBox fx:id="isResolved" mnemonicParsing="false" text="Resolved" />
+                        <Region prefHeight="0.0" prefWidth="50.0" />
+                        <CheckBox fx:id="sendEmailCheckbox" mnemonicParsing="false" text="Send Email" />
+                     </children>
+                  </HBox>
+                  </VBox>
+               <VBox fx:id="toHide2" alignment="CENTER">
+                  <children>
+                     <Label text="Email content" />
+                     <TextArea fx:id="emailTextArea" prefHeight="158.0" prefWidth="350.0" promptText="write your email here" />
+                  </children>
+               </VBox>
+            </children>
+         </HBox>
+            <HBox alignment="CENTER" prefHeight="75.0" prefWidth="992.0" spacing="10.0">
+                <MFXButton fx:id="cancel" layoutX="401.0" layoutY="55.0" onAction="#cancel" prefHeight="31.0" prefWidth="167.0" text="Cancel">
                     <font>
-                        <Font size="14.0"/>
-                    </font>
-                </MFXTextField>
-                <ComboBox fx:id="type" prefHeight="25.0" prefWidth="150.0" promptText="Choose Type"
-                          visibleRowCount="2"/>
-                <CheckBox fx:id="isResolved" mnemonicParsing="false" text="Resolved"/>
-            </VBox>
-            <HBox alignment="CENTER" prefHeight="75.0" prefWidth="949.0" spacing="10.0">
-                <MFXButton fx:id="cancel" layoutX="401.0" layoutY="55.0" onAction="#cancel" prefHeight="31.0"
-                           prefWidth="167.0" text="Cancel">
-                    <font>
-                        <Font name="Segoe UI Semilight" size="15.0"/>
+                        <Font name="Segoe UI Semilight" size="15.0" />
                     </font>
                 </MFXButton>
-                <MFXButton fx:id="makeNotification" onAction="#makeNotification" prefHeight="31.0" prefWidth="167.0"
-                           text="Make Notification">
+            <MFXButton fx:id="editEmail" onAction="#editEmailText" prefHeight="31.0" prefWidth="167.0" text="Edit Email">
+               <font>
+                  <Font name="Segoe UI Semilight" size="15.0" />
+               </font>
+            </MFXButton>
+                <MFXButton fx:id="makeNotification" onAction="#makeNotification" prefHeight="31.0" prefWidth="167.0" text="Make Notification">
                     <font>
-                        <Font name="Segoe UI Semilight" size="15.0"/>
+                        <Font name="Segoe UI Semilight" size="15.0" />
                     </font>
                 </MFXButton>
             </HBox>

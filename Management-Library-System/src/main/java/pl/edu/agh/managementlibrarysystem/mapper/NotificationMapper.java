@@ -16,6 +16,17 @@ public class NotificationMapper implements OneWayMapper<Notification, Notificati
     public NotificationDTO map(Notification object) {
         Book book = object.getBooks();
         User user = object.getUser();
+        if(book==null){
+            return NotificationDTO.builder()
+                    .notificationID(object.getNotificationID())
+                    .userID(user.getId())
+                    .bookISBN(null)
+                    .bookTitle(null)
+                    .typeOfNotification(object.getType().toString().toLowerCase())
+                    .dateOfAdmition(object.getSendingDate())
+                    .status(object.getAccepted())
+                    .build();
+        }
         return NotificationDTO.builder()
                 .notificationID(object.getNotificationID())
                 .userID(user.getId())
