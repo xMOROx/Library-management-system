@@ -73,11 +73,16 @@ public class NotificationService {
     public String resolveNotifications(NotificationDTO notificationDTO) {
         String msg = "";
         String bookISBN = notificationDTO.getBookISBN();
+        if(bookISBN==null){
+            Optional<Notification> notification = notificationRepository.findById(notificationDTO.getNotificationID());
+            notification.ifPresent(value -> value.setAccepted(true));
+            return "Notification(s) resolved!";
+        }
         Long userId = notificationDTO.getUserID();
         List<Notification> notifications = notificationRepository.findAll();
         for (Notification notification : notifications) {
             if (notification.getUser().getId().equals(userId)) {
-                if (notification.getBooks().getIsbn().equals(bookISBN)) {
+                if (notification.getBooks()!=null && notification.getBooks().getIsbn().equals(bookISBN)) {
                     notification.setAccepted(true);
                     notificationRepository.save(notification);
                     msg = "Notification(s) resolved!";
