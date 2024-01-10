@@ -19,7 +19,6 @@ import org.springframework.stereotype.Controller;
 import pl.edu.agh.managementlibrarysystem.DTO.BookDTO;
 import pl.edu.agh.managementlibrarysystem.DTO.UserDTO;
 import pl.edu.agh.managementlibrarysystem.controller.abstraction.BaseDataEntryController;
-import pl.edu.agh.managementlibrarysystem.event.fxml.LeavingBorderPaneEvent;
 import pl.edu.agh.managementlibrarysystem.model.util.Type;
 import pl.edu.agh.managementlibrarysystem.service.BookService;
 import pl.edu.agh.managementlibrarysystem.service.EmailService;
@@ -251,6 +250,9 @@ public class AddNotificationController extends BaseDataEntryController<ActionEve
         );
 
         Alerts.showInformationAlert("Notification notification", msg);
+        if(msg.split(" ")[0].equals("Error")){
+            return;
+        }
         if(sendEmailCheckbox.isSelected()){
             sendEmail();
         }

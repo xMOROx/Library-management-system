@@ -44,7 +44,7 @@ public class NotificationService {
             notificationRepository.save(notification);
             return "Notification added successfully!";
             }
-            return "Couldn't make notification because no such user exists";
+            return "Error: Couldn't make notification because no such user exists";
         }
         Optional<Book> book = bookRepository.findByIsbn(isbn);
         if (book.isPresent() && user.isPresent()) {
@@ -60,12 +60,12 @@ public class NotificationService {
                 msg = "Notification added successfully!";
             }
             if (msg.isEmpty()) {
-                msg = "Couldn't make notification because the user provided has no such books issued";
+                msg = "Error: Couldn't make notification because the user provided has no such books issued";
             }
         } else if (book.isPresent()) {
-            msg = "Couldn't make notification because no such user exists";
+            msg = "Error: Couldn't make notification because no such user exists";
         } else {
-            msg = "Couldn't make notification because no such book exists";
+            msg = "Error: Couldn't make notification because no such book exists";
         }
         return msg;
     }
