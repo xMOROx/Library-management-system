@@ -238,7 +238,7 @@ Część aplikacji odpowiadająca za polecanie użytkownikom książek na podsta
 - service/BookService.java
 - repository/BookRepository.java
 
-![Polecanie książki](./images/data/recommended.png)
+![Polecanie książki](./images/data/recomended.png)
 
 ## Reviews
 
