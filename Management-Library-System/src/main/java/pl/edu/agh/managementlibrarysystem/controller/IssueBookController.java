@@ -138,16 +138,16 @@ public class IssueBookController extends ResizeableBaseController implements Ini
             return;
         }
 
-        if (book.getAvailability().equals("Not available")) {
+        if (book.getAvailability().getValue().equalsIgnoreCase("unavailable")) {
             errorISBNMessage.setValue("Book with given ISBN is not available!");
             return;
         }
         errorISBNMessage.setValue("");
 
-        this.bookTitle.setText(book.getTitle());
-        this.bookAuthor.setText(book.getAuthors());
-        this.bookPublisher.setText(book.getPublisher());
-        this.availability.setText(book.getAvailability());
+        this.bookTitle.setText(book.getTitle().getValue());
+        this.bookAuthor.setText(book.getAuthors().getValue());
+        this.bookPublisher.setText(book.getPublisher().getValue());
+        this.availability.setText(book.getAvailability().getValue());
         if (user != null && date!=null) {
             this.issueBook.setDisable(false);
         }
@@ -179,32 +179,6 @@ public class IssueBookController extends ResizeableBaseController implements Ini
 
     }
 
-//    @FXML
-//    private void enterNumberOfDays(KeyEvent keyEvent) {
-//        String numberOfDays = numberOfDaysTextField.getText();
-//        if (numberOfDays.isEmpty()) {
-//            errorUserMessage.setValue("Number of days field is empty!");
-//            return;
-//        }
-//
-//        try {
-//            Integer.parseInt(numberOfDays);
-//        } catch (NumberFormatException e) {
-//            errorUserMessage.setValue("Number of days field must be a number!");
-//        }
-//
-//        if (Integer.parseInt(numberOfDays) < 0) {
-//            errorUserMessage.setValue("Number of days field must be a positive number!");
-//            return;
-//        }
-//
-//        errorUserMessage.setValue("");
-//
-//
-//        if (book != null && user != null) {
-//            this.issueBook.setDisable(false);
-//        }
-//    }
     private void dateEntered(){
         this.date = datePicker.getValue();
         if (book != null && user != null) {
@@ -229,7 +203,6 @@ public class IssueBookController extends ResizeableBaseController implements Ini
         }
 
 
-//        Integer days = Integer.parseInt(numberOfDaysTextField.getText());
         Integer days = (int) ChronoUnit.DAYS.between(LocalDate.now(), date);
         this.bookService.issueBook(book, user, days, !logged);
 

@@ -28,7 +28,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ResourceBundle;
 
 @Controller
-public class ReadBookController extends ResizeableBaseController implements Initializable {
+public class ReturnBookController extends ResizeableBaseController implements Initializable {
 
     private final BookService bookService;
     private final ObservableList<String> data = FXCollections.observableArrayList();
@@ -50,22 +50,23 @@ public class ReadBookController extends ResizeableBaseController implements Init
     private LocalDate minDate;
 
 
-    public ReadBookController(ApplicationContext applicationContext, BookService bookService) {
+    public ReturnBookController(ApplicationContext applicationContext, BookService bookService) {
         super(applicationContext);
         this.bookService = bookService;
     }
 
-    private void dateEntered(){
+    private void dateEntered() {
         numberOfDaysToRenew = (int) ChronoUnit.DAYS.between(minDate, datePicker.getValue());
         renew.setDisable(false);
     }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.tooltipInitializer();
         this.createNewTask(80, 20);
         this.datePicker.setDisable(true);
-        datePicker.valueProperty().addListener((obs,oldDate,newDate)->{
-            if(newDate!=null){
+        datePicker.valueProperty().addListener((obs, oldDate, newDate) -> {
+            if (newDate != null) {
                 dateEntered();
             }
         });
@@ -143,34 +144,35 @@ public class ReadBookController extends ResizeableBaseController implements Init
         }
 
 
-        data.add("Issued ID               : " + issuedBookDTO.getIssuedID());
-        data.add("Fee                         : " + issuedBookDTO.getFee());
-        data.add("Days                       : " + issuedBookDTO.getDays());
+        data.add("Issued ID               : " + issuedBookDTO.getIssuedID().getValue());
+        data.add("Fee                         : " + issuedBookDTO.getFee().getValue());
+        data.add("Days                       : " + issuedBookDTO.getDays().getValue());
         data.add("\nISSUED BOOK INFORMATION");
-        data.add("Book ISBN             : " + issuedBookDTO.getBookISBN());
-        data.add("Book Title              : " + issuedBookDTO.getBookTitle());
-        data.add("Issued Time           : " + issuedBookDTO.getIssuedDate());
-        data.add("Return Time          : " + issuedBookDTO.getReturnedDate());
-        data.add("Taken                 : " + issuedBookDTO.getIsTaken());
+        data.add("Book ISBN             : " + issuedBookDTO.getBookISBN().getValue());
+        data.add("Book Title              : " + issuedBookDTO.getBookTitle().getValue());
+        data.add("Issued Time           : " + issuedBookDTO.getIssuedDate().getValue());
+        data.add("Return Time          : " + issuedBookDTO.getReturnedDate().getValue());
+        data.add("Taken                 : " + issuedBookDTO.getIsTaken().getValue());
         data.add("\nUSER INFORMATION");
-        data.add("User ID                 : " + issuedBookDTO.getUserID());
-        data.add("User full name       : " + issuedBookDTO.getUserFullName());
-        data.add("Student Email        : " + issuedBookDTO.getUserEmail());
+        data.add("User ID                 : " + issuedBookDTO.getUserID().getValue());
+        data.add("User full name       : " + issuedBookDTO.getUserFullName().getValue());
+        data.add("Student Email        : " + issuedBookDTO.getUserEmail().getValue());
 
         listView.setItems(data);
         this.issuedId = text;
         this.submit.setDisable(false);
         this.datePicker.setDisable(false);
 
-        minDate = LocalDate.parse(issuedBookDTO.getIssuedDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd")).plusDays(issuedBookDTO.getDays());
+        minDate = LocalDate.parse(issuedBookDTO.getIssuedDate().getValue(), DateTimeFormatter.ofPattern("yyyy-MM-dd")).plusDays(issuedBookDTO.getDays().getValue());
         datePicker.setDayCellFactory(d ->
                 new DateCell() {
-                    @Override public void updateItem(LocalDate item, boolean empty) {
+                    @Override
+                    public void updateItem(LocalDate item, boolean empty) {
                         super.updateItem(item, empty);
                         setDisable(item.isBefore(minDate));
-                    }});
+                    }
+                });
     }
-
 
 
     @FXML

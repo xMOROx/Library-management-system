@@ -2,8 +2,8 @@ package pl.edu.agh.managementlibrarysystem.controller;
 
 import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.concurrent.Task;
@@ -13,8 +13,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.Clipboard;
-import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
 import org.kordamp.ikonli.javafx.FontIcon;
@@ -82,11 +80,11 @@ public class BookController extends ControllerWithTableView<BookDTO> {
     @FXML
     private TableColumn<BookDTO, String> mainGenre;
     @FXML
-    private TableColumn<BookDTO, Integer> edition;
+    private TableColumn<BookDTO, Number> edition;
     @FXML
-    private TableColumn<BookDTO, Integer> quantity;
+    private TableColumn<BookDTO, Number> quantity;
     @FXML
-    private TableColumn<BookDTO, Integer> remainingBooks;
+    private TableColumn<BookDTO, Number> remainingBooks;
     @FXML
     private TableColumn<BookDTO, String> availability;
 
@@ -148,21 +146,23 @@ public class BookController extends ControllerWithTableView<BookDTO> {
         User u = session.getLoggedUser();
         if (u.getPermission() == Permission.NORMAL_USER) {
             ControlsUtils.changeControlVisibility(loadDataEntryButton, false);
-            this.contextMenu.getItems().remove(1);
+            for (int i = 0; i < 2; i++) {
+                this.contextMenu.getItems().remove(1);
+            }
         }
     }
 
     @Override
     protected void initializeColumns() {
-        bookISBN.setCellValueFactory(new PropertyValueFactory<>("isbn"));
-        bookTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
-        bookAuthors.setCellValueFactory(new PropertyValueFactory<>("authors"));
-        bookPublisher.setCellValueFactory(new PropertyValueFactory<>("publisher"));
-        mainGenre.setCellValueFactory(new PropertyValueFactory<>("mainGenre"));
-        edition.setCellValueFactory(new PropertyValueFactory<>("edition"));
-        quantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
-        remainingBooks.setCellValueFactory(new PropertyValueFactory<>("remainingBooks"));
-        availability.setCellValueFactory(new PropertyValueFactory<>("availability"));
+        bookISBN.setCellValueFactory(cell -> cell.getValue().getIsbn());
+        bookTitle.setCellValueFactory(cell -> cell.getValue().getTitle());
+        bookAuthors.setCellValueFactory(cell -> cell.getValue().getAuthors());
+        bookPublisher.setCellValueFactory(cell -> cell.getValue().getPublisher());
+        mainGenre.setCellValueFactory(cell -> cell.getValue().getMainGenre());
+        edition.setCellValueFactory(cell -> cell.getValue().getEdition());
+        quantity.setCellValueFactory(cell -> cell.getValue().getQuantity());
+        remainingBooks.setCellValueFactory(cell -> cell.getValue().getRemainingBooks());
+        availability.setCellValueFactory(cell -> cell.getValue().getAvailability());
     }
 
     @Override
@@ -219,15 +219,15 @@ public class BookController extends ControllerWithTableView<BookDTO> {
                         }
                         String lowerCaseFilter = newValue.toLowerCase();
 
-                        if (book.getIsbn().toLowerCase().contains(lowerCaseFilter)) {
+                        if (book.getIsbn().getValue().toLowerCase().contains(lowerCaseFilter)) {
                             return true;
-                        } else if (book.getTitle().toLowerCase().contains(lowerCaseFilter)) {
+                        } else if (book.getTitle().getValue().toLowerCase().contains(lowerCaseFilter)) {
                             return true;
-                        } else if (book.getAuthors().toLowerCase().contains(lowerCaseFilter)) {
+                        } else if (book.getAuthors().getValue().toLowerCase().contains(lowerCaseFilter)) {
                             return true;
-                        } else if (book.getPublisher().toLowerCase().contains(lowerCaseFilter)) {
+                        } else if (book.getPublisher().getValue().toLowerCase().contains(lowerCaseFilter)) {
                             return true;
-                        } else if (book.getMainGenre().toLowerCase().contains(lowerCaseFilter)) {
+                        } else if (book.getMainGenre().getValue().toLowerCase().contains(lowerCaseFilter)) {
                             return true;
                         } else if (book.getEdition().toString().toLowerCase().contains(lowerCaseFilter)) {
                             return true;
@@ -235,7 +235,7 @@ public class BookController extends ControllerWithTableView<BookDTO> {
                             return true;
                         } else if (book.getRemainingBooks().toString().toLowerCase().contains(lowerCaseFilter)) {
                             return true;
-                        } else if (book.getAvailability().toLowerCase().contains(lowerCaseFilter)) {
+                        } else if (book.getAvailability().getValue().toLowerCase().contains(lowerCaseFilter)) {
                             return true;
                         }
                         tableView.setPlaceholder(new Text("No record match your search"));
@@ -251,8 +251,6 @@ public class BookController extends ControllerWithTableView<BookDTO> {
     private void refreshList(ActionEvent actionEvent) {
         this.createNewTask();
     }
-
-
     @FXML
     private void deleteBook(ActionEvent actionEvent) {
         BookDTO bookDTO = this.tableView.getSelectionModel().getSelectedItem();
@@ -262,14 +260,16 @@ public class BookController extends ControllerWithTableView<BookDTO> {
         }
 
         this.data.remove(bookDTO);
-        this.booksAmount.setText(String.valueOf(Integer.parseInt(this.booksAmount.getText()) - bookDTO.getQuantity()));
-        this.remainingBooksAmount.setText(String.valueOf(Integer.parseInt(this.remainingBooksAmount.getText()) - bookDTO.getRemainingBooks()));
+        this.booksAmount.setText(String.valueOf(Integer.parseInt(this.booksAmount.getText()) - bookDTO.getQuantity().getValue()));
+        this.remainingBooksAmount.setText(String.valueOf(Integer.parseInt(this.remainingBooksAmount.getText()) - bookDTO.getRemainingBooks().getValue()));
         Alerts.showSuccessAlert("Book deleted", "Book has been deleted");
+
+        tableView.refresh();
 
         Task<Void> task = new Task<>() {
             @Override
             protected Void call() {
-                bookService.deleteBookByIsbn(bookDTO.getIsbn());
+                bookService.deleteBookByIsbn(bookDTO.getIsbn().getValue());
                 return null;
             }
         };
@@ -281,14 +281,15 @@ public class BookController extends ControllerWithTableView<BookDTO> {
     private void deleteSelectedBooks(ActionEvent actionEvent) {
         this.tableView.getSelectionModel().getSelectedItems().forEach(bookDTO -> {
             this.data.remove(bookDTO);
-            this.booksAmount.setText(String.valueOf(Integer.parseInt(this.booksAmount.getText()) - bookDTO.getQuantity()));
-            this.remainingBooksAmount.setText(String.valueOf(Integer.parseInt(this.remainingBooksAmount.getText()) - bookDTO.getRemainingBooks()));
+            this.booksAmount.setText(String.valueOf(Integer.parseInt(this.booksAmount.getText()) - bookDTO.getQuantity().getValue()));
+            this.remainingBooksAmount.setText(String.valueOf(Integer.parseInt(this.remainingBooksAmount.getText()) - bookDTO.getRemainingBooks().getValue()));
 
+            tableView.refresh();
 
             Task<Void> task = new Task<>() {
                 @Override
                 protected Void call() {
-                    bookService.deleteBookByIsbn(bookDTO.getIsbn());
+                    bookService.deleteBookByIsbn(bookDTO.getIsbn().getValue());
                     return null;
                 }
             };
@@ -322,7 +323,7 @@ public class BookController extends ControllerWithTableView<BookDTO> {
         this.applicationContext.publishEvent(
                 new OpenNewBookWindowEvent<>(new ClassPathResource("fxml/bookDetails.fxml"), bookDTO, (book, controller) -> {
                     BookDetailsController bookDetailsController = (BookDetailsController) controller;
-                    bookDetailsController.setBookISBN(((BookDTO) book).getIsbn());
+                    bookDetailsController.setBookISBN(((BookDTO) book).getIsbn().getValue());
                 }, "Book details"));
 
     }
@@ -342,7 +343,36 @@ public class BookController extends ControllerWithTableView<BookDTO> {
         this.borderPane.setCenter(this.tableView);
         this.changeVisibilityOfControls(true);
     }
+    @FXML
+    private void changeAvailability(ActionEvent actionEvent) {
+        BookDTO bookDTO = this.tableView.getSelectionModel().getSelectedItem();
+        if (bookDTO == null) {
+            Alerts.showErrorAlert("No book selected", "Please select book to change availability");
+            return;
+        }
 
+        if (bookDTO.getAvailability().getValue().equals("available")) {
+            bookDTO.setAvailability(new SimpleStringProperty("unavailable"));
+            this.remainingBooksAmount.setText(String.valueOf(Integer.parseInt(this.remainingBooksAmount.getText()) - bookDTO.getRemainingBooks().getValue()));
+            Alerts.showSuccessAlert("Book unavailable", "Book is now unavailable");
+        } else {
+            bookDTO.setAvailability(new SimpleStringProperty("available"));
+            this.remainingBooksAmount.setText(String.valueOf(Integer.parseInt(this.remainingBooksAmount.getText()) + bookDTO.getRemainingBooks().getValue()));
+            Alerts.showSuccessAlert("Book available", "Book is now available");
+        }
+
+        tableView.refresh();
+
+        Task<Void> task = new Task<>() {
+            @Override
+            protected Void call() {
+                bookService.updateBook(bookDTO.getIsbn().toString());
+                return null;
+            }
+        };
+
+        TaskFactory.startTask(task);
+    }
     private void changeVisibilityOfControls(Boolean visible) {
         this.readBooksButton.setVisible(visible);
         this.allBooksButton.setVisible(!visible);

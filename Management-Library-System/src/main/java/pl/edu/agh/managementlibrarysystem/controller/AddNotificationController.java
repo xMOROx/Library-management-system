@@ -156,16 +156,16 @@ public class AddNotificationController extends BaseDataEntryController<ActionEve
             return;
         }
 
-        if (searchedBook.getAvailability().equals("Not available")) {
+        if (searchedBook.getAvailability().getValue().equals("Not available")) {
             Alerts.showErrorAlert("Book not available", "Book with given ISBN is not available!");
             return;
         }
 
 
-        this.bookTitle.setText(searchedBook.getTitle());
-        this.bookAuthors.setText(searchedBook.getAuthors());
-        this.bookPublisher.setText(searchedBook.getPublisher());
-        this.availability.setText(searchedBook.getAvailability());
+        this.bookTitle.setText(searchedBook.getTitle().getValue());
+        this.bookAuthors.setText(searchedBook.getAuthors().getValue());
+        this.bookPublisher.setText(searchedBook.getPublisher().getValue());
+        this.availability.setText(searchedBook.getAvailability().getValue());
     }
 
     @FXML
@@ -224,7 +224,7 @@ public class AddNotificationController extends BaseDataEntryController<ActionEve
             type1 = Type.RETURN_DATE_IS_CLOSE;
         }
         String msg = notificationService.makeNewNotification(
-                searchedBook.getIsbn(),
+                searchedBook.getIsbn().getValue(),
                 searchedUser.getEmail(),
                 Date.valueOf(date),
                 type1,

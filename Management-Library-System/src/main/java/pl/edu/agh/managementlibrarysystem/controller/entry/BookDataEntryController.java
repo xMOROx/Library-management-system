@@ -31,6 +31,7 @@ import pl.edu.agh.managementlibrarysystem.service.PublisherService;
 import pl.edu.agh.managementlibrarysystem.session.UserSession;
 import pl.edu.agh.managementlibrarysystem.utils.Alerts;
 import pl.edu.agh.managementlibrarysystem.utils.ControlsUtils;
+import pl.edu.agh.managementlibrarysystem.utils.FxmlPropertyFactory;
 
 import java.io.Serial;
 import java.net.URL;
@@ -213,16 +214,16 @@ public class BookDataEntryController extends BaseDataEntryController<ActionEvent
         int bookQuantity = Integer.parseInt(this.quantity.getText());
 
         BookDTO book = BookDTO.builder()
-                .title(this.title.getText())
-                .isbn(this.isbn.getText().trim())
-                .edition(!this.edition.getText().isEmpty() ? Integer.parseInt(this.edition.getText()) : 1)
-                .quantity(bookQuantity)
-                .remainingBooks(bookQuantity)
-                .description(!this.description.getText().isEmpty() ? this.description.getText() : null)
-                .availability(this.availability.isSelected() ? "available" : "unavailable")
-                .cover(this.coverType.getValue())
-                .image(!this.imageURL.getText().isEmpty() ? this.imageURL.getText() : null)
-                .tableOfContent(!this.tableOfContent.getText().isEmpty() ? this.tableOfContent.getText() : null)
+                .title(FxmlPropertyFactory.stringProperty(this.title.getText()))
+                .isbn(FxmlPropertyFactory.stringProperty(this.isbn.getText().trim()))
+                .edition(!this.edition.getText().isEmpty() ? FxmlPropertyFactory.integerProperty(Integer.parseInt(this.edition.getText())) : FxmlPropertyFactory.integerProperty(1))
+                .quantity(FxmlPropertyFactory.integerProperty(bookQuantity))
+                .remainingBooks(FxmlPropertyFactory.integerProperty(bookQuantity))
+                .description(!this.description.getText().isEmpty() ? FxmlPropertyFactory.stringProperty(this.description.getText()) : null)
+                .availability(this.availability.isSelected() ? FxmlPropertyFactory.stringProperty("available") : FxmlPropertyFactory.stringProperty("unavailable"))
+                .cover(FxmlPropertyFactory.stringProperty(this.coverType.getValue()))
+                .image(!this.imageURL.getText().isEmpty() ? FxmlPropertyFactory.stringProperty(this.imageURL.getText()) : null)
+                .tableOfContent(!this.tableOfContent.getText().isEmpty() ? FxmlPropertyFactory.stringProperty(this.tableOfContent.getText()) : null)
                 .build();
 
         String authorName = this.authorSelection.getValue().split(" ")[0];
@@ -270,17 +271,17 @@ public class BookDataEntryController extends BaseDataEntryController<ActionEvent
     }
 
     protected void setFields(BookDTO bookDTO) {
-        this.title.setText(bookDTO.getTitle());
-        this.isbn.setText(bookDTO.getIsbn());
+        this.title.setText(bookDTO.getTitle().getValue());
+        this.isbn.setText(bookDTO.getIsbn().getValue());
         this.edition.setText(bookDTO.getEdition().toString());
         this.quantity.setText(bookDTO.getQuantity().toString());
-        this.description.setText(bookDTO.getDescription());
-        this.tableOfContent.setText(bookDTO.getTableOfContent());
-        this.availability.setSelected(Boolean.parseBoolean(bookDTO.getAvailability()));
-        this.coverType.setValue(bookDTO.getCover());
-        this.authorSelection.setValue(bookDTO.getAuthors());
-        this.publisherSelection.setValue(bookDTO.getPublisher());
-        this.genresSelection.setValue(bookDTO.getMainGenre());
+        this.description.setText(bookDTO.getDescription().getValue());
+        this.tableOfContent.setText(bookDTO.getTableOfContent().getValue());
+        this.availability.setSelected(Boolean.parseBoolean(bookDTO.getAvailability().getValue()));
+        this.coverType.setValue(bookDTO.getCover().getValue());
+        this.authorSelection.setValue(bookDTO.getAuthors().getValue());
+        this.publisherSelection.setValue(bookDTO.getPublisher().getValue());
+        this.genresSelection.setValue(bookDTO.getMainGenre().getValue());
     }
 
     private boolean verifyData() {
@@ -345,7 +346,7 @@ public class BookDataEntryController extends BaseDataEntryController<ActionEvent
     }
 
     public void deleteBook(ActionEvent actionEvent) {
-        bookService.deleteByISBN(session.getSelectedBook().getIsbn());
+        bookService.deleteByISBN(session.getSelectedBook().getIsbn().getValue());
     }
 
     public static class EntryHelperEmptyEvent extends Event {

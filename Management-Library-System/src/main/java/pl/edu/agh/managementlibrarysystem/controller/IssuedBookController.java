@@ -21,6 +21,7 @@ import pl.edu.agh.managementlibrarysystem.model.util.Permission;
 import pl.edu.agh.managementlibrarysystem.service.BookService;
 import pl.edu.agh.managementlibrarysystem.session.UserSession;
 import pl.edu.agh.managementlibrarysystem.utils.Alerts;
+import pl.edu.agh.managementlibrarysystem.utils.FxmlPropertyFactory;
 import pl.edu.agh.managementlibrarysystem.utils.TaskFactory;
 
 import java.net.URL;
@@ -41,7 +42,7 @@ public class IssuedBookController extends ControllerWithTableView<IssuedBookDTO>
     @FXML
     private TableColumn<IssuedBookDTO, String> bookTitle;
     @FXML
-    private TableColumn<IssuedBookDTO, Integer> userID;
+    private TableColumn<IssuedBookDTO, Number> userID;
     @FXML
     private TableColumn<IssuedBookDTO, String> userName;
     @FXML
@@ -49,11 +50,11 @@ public class IssuedBookController extends ControllerWithTableView<IssuedBookDTO>
     @FXML
     private TableColumn<IssuedBookDTO, String> returnedDate; //TODO: when date passed, change color
     @FXML
-    private TableColumn<IssuedBookDTO, Integer> days;
+    private TableColumn<IssuedBookDTO, Number> days;
     @FXML
-    private TableColumn<IssuedBookDTO, Integer> fee;
+    private TableColumn<IssuedBookDTO, Number> fee;
     @FXML
-    private TableColumn<IssuedBookDTO, Boolean> isTaken;
+    private TableColumn<IssuedBookDTO, String> isTaken;
 
     @Autowired
     public IssuedBookController(ApplicationContext applicationContext, BookService bookService, UserSession session) {
@@ -92,25 +93,25 @@ public class IssuedBookController extends ControllerWithTableView<IssuedBookDTO>
                         }
                         String lowerCaseFilter = newValue.toLowerCase();
 
-                        if (book.getBookISBN().toLowerCase().contains(lowerCaseFilter)) {
+                        if (book.getBookISBN().getValue().toLowerCase().contains(lowerCaseFilter)) {
                             return true;
-                        } else if (book.getBookTitle().toLowerCase().contains(lowerCaseFilter)) {
+                        } else if (book.getBookTitle().getValue().toLowerCase().contains(lowerCaseFilter)) {
                             return true;
                         } else if (book.getUserID().toString().contains(lowerCaseFilter)) {
                             return true;
-                        } else if (book.getUserFullName().toLowerCase().contains(lowerCaseFilter)) {
+                        } else if (book.getUserFullName().getValue().toLowerCase().contains(lowerCaseFilter)) {
                             return true;
-                        } else if (book.getIssuedDate().contains(lowerCaseFilter)) {
+                        } else if (book.getIssuedDate().getValue().contains(lowerCaseFilter)) {
                             return true;
-                        } else if (book.getReturnedDate().contains(lowerCaseFilter)) {
+                        } else if (book.getReturnedDate().getValue().contains(lowerCaseFilter)) {
                             return true;
                         } else if (book.getDays().toString().contains(lowerCaseFilter)) {
                             return true;
                         } else if (book.getFee().toString().toLowerCase().contains(lowerCaseFilter)) {
                             return true;
-                        } else if (book.getIssuedID().toLowerCase().contains(lowerCaseFilter)) {
+                        } else if (book.getIssuedID().getValue().toLowerCase().contains(lowerCaseFilter)) {
                             return true;
-                        } else if (book.getIsTaken().toLowerCase().contains(lowerCaseFilter)) {
+                        } else if (book.getIsTaken().getValue().toLowerCase().contains(lowerCaseFilter)) {
                             return true;
                         }
 
@@ -160,26 +161,28 @@ public class IssuedBookController extends ControllerWithTableView<IssuedBookDTO>
 
     @Override
     protected void initializeColumns() {
-        issuedID.setCellValueFactory(new PropertyValueFactory<>("issuedID"));
-        bookISBN.setCellValueFactory(new PropertyValueFactory<>("bookISBN"));
-        bookTitle.setCellValueFactory(new PropertyValueFactory<>("bookTitle"));
-        userID.setCellValueFactory(new PropertyValueFactory<>("userID"));
-        userName.setCellValueFactory(new PropertyValueFactory<>("userFullName"));
-        issuedDate.setCellValueFactory(new PropertyValueFactory<>("issuedDate"));
-        returnedDate.setCellValueFactory(new PropertyValueFactory<>("returnedDate"));
-        days.setCellValueFactory(new PropertyValueFactory<>("days"));
-        fee.setCellValueFactory(new PropertyValueFactory<>("fee"));
-        isTaken.setCellValueFactory(new PropertyValueFactory<>("isTaken"));
+        issuedID.setCellValueFactory(cell -> cell.getValue().getIssuedID());
+        bookISBN.setCellValueFactory(cell -> cell.getValue().getBookISBN());
+        bookTitle.setCellValueFactory(cell -> cell.getValue().getBookTitle());
+        userID.setCellValueFactory(cell -> cell.getValue().getUserID());
+        userName.setCellValueFactory(cell -> cell.getValue().getUserFullName());
+        issuedDate.setCellValueFactory(cell -> cell.getValue().getIssuedDate());
+        returnedDate.setCellValueFactory(cell -> cell.getValue().getReturnedDate());
+        days.setCellValueFactory(cell -> cell.getValue().getDays());
+        fee.setCellValueFactory(cell -> cell.getValue().getFee());
+        isTaken.setCellValueFactory(cell -> cell.getValue().getIsTaken());
     }
 
     public void issueBookToUser(ActionEvent actionEvent) {
         IssuedBookDTO issuedBookDTO = this.tableView.getSelectionModel().getSelectedItem();
-        if (issuedBookDTO.getIsTaken().equalsIgnoreCase("yes")) {
+        if (issuedBookDTO.getIsTaken().getValue().equalsIgnoreCase("yes")) {
             Alerts.showAlert("Book already issued", "Book is already issued to user", "Please choose another book");
             return;
         }
 
-        issuedBookDTO.setIsTaken("yes");
+        issuedBookDTO.setIsTaken(FxmlPropertyFactory.stringProperty("Yes"));
+        tableView.refresh();
+
         Task<Void> task = new Task<>() {
             @Override
             protected Void call() {

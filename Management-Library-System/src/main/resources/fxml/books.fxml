@@ -190,6 +190,7 @@
                     <items>
                         <MenuItem mnemonicParsing="false" onAction="#refreshList" text="Refresh list"/>
                         <MenuItem mnemonicParsing="false" onAction="#deleteBook" text="Delete Book"/>
+                        <MenuItem mnemonicParsing="false"  onAction="#changeAvailability" text="Change book availability"/>
                         <MenuItem fx:id="copyItem" mnemonicParsing="false" onAction="#copy" text="Copy from cell"/>
                     </items>
                 </ContextMenu>
