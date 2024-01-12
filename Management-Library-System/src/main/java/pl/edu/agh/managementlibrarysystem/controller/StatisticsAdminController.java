@@ -9,7 +9,9 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
+import pl.edu.agh.managementlibrarysystem.DTO.BookStatsDTO;
 import pl.edu.agh.managementlibrarysystem.DTO.ReadBookDTO;
+import pl.edu.agh.managementlibrarysystem.DTO.UserStatsDTO;
 import pl.edu.agh.managementlibrarysystem.controller.abstraction.StatisticsController;
 import pl.edu.agh.managementlibrarysystem.model.User;
 import pl.edu.agh.managementlibrarysystem.model.util.Permission;
@@ -27,32 +29,35 @@ import java.util.ResourceBundle;
 public class StatisticsAdminController extends StatisticsController {
 
     @FXML
-    public TableView<ReadBookDTO> tableView;
+    public TableView<UserStatsDTO> userView;
     @FXML
-    public TableColumn<ReadBookDTO, String> bookISBN;
+    public TableColumn<UserStatsDTO,Integer> userId;
     @FXML
-    public TableColumn<ReadBookDTO, String> bookTitle;
+    public TableColumn<UserStatsDTO,String> userFirst;
     @FXML
-    public TableColumn<ReadBookDTO, String> bookAuthors;
+    public TableColumn<UserStatsDTO,String> userLast;
     @FXML
-    public TableColumn<ReadBookDTO, String> bookPublisher;
+    public TableColumn<UserStatsDTO,Integer> userBooks;
     @FXML
-    public TableColumn<ReadBookDTO, String> bookGenres;
-    @FXML
-    public TableColumn<ReadBookDTO, Date> bookIssued;
-    @FXML
-    public TableColumn<ReadBookDTO, Date> bookReturned;
-    @FXML
-    public TableColumn<ReadBookDTO, Integer> bookDays;
-    @FXML
-    public TableColumn<ReadBookDTO, Double> bookFee;
-    @FXML
-    public TableColumn<ReadBookDTO, Integer> bookEdition;
-    @FXML
-    public ListView<String> statisitcsList;
+    public TableColumn<UserStatsDTO,Integer> userReviews;
 
+    @FXML
+    public TableView<BookStatsDTO> bookView;
+    @FXML
+    public TableColumn<BookStatsDTO,String>  bookISBN;
+    @FXML
+    public TableColumn<BookStatsDTO,String>  bookTitle;
+    @FXML
+    public TableColumn<BookStatsDTO,String>  bookAuthors;
+    @FXML
+    public TableColumn<BookStatsDTO,Integer>  bookReviews;
+    @FXML
+    public TableColumn<BookStatsDTO,Integer>  bookTimes;
+    @FXML
+    public ListView<String> statisticsList;
 
-    private List<ReadBookDTO> data;
+    private List<UserStatsDTO> usersData;
+    private List<BookStatsDTO> booksData;
     private List<String> otherStatistics;
 
 
@@ -66,10 +71,15 @@ public class StatisticsAdminController extends StatisticsController {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         tooltipInitializer();
-        initializeStageOptions();
         this.initializeColumns();
         this.createNewTask();
     }
+
+    @Override
+    protected void initializeStageOptions() {
+
+    }
+
     protected void createNewTask() {
         Task<Void> task = new Task<>() {
             @Override
@@ -88,41 +98,35 @@ public class StatisticsAdminController extends StatisticsController {
         TaskFactory.startTask(task);
     }
     protected void initData() {
-        User currUser = session.getLoggedUser();
-        data = FXCollections.observableArrayList(statisticsService.getBooksReturnedByUser(session.getLoggedUser()));
-        this.tableView.getItems().clear();
-        this.tableView.getItems().addAll(data);
+        this.usersData = FXCollections.observableArrayList(statisticsService.getAllUsersStats());
+        this.userView.getItems().clear();
+        this.userView.getItems().addAll(usersData);
+
+        this.booksData =  FXCollections.observableArrayList(statisticsService.getAllBookStats());
+        this.bookView.getItems().clear();
+        this.bookView.getItems().addAll(booksData);
     }
     public void initStatistics() {
-        List<String> stats = statisticsService.getBasicUserStatistics(session.getLoggedUser());
-        otherStatistics.add("Read books:        "+ stats.get(0));
-        otherStatistics.add("Ratings given:     "+ stats.get(1));
-        otherStatistics.add("Reviews given:    "+stats.get(2));
-        otherStatistics.add("Total fees:           "+stats.get(3));
-        otherStatistics.add("Ratings average: "+stats.get(4));
-        this.statisitcsList.setItems(FXCollections.observableArrayList(otherStatistics));
+        List<String> stats = statisticsService.getAllUsersStatistics();
+        otherStatistics.add("All read books:                    "+ stats.get(0));
+        otherStatistics.add("All ratings given:                 "+ stats.get(1));
+        otherStatistics.add("All reviews given:                 "+stats.get(2));
+        otherStatistics.add("Total number of normal users: "+stats.get(3));
+        otherStatistics.add("Total number of books:           "+stats.get(4));
+        this.statisticsList.setItems(FXCollections.observableArrayList(otherStatistics));
     }
-    protected void initializeStageOptions() {
-        if (session.getLoggedUser() == null) {
-            return;
-        }
-        User u = session.getLoggedUser();
-        if (u.getPermission() == Permission.NORMAL_USER) {
 
-        }
-    }
     protected void initializeColumns() {
         this.bookISBN.setCellValueFactory(new PropertyValueFactory<>("isbn"));
         this.bookTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
-        this.bookAuthors.setCellValueFactory(new PropertyValueFactory<>("authors"));
-        this.bookPublisher.setCellValueFactory(new PropertyValueFactory<>("publisher"));
-        this.bookGenres.setCellValueFactory(new PropertyValueFactory<>("genres"));
-        this.bookIssued.setCellValueFactory(new PropertyValueFactory<>("issuedDate"));
-        this.bookReturned.setCellValueFactory(new PropertyValueFactory<>("returnedDate"));
-        this.bookDays.setCellValueFactory(new PropertyValueFactory<>("days"));
-        this.bookFee.setCellValueFactory(new PropertyValueFactory<>("fee"));
-        this.bookEdition.setCellValueFactory(new PropertyValueFactory<>("edition"));
+        this.bookAuthors.setCellValueFactory(new PropertyValueFactory<>("publisher"));
+        this.bookReviews.setCellValueFactory(new PropertyValueFactory<>("reviews"));
+        this.bookTimes.setCellValueFactory(new PropertyValueFactory<>("readTimes"));
 
-        ;
+        this.userId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        this.userFirst.setCellValueFactory(new PropertyValueFactory<>("first"));
+        this.userLast.setCellValueFactory(new PropertyValueFactory<>("last"));
+        this.userBooks.setCellValueFactory(new PropertyValueFactory<>("books"));
+        this.userReviews.setCellValueFactory(new PropertyValueFactory<>("reviews"));
     }
 }

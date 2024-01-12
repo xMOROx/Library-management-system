@@ -5,15 +5,22 @@ import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 import pl.edu.agh.managementlibrarysystem.DTO.BookDTO;
+import pl.edu.agh.managementlibrarysystem.DTO.BookStatsDTO;
+import pl.edu.agh.managementlibrarysystem.DTO.UserStatsDTO;
 import pl.edu.agh.managementlibrarysystem.mapper.BookMapper;
+import pl.edu.agh.managementlibrarysystem.mapper.BookStatsDTORowMapper;
+import pl.edu.agh.managementlibrarysystem.mapper.UserStatsDTORowMapper;
 import pl.edu.agh.managementlibrarysystem.model.Author;
 import pl.edu.agh.managementlibrarysystem.model.Book;
 import pl.edu.agh.managementlibrarysystem.model.Genre;
 import pl.edu.agh.managementlibrarysystem.model.Publisher;
 
 import java.lang.reflect.Field;
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -21,7 +28,7 @@ import java.util.Optional;
 public class BookRepositoryImpl {
     @PersistenceContext
     private final EntityManager entityManager;
-
+    private final JdbcTemplate jdbcTemplate;
     @Transactional
     @SuppressWarnings("unused")
     public Optional<Book> saveNewBookWithGivenParams(Book book, String authorName, String authorLastname, String publisherName, String genreType) {
@@ -138,5 +145,11 @@ public class BookRepositoryImpl {
             }
         }
 
+    }
+
+    String BOOK_STATISTICS = "SELECT b.isbn, b.title, p.name, IFNULL(cread.read_count,0), IFNULL(crev.review_count,0) FROM books b INNER JOIN publishers p ON p.id = b.publisher_id LEFT JOIN (SELECT b1.id, COUNT(rb.id) AS read_count FROM books b1 INNER JOIN read_books rb ON b1.id = rb.book_id GROUP BY b1.id ) cread ON cread.id = b.id LEFT JOIN (SELECT b2.id, COUNT(*) AS review_count FROM books b2 INNER JOIN review_books rb ON b2.id = rb.book_id GROUP BY b2.id) crev ON crev.id = cread.id ";
+    public List<BookStatsDTO> getALLBookStats() {
+        RowMapper<BookStatsDTO> mapper = new BookStatsDTORowMapper();
+        return jdbcTemplate.query(BOOK_STATISTICS, mapper);
     }
 }

@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import pl.edu.agh.managementlibrarysystem.DTO.BookDTO;
+import pl.edu.agh.managementlibrarysystem.DTO.BookStatsDTO;
 import pl.edu.agh.managementlibrarysystem.model.Book;
 
 import java.util.List;
@@ -48,4 +49,5 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 
     Optional<Book> saveNewBookWithGivenParams(Book book, String authorName, String authorLastname, String publisherName, String genreType);
     public Optional<Book> updateBookWithGivenParams(Long bookId, BookDTO bookDTO, String authorName, String authorLastname, String publisherName, String genreType);
+    List<BookStatsDTO> getALLBookStats();
 }

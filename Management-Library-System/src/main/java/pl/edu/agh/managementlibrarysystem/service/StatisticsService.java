@@ -3,7 +3,9 @@ package pl.edu.agh.managementlibrarysystem.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.edu.agh.managementlibrarysystem.DTO.BookStatsDTO;
 import pl.edu.agh.managementlibrarysystem.DTO.ReadBookDTO;
+import pl.edu.agh.managementlibrarysystem.DTO.UserStatsDTO;
 import pl.edu.agh.managementlibrarysystem.mapper.ReadBookMapper;
 import pl.edu.agh.managementlibrarysystem.model.User;
 import pl.edu.agh.managementlibrarysystem.repository.*;
@@ -15,6 +17,7 @@ import java.util.List;
 @Transactional
 @RequiredArgsConstructor
 public class StatisticsService {
+    private final UserRepository userRepository;
     private final BookRepository bookRepository;
     private final AuthorRepository authorRepository;
     private final GenresRepository genresRepository;
@@ -50,5 +53,22 @@ public class StatisticsService {
     }
     public List<Object[]> getPopularGenres(int number){
         return genresRepository.getNumberOfIssues(number);
+    }
+
+    public List<UserStatsDTO> getAllUsersStats(){
+        return this.userRepository.getALLUserStats();
+    }
+    public List<BookStatsDTO> getAllBookStats(){
+        return this.bookRepository.getALLBookStats();
+    }
+
+    public List<String> getAllUsersStatistics(){
+        List<String> statisitics = new ArrayList<>();
+        statisitics.add(readBookRepository.getCountAllOfReadBooks().toString());
+        statisitics.add(reviewBookRepository.getCountOfALLRatingsGiven().toString());
+        statisitics.add(reviewBookRepository.getCountOfALLReviewsGiven().toString());
+        statisitics.add(userRepository.getNumberOfNormalUsers().toString());
+        statisitics.add(""+bookRepository.sumOfAllBooks());
+        return  statisitics;
     }
 }

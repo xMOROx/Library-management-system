@@ -174,7 +174,14 @@ public class MainStageController extends BaseController implements Initializable
     }
     @FXML
     private void loadStatisticsPanel(ActionEvent actionEvent) {
-        applicationContext.publishEvent(new BorderPaneReadyEvent(pane, new ClassPathResource("fxml/statisticsUser.fxml")));
+        String s;
+        if(session.getLoggedUser().getPermission() == Permission.NORMAL_USER){
+            s = "fxml/statisticsUser.fxml";
+        }
+        else{
+            s = "fxml/statisticsAdmin.fxml";
+        }
+        applicationContext.publishEvent(new BorderPaneReadyEvent(pane, new ClassPathResource(s)));
     }
     @FXML
     private void loadSettingsPanel(ActionEvent actionEvent) {
