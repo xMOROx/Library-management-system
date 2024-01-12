@@ -41,9 +41,9 @@ import java.util.regex.Pattern;
 public class EditUserController extends ResizeableBaseController implements Initializable {
     private final UserService userService;
     private final Pattern patternEmail;
+    private final UserRepository userRepository;
     private final ObservableList<String> data = FXCollections.observableArrayList();
     private final PasswordEncoder passwordEncoder;
-    private final UserRepository userRepository;
     private final UserSession session;
     private UserDTO currUserDTO;
     @FXML
