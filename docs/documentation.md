@@ -180,9 +180,9 @@ Administrator może zmienić globalne ustawienia systemu zarządzającego np. wa
 - repository/UserRepository.java
 - controller/AdminSettingsController.java
 
-![Zmiana hasła administratora](./updates/settings_sign.png)
-![Zmiana opłat](./updates/settings_fee.png)
-![Zmiana serwera SMTP](./updates/settings_mail.png)
+![Zmiana hasła administratora](./images/updates/settings_sign.png)
+![Zmiana opłat](./images/updates/settings_fee.png)
+![Zmiana serwera SMTP](./images/updates/settings_mail.png)
 
 ## Annoucements
 
@@ -198,7 +198,7 @@ Bibliotekarz oraz administrator mogą zlecać wysyłanie maili powiadamiających
 - repository/UserRepository.java
 - repository/IssuedBooksRepository.java
 
-![Dodawanie powiadomienia](./updates/add_notification.png)
+![Dodawanie powiadomienia](./images/updates/add_notification.png)
 
 ## Statistics
 
@@ -208,13 +208,13 @@ Dla użytkowników:
 - resources/statisticsUser.fxml
 - controller/StatisticsUserController.java
 
-![Statystyki użytkownika](./data/stats_us.png)
+![Statystyki użytkownika](./images/data/stats_us.png)
 
 Dla użytkowników:
 - resources/statisticsAdmin.fxml
 - controller/StatisticsAdminController.java
 
-![Statystyki administratora](./data/stats_ad.png)
+![Statystyki administratora](./images/data/stats_ad.png)
 
 Wspólne:
 - resources/charts.fxml
@@ -228,7 +228,7 @@ Wspólne:
 - repository/ReviewBookRepository.java
 - repository/IssuedBookRepository.java
 
-![Wspólne wykresy](./data/charts.png)
+![Wspólne wykresy](./images/data/charts.png)
 
 ## Recomendations
 
@@ -238,7 +238,7 @@ Część aplikacji odpowiadająca za polecanie użytkownikom książek na podsta
 - service/BookService.java
 - repository/BookRepository.java
 
-![Polecanie książki](./data/recommended.png)
+![Polecanie książki](./images/data/recommended.png)
 
 ## Reviews
 
@@ -246,6 +246,6 @@ Pozwala użytkownikom na ocenę oraz recenzję książek:
 - service/popups/ReviewBookController.java
 - resources/reviewBook.fxml
 
-![Ocena i recenzja książek](./updates/reviewing.png)
+![Ocena i recenzja książek](./images/updates/reviewing.png)
 
 
