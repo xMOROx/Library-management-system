@@ -67,10 +67,15 @@ public class StatisticsUserController extends StatisticsController {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         tooltipInitializer();
-        initializeStageOptions();
         this.initializeColumns();
         this.createNewTask();
     }
+
+    @Override
+    protected void initializeStageOptions() {
+
+    }
+
     protected void createNewTask() {
         Task<Void> task = new Task<>() {
             @Override
@@ -103,15 +108,7 @@ public class StatisticsUserController extends StatisticsController {
         otherStatistics.add("Ratings average: "+stats.get(4));
         this.statisitcsList.setItems(FXCollections.observableArrayList(otherStatistics));
     }
-    protected void initializeStageOptions() {
-        if (session.getLoggedUser() == null) {
-            return;
-        }
-        User u = session.getLoggedUser();
-        if (u.getPermission() == Permission.NORMAL_USER) {
 
-        }
-    }
     protected void initializeColumns() {
         this.bookISBN.setCellValueFactory(new PropertyValueFactory<>("isbn"));
         this.bookTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
