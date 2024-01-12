@@ -168,7 +168,7 @@ Klient biblioteki może wyświetlać i modyfikować swój profil:
 
 ## Settings
 
-Administrator może zmienić globalne ustawienia systemu zarządzającego np. wartość opłat, serwer SMTP z którego korzystać będzie sysyem:
+Administrator może zmienić globalne ustawienia systemu zarządzającego np. wartość opłat, serwer SMTP z którego korzystać będzie system:
 - resources/adminSettings.fxml
 - resources/changeAdminPassword.fxml
 - resources/configureEmailServer.fxml
