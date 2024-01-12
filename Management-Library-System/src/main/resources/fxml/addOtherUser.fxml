@@ -13,14 +13,14 @@
 
 <BorderPane fx:id="borderPane" prefHeight="651.0" prefWidth="1000.0" style="-fx-background-color: white;" stylesheets="@../css/books.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.agh.managementlibrarysystem.controller.AddOtherUserController">
     <top>
-        <VBox prefHeight="123.0" prefWidth="953.0" BorderPane.alignment="CENTER">
-            <BorderPane maxHeight="67.0" prefHeight="67.0" prefWidth="957.0" style="-fx-background-color: white;">
+        <VBox prefHeight="123.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
+            <BorderPane prefHeight="67.0" prefWidth="1000.0" style="-fx-background-color: white;">
                 <right>
                     <HBox alignment="TOP_RIGHT" prefHeight="37.0" prefWidth="127.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
                         <Label fx:id="minimize" contentDisplay="GRAPHIC_ONLY" onMouseClicked="#minimize" />
-                        <Label fx:id="fullscreen" contentDisplay="GRAPHIC_ONLY" layoutX="194.0" layoutY="10.0" onMouseClicked="#fullscreen" />
-                        <Label fx:id="unfullscreen" contentDisplay="GRAPHIC_ONLY" layoutX="194.0" layoutY="10.0" onMouseClicked="#unfullscreen" />
-                        <Label fx:id="close" contentDisplay="GRAPHIC_ONLY" layoutX="194.0" layoutY="10.0" onMouseClicked="#close" />
+                        <Label fx:id="fullscreen" contentDisplay="GRAPHIC_ONLY" layoutX="182.0" layoutY="10.0" onMouseClicked="#fullscreen" />
+                        <Label fx:id="unfullscreen" contentDisplay="GRAPHIC_ONLY" layoutX="182.0" layoutY="10.0" onMouseClicked="#unfullscreen" />
+                        <Label fx:id="close" contentDisplay="GRAPHIC_ONLY" layoutX="182.0" layoutY="10.0" onMouseClicked="#close" />
                     </HBox>
                 </right>
                 <center>
@@ -28,39 +28,75 @@
                         <font>
                             <Font name="Segoe UI Semilight" size="23.0" />
                         </font>
+                        <BorderPane.margin>
+                            <Insets top="2.0" />
+                        </BorderPane.margin>
                     </Label>
                 </center>
             </BorderPane>
-            <VBox prefHeight="117.0" prefWidth="953.0" style="-fx-background-color: white;">
-                <HBox alignment="BOTTOM_LEFT" prefHeight="117.0" prefWidth="953.0" spacing="10.0">
-                    <Label fx:id="word" text="Add new user" textFill="#2b579a">
+            <VBox prefHeight="117.0" prefWidth="1000.0" style="-fx-background-color: white;">
+                <HBox prefHeight="81.0" prefWidth="953.0" spacing="10.0">
+                    <Label prefHeight="73.0" prefWidth="263.0" style="-fx-text-fill: #2b579a;" text="Add user">
                         <font>
                             <Font name="Segoe UI Semilight" size="46.0" />
                         </font>
-                        <HBox.margin>
-                            <Insets left="2.0" />
-                        </HBox.margin>
+                        <padding>
+                            <Insets left="10.0" />
+                        </padding>
                     </Label>
                 </HBox>
             </VBox>
+            <HBox prefHeight="35.0" prefWidth="1000.0" style="-fx-background-color: #efefefef;" />
         </VBox>
     </top>
     <center>
         <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="528.0" prefWidth="1002.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
-            <Label layoutX="101.0" layoutY="91.0" text="Name" />
-            <Label layoutX="102.0" layoutY="123.0" text="Surname" />
-            <Label layoutX="102.0" layoutY="155.0" text="Email" />
-            <Label layoutX="100.0" layoutY="189.0" text="Password" />
-            <Label layoutX="101.0" layoutY="220.0" text="Repeat password" />
-            <TextField fx:id="name" layoutX="326.0" layoutY="87.0" onKeyTyped="#keyTyped" />
-            <TextField fx:id="surname" layoutX="326.0" layoutY="119.0" onKeyTyped="#keyTyped" />
-            <TextField fx:id="email" layoutX="326.0" layoutY="151.0" onKeyTyped="#keyTyped" />
-            <MFXButton fx:id="addUser" layoutX="424.0" layoutY="313.0" onMouseClicked="#addUserClicked" text="Add user" />
-            <MFXButton fx:id="addLibrarian" layoutX="400.0" layoutY="281.0" onMouseClicked="#addLibrarianClicked" text="Add librarian" />
-            <MFXButton fx:id="addAdmin" layoutX="368.0" layoutY="249.0" onMouseClicked="#addAdminClicked" text="Add administrator" />
-            <PasswordField fx:id="password" layoutX="326.0" layoutY="185.0" onKeyTyped="#keyTyped" />
-            <PasswordField fx:id="repeatPassword" layoutX="326.0" layoutY="216.0" onKeyTyped="#keyTyped" />
-            <VBox fx:id="errorVbox" layoutX="102.0" layoutY="249.0" prefHeight="90.0" prefWidth="224.0" />
+            <VBox fx:id="errorVbox" layoutX="287.0" layoutY="287.0" prefHeight="90.0" prefWidth="228.0" />
+         <VBox layoutX="287.0" layoutY="90.0" prefHeight="200.0" prefWidth="209.0" spacing="5.0">
+            <children>
+                  <Label prefHeight="30.0" text="Name">
+                  <font>
+                     <Font size="18.0" />
+                  </font>
+               </Label>
+                  <Label prefHeight="30.0" text="Surname">
+                  <font>
+                     <Font size="18.0" />
+                  </font>
+               </Label>
+                  <Label prefHeight="30.0" text="Email">
+                  <font>
+                     <Font size="18.0" />
+                  </font>
+               </Label>
+                  <Label prefHeight="30.0" text="Password">
+                  <font>
+                     <Font size="18.0" />
+                  </font>
+               </Label>
+                  <Label prefHeight="30.0" text="Repeat password">
+                  <font>
+                     <Font size="18.0" />
+                  </font>
+               </Label>
+            </children>
+         </VBox>
+         <VBox layoutX="515.0" layoutY="87.0" prefHeight="174.0" prefWidth="200.0" spacing="5.0">
+            <children>
+                  <TextField fx:id="name" onKeyTyped="#keyTyped" prefHeight="30.0" prefWidth="200.0" />
+                  <TextField fx:id="surname" onKeyTyped="#keyTyped" prefHeight="30.0" prefWidth="200.0" />
+                  <TextField fx:id="email" onKeyTyped="#keyTyped" prefHeight="30.0" prefWidth="200.0" />
+                  <PasswordField fx:id="password" onKeyTyped="#keyTyped" prefHeight="30.0" prefWidth="200.0" />
+                  <PasswordField fx:id="repeatPassword" onKeyTyped="#keyTyped" prefHeight="30.0" prefWidth="200.0" />
+            </children>
+         </VBox>
+         <VBox layoutX="567.0" layoutY="274.0" prefHeight="88.0" prefWidth="148.0" spacing="5.0">
+            <children>
+                  <MFXButton fx:id="addAdmin" onMouseClicked="#addAdminClicked" text="Add administrator" />
+                  <MFXButton fx:id="addLibrarian" onMouseClicked="#addLibrarianClicked" text="Add librarian" />
+                  <MFXButton fx:id="addUser" onMouseClicked="#addUserClicked" text="Add user" />
+            </children>
+         </VBox>
 
         </AnchorPane>
     </center>

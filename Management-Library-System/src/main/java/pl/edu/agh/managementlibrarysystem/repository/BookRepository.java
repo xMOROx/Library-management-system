@@ -2,9 +2,11 @@ package pl.edu.agh.managementlibrarysystem.repository;
 
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import pl.edu.agh.managementlibrarysystem.DTO.BookDTO;
+import pl.edu.agh.managementlibrarysystem.DTO.BookStatsDTO;
 import pl.edu.agh.managementlibrarysystem.model.Book;
 
 import java.util.List;
@@ -20,7 +22,8 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     String SUM_OF_ALL_REMAINING_BOOKS = "SELECT SUM(b.remainingBooks) FROM books b WHERE b.remainingBooks > 0";
     String SUM_OF_ALL_AVAILABLE_REMAINING_BOOKS = "SELECT SUM(b.remainingBooks) FROM books b WHERE b.availability = 'available' AND b.remainingBooks > 0";
     String CHECK_IF_BOOK_IS_AVAILABLE = "SELECT b.availability FROM books b WHERE b.isbn = ?1";
-
+    String NUMBER_OF_ISSUES = "SELECT b.title, COUNT(*) as number FROM books b INNER JOIN issued_books ib ON b.id = ib.book_id GROUP BY b.id ORDER BY number DESC LIMIT ?1";
+    String UPDATE_BOOK_AVAILABILITY_BY_ISBN = "UPDATE books b SET b.availability = 'unavailable' WHERE b.isbn = ?1";
     @Query(FIND_BY_ISBN)
     Optional<Book> findByIsbn(String isbn);
 
@@ -41,8 +44,14 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 
     @Query(CHECK_IF_BOOK_IS_AVAILABLE)
     String checkIfBookIsAvailable(String isbn);
-    void deleteBookByIsbn(String isbn);
 
+    @Query(value=NUMBER_OF_ISSUES,nativeQuery = true)
+    List<Object[]> getNumberOfIssues(Integer top);
+    @Modifying
+    @Query(UPDATE_BOOK_AVAILABILITY_BY_ISBN)
+    void updateBookAvailabilityByIsbn(String isbn);
+    void deleteBookByIsbn(String isbn);
     Optional<Book> saveNewBookWithGivenParams(Book book, String authorName, String authorLastname, String publisherName, String genreType);
-    public Optional<Book> updateBookWithGivenParams(Long bookId, BookDTO bookDTO, String authorName, String authorLastname, String publisherName, String genreType);
+    Optional<Book> updateBookWithGivenParams(Long bookId, BookDTO bookDTO, String authorName, String authorLastname, String publisherName, String genreType);
+    List<BookStatsDTO> getALLBookStats();
 }

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="651.0" prefWidth="1000.0" style="-fx-background-color: white;" stylesheets="@../css/issueBook.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.agh.managementlibrarysystem.controller.StatisticsUserController">
+    <top>
+        <VBox prefHeight="123.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
+            <BorderPane prefHeight="67.0" prefWidth="1000.0" style="-fx-background-color: white;">
+                <right>
+                    <HBox alignment="TOP_RIGHT" prefHeight="37.0" prefWidth="127.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
+                        <Label fx:id="minimize" contentDisplay="GRAPHIC_ONLY" onMouseClicked="#minimize" />
+                        <Label fx:id="fullscreen" contentDisplay="GRAPHIC_ONLY" layoutX="182.0" layoutY="10.0" onMouseClicked="#fullscreen" />
+                        <Label fx:id="unfullscreen" contentDisplay="GRAPHIC_ONLY" layoutX="182.0" layoutY="10.0" onMouseClicked="#unfullscreen" />
+                        <Label fx:id="close" contentDisplay="GRAPHIC_ONLY" layoutX="182.0" layoutY="10.0" onMouseClicked="#close" />
+                    </HBox>
+                </right>
+                <center>
+                    <Label text="Library Management System" textFill="#a1a1a1" BorderPane.alignment="CENTER">
+                        <font>
+                            <Font name="Segoe UI Semilight" size="23.0" />
+                        </font>
+                        <BorderPane.margin>
+                            <Insets top="2.0" />
+                        </BorderPane.margin>
+                    </Label>
+                </center>
+            </BorderPane>
+            <VBox prefHeight="117.0" prefWidth="1000.0" style="-fx-background-color: white;">
+                <HBox prefHeight="81.0" prefWidth="953.0" spacing="10.0">
+                    <Label prefHeight="73.0" prefWidth="267.0" style="-fx-text-fill: #2b579a;" text="Statistics">
+                        <font>
+                            <Font name="Segoe UI Semilight" size="46.0" />
+                        </font>
+                        <padding>
+                            <Insets left="10.0" />
+                        </padding>
+                    </Label>
+                    <ImageView fx:id="spinner" fitHeight="41.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true">
+                        <HBox.margin>
+                            <Insets top="15.0" />
+                        </HBox.margin>
+                        <Image url="@../images/spinner.gif" />
+                    </ImageView>
+               <MFXButton onMouseClicked="#openCharts" prefHeight="26.0" prefWidth="167.0" text="Charts" />
+                    <Region prefHeight="81.0" prefWidth="182.0" HBox.hgrow="ALWAYS" />
+                </HBox>
+            </VBox>
+            <HBox prefHeight="35.0" prefWidth="1000.0" style="-fx-background-color: #efefefef;" />
+        </VBox>
+    </top>
+   <center>
+      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox alignment="CENTER" prefHeight="38.0" prefWidth="957.0" spacing="5.0" style="-fx-border-color: #C5CAE9; -fx-background-color: EEEEEE;">
+               <children>
+                  <Label text="All read books">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+             <TableView fx:id="tableView" prefHeight="349.0" prefWidth="1007.0">
+                 <columns>
+                     <TableColumn fx:id="bookISBN" prefWidth="117.0" text="ISBN" />
+                     <TableColumn fx:id="bookTitle" prefWidth="96.0" text="Book Title" />
+                     <TableColumn fx:id="bookAuthors" prefWidth="107.0" text="Authors" />
+                     <TableColumn fx:id="bookPublisher" prefWidth="116.0" text="Publisher" />
+                     <TableColumn fx:id="bookGenres" prefWidth="155.0" text="Genres" />
+                     <TableColumn fx:id="bookIssued" prefWidth="120.0" text="Issued" />
+                     <TableColumn fx:id="bookReturned" minWidth="0.0" prefWidth="120.0" text="Returned" />
+                     <TableColumn fx:id="bookDays" minWidth="0.0" prefWidth="50.0" text="Days" />
+                     <TableColumn fx:id="bookFee" prefWidth="40.0" text="Fee" />
+                     <TableColumn fx:id="bookEdition" prefWidth="78.0" text="Edition" />
+                 </columns>
+             </TableView>
+            <HBox alignment="CENTER" prefHeight="38.0" prefWidth="957.0" spacing="5.0" style="-fx-border-color: #C5CAE9; -fx-background-color: EEEEEE;">
+               <children>
+                  <Label text="Other statistics">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+            <ListView fx:id="statisitcsList" prefHeight="200.0" prefWidth="200.0" />
+         </children></VBox>
+   </center>
+
+</BorderPane>

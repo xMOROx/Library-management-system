@@ -9,6 +9,8 @@ import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.DateCell;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.ListView;
 import javafx.scene.input.KeyEvent;
 import org.springframework.context.ApplicationContext;
@@ -20,13 +22,18 @@ import pl.edu.agh.managementlibrarysystem.utils.Alerts;
 import pl.edu.agh.managementlibrarysystem.utils.TaskFactory;
 
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ResourceBundle;
 
 @Controller
-public class ReadBookController extends ResizeableBaseController implements Initializable {
+public class ReturnBookController extends ResizeableBaseController implements Initializable {
 
     private final BookService bookService;
     private final ObservableList<String> data = FXCollections.observableArrayList();
+    @FXML
+    public DatePicker datePicker;
     @FXML
     private MFXButton submit;
     @FXML
@@ -40,18 +47,29 @@ public class ReadBookController extends ResizeableBaseController implements Init
     private int numberOfDaysToRenew;
     private String issuedId;
     private Long userId, bookId;
+    private LocalDate minDate;
 
 
-    public ReadBookController(ApplicationContext applicationContext, BookService bookService) {
+    public ReturnBookController(ApplicationContext applicationContext, BookService bookService) {
         super(applicationContext);
         this.bookService = bookService;
     }
 
+    private void dateEntered() {
+        numberOfDaysToRenew = (int) ChronoUnit.DAYS.between(minDate, datePicker.getValue());
+        renew.setDisable(false);
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.tooltipInitializer();
         this.createNewTask(80, 20);
+        this.datePicker.setDisable(true);
+        datePicker.valueProperty().addListener((obs, oldDate, newDate) -> {
+            if (newDate != null) {
+                dateEntered();
+            }
+        });
     }
 
     private void updateFee() {
@@ -126,61 +144,36 @@ public class ReadBookController extends ResizeableBaseController implements Init
         }
 
 
-        data.add("Issued ID               : " + issuedBookDTO.getIssuedID());
-        data.add("Fee                         : " + issuedBookDTO.getFee());
-        data.add("Days                       : " + issuedBookDTO.getDays());
+        data.add("Issued ID               : " + issuedBookDTO.getIssuedID().getValue());
+        data.add("Fee                         : " + issuedBookDTO.getFee().getValue());
+        data.add("Days                       : " + issuedBookDTO.getDays().getValue());
         data.add("\nISSUED BOOK INFORMATION");
-        data.add("Book ISBN             : " + issuedBookDTO.getBookISBN());
-        data.add("Book Title              : " + issuedBookDTO.getBookTitle());
-        data.add("Issued Time           : " + issuedBookDTO.getIssuedDate());
-        data.add("Return Time          : " + issuedBookDTO.getReturnedDate());
-        data.add("Taken                 : " + issuedBookDTO.getIsTaken());
+        data.add("Book ISBN             : " + issuedBookDTO.getBookISBN().getValue());
+        data.add("Book Title              : " + issuedBookDTO.getBookTitle().getValue());
+        data.add("Issued Time           : " + issuedBookDTO.getIssuedDate().getValue());
+        data.add("Return Time          : " + issuedBookDTO.getReturnedDate().getValue());
+        data.add("Taken                 : " + issuedBookDTO.getIsTaken().getValue());
         data.add("\nUSER INFORMATION");
-        data.add("User ID                 : " + issuedBookDTO.getUserID());
-        data.add("User full name       : " + issuedBookDTO.getUserFullName());
-        data.add("Student Email        : " + issuedBookDTO.getUserEmail());
+        data.add("User ID                 : " + issuedBookDTO.getUserID().getValue());
+        data.add("User full name       : " + issuedBookDTO.getUserFullName().getValue());
+        data.add("Student Email        : " + issuedBookDTO.getUserEmail().getValue());
 
         listView.setItems(data);
         this.issuedId = text;
         this.submit.setDisable(false);
+        this.datePicker.setDisable(false);
 
+        minDate = LocalDate.parse(issuedBookDTO.getIssuedDate().getValue(), DateTimeFormatter.ofPattern("yyyy-MM-dd")).plusDays(issuedBookDTO.getDays().getValue());
+        datePicker.setDayCellFactory(d ->
+                new DateCell() {
+                    @Override
+                    public void updateItem(LocalDate item, boolean empty) {
+                        super.updateItem(item, empty);
+                        setDisable(item.isBefore(minDate));
+                    }
+                });
     }
 
-    @FXML
-    private void inputNumberOfDays(KeyEvent keyEvent) {
-        String text = numberOfDaysToRenewInput.getText();
-
-        if (text.isEmpty()) {
-            Alerts.showErrorAlert("Invalid number of days", "Number of days cannot be empty if you want to renew book");
-            return;
-        }
-
-        try {
-            this.numberOfDaysToRenew = Integer.parseInt(text);
-        } catch (NumberFormatException ex) {
-            Alerts.showErrorAlert("Invalid number of days", "Number of days have to be a number");
-            return;
-        }
-
-        if (numberOfDaysToRenew < 0) {
-            Alerts.showErrorAlert("Invalid number of days", "Number of days cannot be negative");
-            return;
-        }
-
-        if (numberOfDaysToRenew > 30) {
-            Alerts.showErrorAlert("Invalid number of days", "Number of days cannot be greater than 30");
-            return;
-        }
-
-        if (numberOfDaysToRenew == 0) {
-            Alerts.showErrorAlert("Invalid number of days", "Number of days cannot be 0");
-            return;
-        }
-
-        if (this.issuedId != null) {
-            this.renew.setDisable(false);
-        }
-    }
 
     @FXML
     private void submitBook(ActionEvent actionEvent) {
@@ -215,7 +208,8 @@ public class ReadBookController extends ResizeableBaseController implements Init
 
     private void clearInputs() {
         this.issuedIdInput.clear();
-        this.numberOfDaysToRenewInput.clear();
+        this.datePicker.setValue(null);
+        this.datePicker.setDisable(true);
         this.renew.setDisable(true);
         this.submit.setDisable(true);
         this.listView.getItems().clear();

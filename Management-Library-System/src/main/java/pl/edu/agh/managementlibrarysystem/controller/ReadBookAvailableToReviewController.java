@@ -6,7 +6,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.ClassPathResource;
@@ -47,7 +46,7 @@ public class ReadBookAvailableToReviewController implements Initializable {
     @FXML
     private TableColumn<ReadBookAvailableToVoteDTO, String> returnedDate;
     @FXML
-    private TableColumn<ReadBookAvailableToVoteDTO, Integer> bookEdition;
+    private TableColumn<ReadBookAvailableToVoteDTO, Number> bookEdition;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -56,13 +55,13 @@ public class ReadBookAvailableToReviewController implements Initializable {
     }
 
     private void initializeColumns() {
-        bookISBN.setCellValueFactory(new PropertyValueFactory<>("isbn"));
-        bookTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
-        bookAuthors.setCellValueFactory(new PropertyValueFactory<>("authors"));
-        bookPublisher.setCellValueFactory(new PropertyValueFactory<>("publisher"));
-        bookGenres.setCellValueFactory(new PropertyValueFactory<>("genres"));
-        bookEdition.setCellValueFactory(new PropertyValueFactory<>("edition"));
-        returnedDate.setCellValueFactory(new PropertyValueFactory<>("returnedDate"));
+        bookISBN.setCellValueFactory(cell -> cell.getValue().getIsbn());
+        bookTitle.setCellValueFactory(cell -> cell.getValue().getTitle());
+        bookAuthors.setCellValueFactory(cell -> cell.getValue().getAuthors());
+        bookPublisher.setCellValueFactory(cell -> cell.getValue().getPublisher());
+        bookGenres.setCellValueFactory(cell -> cell.getValue().getGenres());
+        bookEdition.setCellValueFactory(cell -> cell.getValue().getEdition());
+        returnedDate.setCellValueFactory(cell -> cell.getValue().getReturnedDate());
     }
 
     private void initData() {
@@ -79,7 +78,7 @@ public class ReadBookAvailableToReviewController implements Initializable {
     @FXML
     private void rateBook(ActionEvent actionEvent) {
         ReadBookAvailableToVoteDTO bookDTO = this.tableViewForReadBook.getSelectionModel().getSelectedItem();
-
+        tableViewForReadBook.refresh();
         this.applicationContext.publishEvent(
                 new OpenNewBookWindowEvent<>(new ClassPathResource("fxml/reviewBook.fxml"), bookDTO, (book, controller) -> {
                     ReviewBookController reviewBookController = (ReviewBookController) controller;

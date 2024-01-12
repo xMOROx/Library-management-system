@@ -34,8 +34,12 @@ import java.util.ResourceBundle;
 public class MainStageController extends BaseController implements Initializable {
 
     public BorderPane pane;
-    private UserSession session;
 
+    public UserSession session;
+    @FXML
+    public MFXButton statistics;
+    @FXML
+    private MFXButton editUser;
 
     @FXML
     private BorderPane borderpane;
@@ -65,8 +69,7 @@ public class MainStageController extends BaseController implements Initializable
     private MFXButton addUser;
     @FXML
     private MFXButton recommendedBooks;
-    @FXML
-    private MFXButton editUser;
+
 
     public MainStageController(ApplicationContext applicationContext, UserSession session) {
         super(applicationContext);
@@ -149,7 +152,7 @@ public class MainStageController extends BaseController implements Initializable
 
     @FXML
     private void loadReturnBooksPanel(ActionEvent actionEvent) {
-        applicationContext.publishEvent(new BorderPaneReadyEvent(pane, new ClassPathResource("fxml/readBook.fxml")));
+        applicationContext.publishEvent(new BorderPaneReadyEvent(pane, new ClassPathResource("fxml/returnBook.fxml")));
     }
 
     @FXML
@@ -161,7 +164,17 @@ public class MainStageController extends BaseController implements Initializable
     private void loadSendAnnouncementsPanel(ActionEvent actionEvent) {
         applicationContext.publishEvent(new BorderPaneReadyEvent(pane, new ClassPathResource("fxml/notifications.fxml")));
     }
-
+    @FXML
+    private void loadStatisticsPanel(ActionEvent actionEvent) {
+        String s;
+        if(session.getLoggedUser().getPermission() == Permission.NORMAL_USER){
+            s = "fxml/statisticsUser.fxml";
+        }
+        else{
+            s = "fxml/statisticsAdmin.fxml";
+        }
+        applicationContext.publishEvent(new BorderPaneReadyEvent(pane, new ClassPathResource(s)));
+    }
     @FXML
     private void loadSettingsPanel(ActionEvent actionEvent) {
         if (this.session.getLoggedUser().getPermission() == Permission.ADMIN) {

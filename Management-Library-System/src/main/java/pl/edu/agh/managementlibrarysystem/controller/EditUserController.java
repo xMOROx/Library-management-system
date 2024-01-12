@@ -13,7 +13,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
@@ -22,9 +21,10 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import pl.edu.agh.managementlibrarysystem.DTO.UserDTO;
-import pl.edu.agh.managementlibrarysystem.controller.abstraction.BaseController;
+import pl.edu.agh.managementlibrarysystem.controller.abstraction.ResizeableBaseController;
 import pl.edu.agh.managementlibrarysystem.model.User;
 import pl.edu.agh.managementlibrarysystem.model.util.Permission;
+import pl.edu.agh.managementlibrarysystem.repository.UserRepository;
 import pl.edu.agh.managementlibrarysystem.service.UserService;
 import pl.edu.agh.managementlibrarysystem.session.UserSession;
 import pl.edu.agh.managementlibrarysystem.utils.Alerts;
@@ -35,13 +35,15 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 @Controller
 
-public class EditUserController extends BaseController implements Initializable {
+public class EditUserController extends ResizeableBaseController implements Initializable {
     private final UserService userService;
     private final Pattern patternEmail;
     private final ObservableList<String> data = FXCollections.observableArrayList();
     private final PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
     private final UserSession session;
     private UserDTO currUserDTO;
     @FXML
@@ -69,19 +71,24 @@ public class EditUserController extends BaseController implements Initializable 
     private BooleanProperty emailBool;
     private BooleanProperty passwordBool;
     private BooleanProperty repeatPasswordBool;
-    public EditUserController(ApplicationContext applicationContext, UserService userService, PasswordEncoder passwordEncoder,UserSession session) {
+    private BooleanProperty userChosenBool;
+
+    public EditUserController(ApplicationContext applicationContext, UserService userService, PasswordEncoder passwordEncoder, UserRepository userRepository, UserSession session) {
         super(applicationContext);
         this.passwordEncoder = passwordEncoder;
+        this.userRepository = userRepository;
         this.patternEmail = Pattern.compile(".+@.+\\..+", Pattern.CASE_INSENSITIVE);
         this.userService = userService;
         this.session = session;
     }
+
     private static void errorLabel(String error_message, Color c, ObservableList<Node> list) {
         Label l = new Label();
         l.setText(error_message);
         l.setTextFill(c);
         list.add(l);
     }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.tooltipInitializer();
@@ -89,15 +96,15 @@ public class EditUserController extends BaseController implements Initializable 
         this.nameBool = new SimpleBooleanProperty(false);
         this.surnameBool = new SimpleBooleanProperty(false);
         this.emailBool = new SimpleBooleanProperty(false);
-        this.passwordBool = new SimpleBooleanProperty(false);
+        this.passwordBool = new SimpleBooleanProperty(true);
         this.repeatPasswordBool = new SimpleBooleanProperty(false);
-
-        this.saveAsUs.disableProperty().bind(Bindings.createBooleanBinding(() -> !(nameBool.get() && surnameBool.get() && emailBool.get() && passwordBool.get() && repeatPasswordBool.get())
-                , nameBool, surnameBool, emailBool, passwordBool, repeatPasswordBool));
-        this.saveAsLib.disableProperty().bind(Bindings.createBooleanBinding(() -> !(nameBool.get() && surnameBool.get() && emailBool.get() && passwordBool.get() && repeatPasswordBool.get())
-                , nameBool, surnameBool, emailBool, passwordBool, repeatPasswordBool));
-        this.saveAsAdmin.disableProperty().bind(Bindings.createBooleanBinding(() -> !(nameBool.get() && surnameBool.get() && emailBool.get() && passwordBool.get() && repeatPasswordBool.get())
-                , nameBool, surnameBool, emailBool, passwordBool, repeatPasswordBool));
+        this.userChosenBool = new SimpleBooleanProperty(false);
+        this.saveAsUs.disableProperty().bind(Bindings.createBooleanBinding(() -> !(nameBool.get() && surnameBool.get() && emailBool.get() && passwordBool.get() && repeatPasswordBool.get() && userChosenBool.get())
+                , nameBool, surnameBool, emailBool, passwordBool, repeatPasswordBool, userChosenBool));
+        this.saveAsLib.disableProperty().bind(Bindings.createBooleanBinding(() -> !(nameBool.get() && surnameBool.get() && emailBool.get() && passwordBool.get() && repeatPasswordBool.get() && userChosenBool.get())
+                , nameBool, surnameBool, emailBool, passwordBool, repeatPasswordBool, userChosenBool));
+        this.saveAsAdmin.disableProperty().bind(Bindings.createBooleanBinding(() -> !(nameBool.get() && surnameBool.get() && emailBool.get() && passwordBool.get() && repeatPasswordBool.get() && userChosenBool.get())
+                , nameBool, surnameBool, emailBool, passwordBool, repeatPasswordBool, userChosenBool));
 
         validateName(nameBool, name);
 
@@ -110,6 +117,7 @@ public class EditUserController extends BaseController implements Initializable 
         initializeStageOptions();
 
     }
+
     private void initializeStageOptions() {
         if (session.getLoggedUser() == null) {
             return;
@@ -124,6 +132,7 @@ public class EditUserController extends BaseController implements Initializable 
 
         }
     }
+
     private void validateEmail() {
         emailBool.bind(Bindings.createBooleanBinding(() -> {
             String text = email.textProperty().get();
@@ -142,45 +151,40 @@ public class EditUserController extends BaseController implements Initializable 
         }, name.textProperty()));
     }
 
-    private void validatePassword() {
-        if(currUserDTO==null){
-            return;
-        }
-        passwordBool.set(userService.findByEmail(currUserDTO.getEmail()).isPresent() && passwordEncoder.matches(password.getText(), userService.findByEmail(currUserDTO.getEmail()).get().getPassword()));
-        updateErrorList();
+    private void validateNewPassword() {
+        repeatPasswordBool.bind(Bindings.createBooleanBinding(() -> {
+            return repeatPassword.getText().length() >= 8;
+        }, repeatPassword.textProperty(), password.textProperty()));
     }
-    private void validateNewPassword(){
-        repeatPasswordBool.bind(Bindings.createBooleanBinding(() -> repeatPassword.getText().length()>=8, repeatPassword.textProperty()));
-        name.focusedProperty().addListener((observable, oldValue, newValue) -> {
-        });
-    }
-    private void loadUserDropbox(){
+
+    private void loadUserDropbox() {
         this.data.clear();
         List<UserDTO> users = userService.getAllUsers();
-        for(UserDTO userDTO : users){
+        for (UserDTO userDTO : users) {
             data.add(userDTO.getId().toString());
         }
         this.chooseUser.setItems(data);
     }
+
     @FXML
-    private void userHasBeenChosen(){
-        if(chooseUser.getValue()==null || chooseUser.getValue().equals("Choose user")){
-           return;
+    private void userHasBeenChosen() {
+        if (chooseUser.getValue().equals("Choose user")) {
+            return;
         }
-        long id;
-        try{
+        userChosenBool.setValue(true);
+        System.out.println("a2" + chooseUser.getValue());
+        Long id = 0L;
+        try {
             id = Long.parseLong(chooseUser.getValue());
-        }
-        catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             e.printStackTrace();
             return;
         }
-        currUserDTO = userService.findById(id);
-        try{
+        currUserDTO = userService.findById(Long.parseLong(chooseUser.getValue()));
+        try {
             this.name.setText(currUserDTO.getFullname().split(" ")[0]);
             this.surname.setText(currUserDTO.getFullname().split(" ")[1]);
-        }
-        catch (IndexOutOfBoundsException e){
+        } catch (IndexOutOfBoundsException e) {
             e.printStackTrace();
             return;
         }
@@ -192,6 +196,7 @@ public class EditUserController extends BaseController implements Initializable 
     private void keyTyped(KeyEvent keyEvent) {
         updateErrorList();
     }
+
     private void updateErrorList() {
         ObservableList<Node> list = this.errorVbox.getChildren();
         list.clear();
@@ -212,6 +217,7 @@ public class EditUserController extends BaseController implements Initializable 
             errorLabel("New password is too short", c, list);
         }
     }
+
     @FXML
     private void addUserClicked(MouseEvent mouseEvent) {
         updateUser(Permission.NORMAL_USER);
@@ -226,15 +232,15 @@ public class EditUserController extends BaseController implements Initializable 
     private void addAdminClicked(MouseEvent mouseEvent) {
         updateUser(Permission.ADMIN);
     }
-    private void updateUser(Permission permission){
-        userService.updateUser(this.currUserDTO.getId(),this.name.getText(),this.surname.getText(),this.email.getText(),passwordEncoder.encode(this.repeatPassword.getText()),permission);
-        Alerts.showInformationAlert("Update User attempt","user has been updated");
-    }
-    @FXML
-    private void passwordKeyPressed(KeyEvent keyEvent) {
-        if (keyEvent.getCode() == KeyCode.ENTER) {
-            validatePassword();
+
+    private void updateUser(Permission permission) {
+        if (userRepository.findByEmail(currUserDTO.getEmail()).isPresent() && passwordEncoder.matches(password.getText(), userRepository.findByEmail(currUserDTO.getEmail()).get().getPassword())) {
+            userService.updateUser(this.currUserDTO.getId(), this.name.getText(), this.surname.getText(), this.email.getText(), passwordEncoder.encode(this.repeatPassword.getText()), permission);
+            Alerts.showInformationAlert("Update User attempt", "user has been updated");
+        } else {
+            Alerts.showErrorAlert("Update User attempt", "Old password is incorrect.");
         }
 
     }
+
 }

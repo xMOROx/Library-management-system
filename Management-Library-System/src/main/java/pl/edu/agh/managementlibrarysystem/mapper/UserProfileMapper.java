@@ -14,11 +14,11 @@ public class UserProfileMapper implements OneWayMapper<IssuedBookDTO, UserProfil
     @Override
     public UserProfileDTO map(IssuedBookDTO object) {
         return UserProfileDTO.builder()
-                .bookTitle(object.getBookTitle())
-                .borrowDate(object.getIssuedDate())
-                .dueFees(object.getFee())
-                .dueDate(object.getReturnedDate())
-                .currentlyBorrowed(object.getIsTaken())
+                .bookTitle(object.getBookTitle().getValue())
+                .borrowDate(object.getIssuedDate().getValue())
+                .dueFees(object.getFee().getValue())
+                .dueDate(object.getReturnedDate().getValue())
+                .currentlyBorrowed(object.getIsTaken().getValue())
                 .build();
     }
 }

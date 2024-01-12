@@ -33,7 +33,7 @@ public class BookService {
 
     public boolean saveBook(BookDTO bookDTO, String authorName, String authorLastname, String publisherName,
                             String genreType) {
-        String isbn = bookDTO.getIsbn();
+        String isbn = bookDTO.getIsbn().getValue();
         Book book = this.bookMapper.mapToEntity(bookDTO);
 
         if (this.bookRepository.findByIsbn(isbn).isPresent()) {
@@ -99,7 +99,7 @@ public class BookService {
 
     public boolean updateBook(BookDTO bookDTO, String authorName, String authorLastname, String publisherName,
                               String genreType) {
-        Optional<Book> b = bookRepository.findByIsbn(bookDTO.getIsbn());
+        Optional<Book> b = bookRepository.findByIsbn(bookDTO.getIsbn().getValue());
         return bookRepository.updateBookWithGivenParams(b.get().getId(), bookDTO, authorName, authorLastname, publisherName, genreType).isPresent();
     }
 
@@ -129,11 +129,11 @@ public class BookService {
     }
 
     public boolean checkIfUserHasGivenBook(UserDTO user, BookDTO book) {
-        return this.issuedBooksRepository.findIssuedBookByUserIdAndBookIsbn(user.getId(), book.getIsbn()).isPresent();
+        return this.issuedBooksRepository.findIssuedBookByUserIdAndBookIsbn(user.getId(), book.getIsbn().getValue()).isPresent();
     }
 
     public void issueBook(BookDTO book, UserDTO user, Integer days, boolean isTaken) {
-        this.issuedBooksRepository.issueBook(book.getIsbn(), user.getId(), days, isTaken);
+        this.issuedBooksRepository.issueBook(book.getIsbn().getValue(), user.getId(), days, isTaken);
     }
 
     public IssuedBookDTO getIssuedBookById(Long bookId, Long userId) {
@@ -175,7 +175,7 @@ public class BookService {
     }
 
     public boolean checkIfBookIsAvailable(BookDTO book) {
-        return this.bookRepository.checkIfBookIsAvailable(book.getIsbn()).equalsIgnoreCase("available");
+        return this.bookRepository.checkIfBookIsAvailable(book.getIsbn().getValue()).equalsIgnoreCase("available");
     }
 
     public BookDetailsDTO getBookDetails(String bookISBN) {
@@ -211,5 +211,9 @@ public class BookService {
 
     public boolean checkIfBookIsIssuedByUser(Long bookId, Long userId) {
         return this.issuedBooksRepository.findByBookIdAndUserId(bookId, userId).isPresent();
+    }
+
+    public void updateBook(String isbn) {
+        this.bookRepository.updateBookAvailabilityByIsbn(isbn);
     }
 }

@@ -12,63 +12,93 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<?import javafx.scene.layout.Region?>
-<BorderPane prefHeight="651.0" prefWidth="1000.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.agh.managementlibrarysystem.controller.EditUserController">
+<BorderPane fx:id="borderPane" prefHeight="651.0" prefWidth="1000.0" style="-fx-background-color: white;" stylesheets="@../css/books.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.agh.managementlibrarysystem.controller.EditUserController">
     <top>
         <VBox prefHeight="123.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
             <BorderPane prefHeight="67.0" prefWidth="1000.0" style="-fx-background-color: white;">
                 <right>
-                    <HBox alignment="TOP_RIGHT" prefHeight="37.0" prefWidth="127.0" style="-fx-background-color: white;"
-                          BorderPane.alignment="CENTER">
-                        <Label fx:id="minimize" contentDisplay="GRAPHIC_ONLY" onMouseClicked="#minimize"/>
-                        <Label fx:id="close" contentDisplay="GRAPHIC_ONLY" layoutX="182.0" layoutY="10.0"
-                               onMouseClicked="#close"/>
+                    <HBox alignment="TOP_RIGHT" prefHeight="37.0" prefWidth="127.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
+                        <Label fx:id="minimize" contentDisplay="GRAPHIC_ONLY" onMouseClicked="#minimize" />
+                        <Label fx:id="fullscreen" contentDisplay="GRAPHIC_ONLY" layoutX="182.0" layoutY="10.0" onMouseClicked="#fullscreen" />
+                        <Label fx:id="unfullscreen" contentDisplay="GRAPHIC_ONLY" layoutX="182.0" layoutY="10.0" onMouseClicked="#unfullscreen" />
+                        <Label fx:id="close" contentDisplay="GRAPHIC_ONLY" layoutX="182.0" layoutY="10.0" onMouseClicked="#close" />
                     </HBox>
                 </right>
                 <center>
                     <Label text="Library Management System" textFill="#a1a1a1" BorderPane.alignment="CENTER">
                         <font>
-                            <Font name="Segoe UI Semilight" size="23.0"/>
+                            <Font name="Segoe UI Semilight" size="23.0" />
                         </font>
                         <BorderPane.margin>
-                            <Insets top="2.0"/>
+                            <Insets top="2.0" />
                         </BorderPane.margin>
                     </Label>
                 </center>
             </BorderPane>
             <VBox prefHeight="117.0" prefWidth="1000.0" style="-fx-background-color: white;">
                 <HBox prefHeight="81.0" prefWidth="953.0" spacing="10.0">
-                    <Label prefHeight="73.0" prefWidth="255.0" style="-fx-text-fill: #2b579a;" text="Issue Book">
+                    <Label prefHeight="73.0" prefWidth="263.0" style="-fx-text-fill: #2b579a;" text="Edit user">
                         <font>
-                            <Font name="Segoe UI Semilight" size="46.0"/>
+                            <Font name="Segoe UI Semilight" size="46.0" />
                         </font>
                         <padding>
-                            <Insets left="10.0"/>
+                            <Insets left="10.0" />
                         </padding>
                     </Label>
-                    <Region prefHeight="81.0" prefWidth="129.0" HBox.hgrow="ALWAYS"/>
                 </HBox>
             </VBox>
-            <HBox prefHeight="35.0" prefWidth="1000.0" style="-fx-background-color: #efefefef;"/>
+            <HBox prefHeight="35.0" prefWidth="1000.0" style="-fx-background-color: #efefefef;" />
         </VBox>
     </top>
     <center>
         <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="528.0" prefWidth="1002.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
-            <Label layoutX="101.0" layoutY="91.0" text="Name" />
-            <Label layoutX="102.0" layoutY="123.0" text="Surname" />
-            <Label layoutX="102.0" layoutY="155.0" text="Email" />
-            <Label layoutX="100.0" layoutY="189.0" text="Old password" />
-            <Label layoutX="101.0" layoutY="220.0" text="New password" />
-            <TextField fx:id="name" layoutX="326.0" layoutY="87.0" onKeyTyped="#keyTyped" />
-            <TextField fx:id="surname" layoutX="326.0" layoutY="119.0" onKeyTyped="#keyTyped" />
-            <TextField fx:id="email" layoutX="326.0" layoutY="151.0" onKeyTyped="#keyTyped" />
-            <MFXButton fx:id="saveAsUs" layoutX="370.0" layoutY="314.0" onMouseClicked="#addUserClicked" text="Save as user" />
-            <MFXButton fx:id="saveAsLib" layoutX="370.0" layoutY="282.0" onMouseClicked="#addLibrarianClicked" text="Save as librarian" />
-            <MFXButton fx:id="saveAsAdmin" layoutX="368.0" layoutY="249.0" onMouseClicked="#addAdminClicked" text="Save as administrator" />
-            <PasswordField fx:id="password" layoutX="326.0" layoutY="185.0" onKeyPressed="#passwordKeyPressed" />
-            <PasswordField fx:id="repeatPassword" layoutX="326.0" layoutY="216.0" onKeyTyped="#keyTyped" />
-            <VBox fx:id="errorVbox" layoutX="102.0" layoutY="249.0" prefHeight="90.0" prefWidth="224.0" />
-         <ComboBox fx:id="chooseUser" layoutX="100.0" layoutY="41.0" prefHeight="25.0" prefWidth="376.0" onAction="#userHasBeenChosen" promptText="Choose User" />
+            <ComboBox fx:id="chooseUser" layoutX="287.0" layoutY="40.0" onAction="#userHasBeenChosen" prefHeight="25.0" prefWidth="376.0" promptText="Choose User" />
+            <VBox fx:id="errorVbox" layoutX="287.0" layoutY="287.0" prefHeight="90.0" prefWidth="228.0" />
+            <VBox layoutX="287.0" layoutY="90.0" prefHeight="200.0" prefWidth="209.0" spacing="5.0">
+                <children>
+                    <Label prefHeight="30.0" text="Name">
+                        <font>
+                            <Font size="18.0" />
+                        </font>
+                    </Label>
+                    <Label prefHeight="30.0" text="Surname">
+                        <font>
+                            <Font size="18.0" />
+                        </font>
+                    </Label>
+                    <Label prefHeight="30.0" text="Email">
+                        <font>
+                            <Font size="18.0" />
+                        </font>
+                    </Label>
+                    <Label prefHeight="30.0" text="Old password">
+                        <font>
+                            <Font size="18.0" />
+                        </font>
+                    </Label>
+                    <Label prefHeight="30.0" text="New password">
+                        <font>
+                            <Font size="18.0" />
+                        </font>
+                    </Label>
+                </children>
+            </VBox>
+            <VBox layoutX="515.0" layoutY="87.0" prefHeight="174.0" prefWidth="200.0" spacing="5.0">
+                <children>
+                    <TextField fx:id="name" onKeyTyped="#keyTyped" prefHeight="30.0" prefWidth="200.0" />
+                    <TextField fx:id="surname" onKeyTyped="#keyTyped" prefHeight="30.0" prefWidth="200.0" />
+                    <TextField fx:id="email" onKeyTyped="#keyTyped" prefHeight="30.0" prefWidth="200.0" />
+                    <PasswordField fx:id="password" onKeyTyped="#keyTyped" prefHeight="30.0" prefWidth="200.0" />
+                    <PasswordField fx:id="repeatPassword" onKeyTyped="#keyTyped" prefHeight="30.0" prefWidth="200.0" />
+                </children>
+            </VBox>
+            <VBox layoutX="567.0" layoutY="274.0" prefHeight="88.0" prefWidth="148.0" spacing="5.0">
+                <children>
+                    <MFXButton fx:id="saveAsAdmin" layoutX="368.0" layoutY="249.0" onMouseClicked="#addAdminClicked" text="Save as administrator" />
+                    <MFXButton fx:id="saveAsLib" layoutX="370.0" layoutY="282.0" onMouseClicked="#addLibrarianClicked" text="Save as librarian" />
+                    <MFXButton fx:id="saveAsUs" layoutX="370.0" layoutY="314.0" onMouseClicked="#addUserClicked" text="Save as user" />
+                </children>
+            </VBox>
 
         </AnchorPane>
     </center>

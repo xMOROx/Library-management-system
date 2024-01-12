@@ -32,6 +32,7 @@ public class BookDetailsController extends BookPopUpWindowController<BookDetails
     }
 
     public void setBookISBN(String bookISBN) {
+        System.out.println(bookService.getBookDetails(bookISBN));
         this.book = bookService.getBookDetails(bookISBN);
         this.initializeBookDetails();
         this.initializeBookCover();

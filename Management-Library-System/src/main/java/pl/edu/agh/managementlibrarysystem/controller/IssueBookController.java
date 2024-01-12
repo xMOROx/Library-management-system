@@ -7,6 +7,8 @@ import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.DateCell;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
@@ -24,6 +26,9 @@ import pl.edu.agh.managementlibrarysystem.utils.Alerts;
 import pl.edu.agh.managementlibrarysystem.utils.ControlsUtils;
 
 import java.net.URL;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ResourceBundle;
 
 @Controller
@@ -31,7 +36,8 @@ public class IssueBookController extends ResizeableBaseController implements Ini
     private final BookService bookService;
     private final UserService userService;
     private final UserSession session;
-
+    @FXML
+    public DatePicker datePicker;
     @FXML
     private Text bookTitle;
     @FXML
@@ -50,8 +56,7 @@ public class IssueBookController extends ResizeableBaseController implements Ini
     private MFXTextField userSearchTextField;
     @FXML
     private MFXTextField bookSearchField;
-    @FXML
-    private MFXTextField numberOfDaysTextField;
+
     @FXML
     private Label errorISBNLabel;
     @FXML
@@ -64,6 +69,7 @@ public class IssueBookController extends ResizeableBaseController implements Ini
     private StringProperty errorUserMessage;
 
     private Long userId;
+    private LocalDate date;
     private boolean logged = false;
 
     public IssueBookController(ApplicationContext applicationContext, BookService bookService,
@@ -81,6 +87,19 @@ public class IssueBookController extends ResizeableBaseController implements Ini
         errorISBNLabel.textProperty().bind(errorISBNMessage);
         errorUserMessage = new SimpleStringProperty();
         errorUserLabel.textProperty().bind(errorUserMessage);
+        LocalDate minDate = LocalDate.now();
+        datePicker.setDayCellFactory(d ->
+                new DateCell() {
+                    @Override public void updateItem(LocalDate item, boolean empty) {
+                        super.updateItem(item, empty);
+                        setDisable(item.isBefore(minDate));
+                    }});
+
+        datePicker.valueProperty().addListener((obs,oldDate,newDate)->{
+            if(newDate!=null){
+                dateEntered();
+            }
+        });
         initializeStageOptions();
         this.issueBook.setDisable(true);
     }
@@ -119,18 +138,17 @@ public class IssueBookController extends ResizeableBaseController implements Ini
             return;
         }
 
-        if (book.getAvailability().equals("Not available")) {
+        if (book.getAvailability().getValue().equalsIgnoreCase("unavailable")) {
             errorISBNMessage.setValue("Book with given ISBN is not available!");
             return;
         }
         errorISBNMessage.setValue("");
 
-        this.bookTitle.setText(book.getTitle());
-        this.bookAuthor.setText(book.getAuthors());
-        this.bookPublisher.setText(book.getPublisher());
-        this.availability.setText(book.getAvailability());
-
-        if (user != null && !numberOfDaysTextField.getText().isEmpty()) {
+        this.bookTitle.setText(book.getTitle().getValue());
+        this.bookAuthor.setText(book.getAuthors().getValue());
+        this.bookPublisher.setText(book.getPublisher().getValue());
+        this.availability.setText(book.getAvailability().getValue());
+        if (user != null && date!=null) {
             this.issueBook.setDisable(false);
         }
     }
@@ -138,7 +156,7 @@ public class IssueBookController extends ResizeableBaseController implements Ini
     private void setUserControls(UserDTO user) {
         this.userFullName.setText(user.getFullname());
         this.userEmail.setText(user.getEmail());
-        if (book != null && !numberOfDaysTextField.getText().isEmpty()) {
+        if (book != null && date!=null) {
             this.issueBook.setDisable(false);
         }
     }
@@ -161,28 +179,8 @@ public class IssueBookController extends ResizeableBaseController implements Ini
 
     }
 
-    @FXML
-    private void enterNumberOfDays(KeyEvent keyEvent) {
-        String numberOfDays = numberOfDaysTextField.getText();
-        if (numberOfDays.isEmpty()) {
-            errorUserMessage.setValue("Number of days field is empty!");
-            return;
-        }
-
-        try {
-            Integer.parseInt(numberOfDays);
-        } catch (NumberFormatException e) {
-            errorUserMessage.setValue("Number of days field must be a number!");
-        }
-
-        if (Integer.parseInt(numberOfDays) < 0) {
-            errorUserMessage.setValue("Number of days field must be a positive number!");
-            return;
-        }
-
-        errorUserMessage.setValue("");
-
-
+    private void dateEntered(){
+        this.date = datePicker.getValue();
         if (book != null && user != null) {
             this.issueBook.setDisable(false);
         }
@@ -205,8 +203,9 @@ public class IssueBookController extends ResizeableBaseController implements Ini
         }
 
 
-        Integer days = Integer.parseInt(numberOfDaysTextField.getText());
+        Integer days = (int) ChronoUnit.DAYS.between(LocalDate.now(), date);
         this.bookService.issueBook(book, user, days, !logged);
+
 
         Alerts.showInformationAlert("Book issued", "Book has been issued successfully!");
         this.clearFields();
@@ -219,7 +218,8 @@ public class IssueBookController extends ResizeableBaseController implements Ini
     private void clearFields() {
         bookSearchField.clear();
         userSearchTextField.clear();
-        numberOfDaysTextField.clear();
+        datePicker.setValue(null);
+        this.datePicker.setDisable(true);
         this.bookTitle.setText("Book Title");
         this.bookAuthor.setText("Book Author");
         this.bookPublisher.setText("Book Publisher");

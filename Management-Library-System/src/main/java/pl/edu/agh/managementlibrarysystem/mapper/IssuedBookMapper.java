@@ -10,6 +10,7 @@ import pl.edu.agh.managementlibrarysystem.model.User;
 import pl.edu.agh.managementlibrarysystem.model.keys.IssuedBooksKey;
 import pl.edu.agh.managementlibrarysystem.repository.BookRepository;
 import pl.edu.agh.managementlibrarysystem.repository.UserRepository;
+import pl.edu.agh.managementlibrarysystem.utils.FxmlPropertyFactory;
 
 import java.sql.Date;
 import java.util.Objects;
@@ -23,8 +24,8 @@ public class IssuedBookMapper implements Mapper<IssuedBook, IssuedBookDTO> {
 
     @Override
     public IssuedBook mapToEntity(IssuedBookDTO object) {
-        Book book = this.bookRepository.findByIsbn(object.getBookISBN()).orElse(null);
-        User user = this.userRepository.findById(object.getUserID()).orElse(null);
+        Book book = this.bookRepository.findByIsbn(object.getBookISBN().getValue()).orElse(null);
+        User user = this.userRepository.findById(object.getUserID().getValue()).orElse(null);
         return IssuedBook.builder()
                 .id(IssuedBooksKey.builder()
                         .bookId(book.getId())
@@ -32,11 +33,11 @@ public class IssuedBookMapper implements Mapper<IssuedBook, IssuedBookDTO> {
                         .build())
                 .book(book)
                 .user(user)
-                .issuedDate(Date.valueOf(object.getIssuedDate()))
-                .returnedDate(Objects.equals(object.getReturnedDate(), "---") ? null : Date.valueOf(object.getReturnedDate()))
-                .days(object.getDays())
-                .fee(object.getFee())
-                .isTaken(object.getIsTaken().equalsIgnoreCase("yes"))
+                .issuedDate(Date.valueOf(object.getIssuedDate().getValue()))
+                .returnedDate(Objects.equals(object.getReturnedDate().getValue(), "---") ? null : Date.valueOf(object.getReturnedDate().getValue()))
+                .days(object.getDays().getValue())
+                .fee(object.getFee().getValue())
+                .isTaken(object.getIsTaken().getValue().equalsIgnoreCase("yes"))
                 .build();
     }
 
@@ -47,17 +48,17 @@ public class IssuedBookMapper implements Mapper<IssuedBook, IssuedBookDTO> {
         Date returnedDate = issuedBook.getReturnedDate();
 
         return IssuedBookDTO.builder()
-                .issuedID("ISSUED-" + id.getBookId() + "-" + id.getUserId())
-                .bookISBN(book.getIsbn())
-                .bookTitle(book.getTitle())
-                .userID(issuedBook.getUser().getId())
-                .userEmail(issuedBook.getUser().getEmail())
-                .userFullName(issuedBook.getUser().getFirstname() + " " + issuedBook.getUser().getLastname())
-                .issuedDate(issuedBook.getIssuedDate().toString())
-                .returnedDate(returnedDate == null ? "---" : returnedDate.toString())
-                .days(issuedBook.getDays())
-                .fee(issuedBook.getFee())
-                .isTaken(issuedBook.isTaken() ? "Yes" : "No")
+                .issuedID(FxmlPropertyFactory.stringProperty("ISSUED-" + id.getBookId() + "-" + id.getUserId()))
+                .bookISBN(FxmlPropertyFactory.stringProperty(book.getIsbn()))
+                .bookTitle(FxmlPropertyFactory.stringProperty(book.getTitle()))
+                .userID(FxmlPropertyFactory.longProperty(issuedBook.getUser().getId()))
+                .userEmail(FxmlPropertyFactory.stringProperty(issuedBook.getUser().getEmail()))
+                .userFullName(FxmlPropertyFactory.stringProperty(issuedBook.getUser().getFirstname() + " " + issuedBook.getUser().getLastname()))
+                .issuedDate(FxmlPropertyFactory.stringProperty(issuedBook.getIssuedDate().toString()))
+                .returnedDate(returnedDate == null ? FxmlPropertyFactory.stringProperty("---") : FxmlPropertyFactory.stringProperty(returnedDate.toString()))
+                .days(FxmlPropertyFactory.integerProperty(issuedBook.getDays()))
+                .fee(FxmlPropertyFactory.doubleProperty(issuedBook.getFee()))
+                .isTaken(issuedBook.isTaken() ? FxmlPropertyFactory.stringProperty("Yes") : FxmlPropertyFactory.stringProperty("No"))
                 .build();
     }
 

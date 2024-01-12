@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="651.0" prefWidth="1000.0" style="-fx-background-color: white;" stylesheets="@../css/issueBook.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.agh.managementlibrarysystem.controller.popups.ChartsController">
+    <top>
+        <VBox prefHeight="123.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
+            <BorderPane prefHeight="67.0" prefWidth="1000.0" style="-fx-background-color: white;">
+                <right>
+                    <HBox alignment="TOP_RIGHT" prefHeight="37.0" prefWidth="127.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
+                        <Label fx:id="minimize" contentDisplay="GRAPHIC_ONLY" onMouseClicked="#minimize" />
+                        <Label fx:id="fullscreen" contentDisplay="GRAPHIC_ONLY" layoutX="182.0" layoutY="10.0" onMouseClicked="#fullscreen" />
+                        <Label fx:id="unfullscreen" contentDisplay="GRAPHIC_ONLY" layoutX="182.0" layoutY="10.0" onMouseClicked="#unfullscreen" />
+                        <Label fx:id="close" contentDisplay="GRAPHIC_ONLY" layoutX="182.0" layoutY="10.0" onMouseClicked="#close" />
+                    </HBox>
+                </right>
+                <center>
+                    <Label text="Library Management System" textFill="#a1a1a1" BorderPane.alignment="CENTER">
+                        <font>
+                            <Font name="Segoe UI Semilight" size="23.0" />
+                        </font>
+                        <BorderPane.margin>
+                            <Insets top="2.0" />
+                        </BorderPane.margin>
+                    </Label>
+                </center>
+            </BorderPane>
+            <VBox prefHeight="117.0" prefWidth="1000.0" style="-fx-background-color: white;">
+                <HBox prefHeight="81.0" prefWidth="953.0" spacing="10.0">
+                    <Label prefHeight="73.0" prefWidth="267.0" style="-fx-text-fill: #2b579a;" text="Statistics">
+                        <font>
+                            <Font name="Segoe UI Semilight" size="46.0" />
+                        </font>
+                        <padding>
+                            <Insets left="10.0" />
+                        </padding>
+                    </Label>
+                    <ImageView fx:id="spinner" fitHeight="41.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true">
+                        <HBox.margin>
+                            <Insets top="15.0" />
+                        </HBox.margin>
+                        <Image url="@../images/spinner.gif" />
+                    </ImageView>
+                    <ProgressBar fx:id="progressBar" maxWidth="10000.0" prefHeight="28.0" prefWidth="571.0" progress="1.0" scaleY="0.4" stylesheets="@../css/books.css" HBox.hgrow="ALWAYS">
+                        <HBox.margin>
+                            <Insets left="3.0" right="5.0" />
+                        </HBox.margin>
+                    </ProgressBar>
+                    <Region prefHeight="81.0" prefWidth="182.0" HBox.hgrow="ALWAYS" />
+                </HBox>
+            </VBox>
+            <HBox prefHeight="35.0" prefWidth="1000.0" style="-fx-background-color: #efefefef;" />
+        </VBox>
+    </top>
+<center>
+    <HBox prefHeight="500.0" prefWidth="200.0">
+        <children>
+            <BarChart fx:id="popularBooks" animated="false" minHeight="200.0" minWidth="100.0" prefHeight="1000.0" prefWidth="1000.0" title="Most popular books">
+                <xAxis>
+                    <CategoryAxis maxHeight="50.0" side="BOTTOM" />
+                </xAxis>
+                <yAxis>
+                    <NumberAxis label="Number of issues" maxHeight="50.0" minorTickVisible="false" side="LEFT" tickUnit="1.0" />
+                </yAxis>
+            </BarChart>
+            <BarChart fx:id="popularAuthors" animated="false" minHeight="200.0" minWidth="100.0" prefHeight="1000.0" prefWidth="1000.0" title="Most popular authors">
+                <xAxis>
+                    <CategoryAxis maxHeight="50.0" side="BOTTOM" />
+                </xAxis>
+                <yAxis>
+                    <NumberAxis label="Number of issues" maxHeight="50.0" minorTickVisible="false" side="LEFT" tickUnit="1.0" />
+                </yAxis>
+            </BarChart>
+            <BarChart fx:id="popularGenres" animated="false" minHeight="200.0" minWidth="100.0" prefHeight="1000.0" prefWidth="1000.0" title="Most popular genres">
+                <xAxis>
+                    <CategoryAxis maxHeight="50.0" side="BOTTOM" />
+                </xAxis>
+                <yAxis>
+                    <NumberAxis label="Number of issues" maxHeight="50.0" minorTickCount="1" minorTickVisible="false" side="LEFT" tickUnit="1.0" />
+                </yAxis>
+            </BarChart>
+        </children>
+    </HBox>
+</center>
+</BorderPane>

@@ -55,20 +55,20 @@ public class ReviewBookController extends BookPopUpWindowController<ReadBookAvai
     public void initializeBookDetails() {
         super.initializeBookDetails();
 
-        data.add("Book ISBN:              " + book.getIsbn());
-        data.add("Book Title:              " + book.getTitle());
-        data.add("Authors:          " + book.getAuthors());
-        data.add("Publisher:          " + book.getPublisher());
-        data.add("Genres:          " + book.getGenres());
-        data.add("Edition:          " + book.getEdition());
-        data.add("Return date:          " + book.getReturnedDate());
+        data.add("Book ISBN:              " + book.getIsbn().getValue());
+        data.add("Book Title:              " + book.getTitle().getValue());
+        data.add("Authors:          " + book.getAuthors().getValue());
+        data.add("Publisher:          " + book.getPublisher().getValue());
+        data.add("Genres:          " + book.getGenres().getValue());
+        data.add("Edition:          " + book.getEdition().getValue());
+        data.add("Return date:          " + book.getReturnedDate().getValue());
 
         this.bookListView.setItems(data);
     }
 
     @FXML
     private void submit(ActionEvent actionEvent) {
-        if (!this.bookService.reviewBook(this.book.getBookId(), this.book.getUserId(), this.reviewTextArea.getText(), this.rating.getRating())) {
+        if (!this.bookService.reviewBook(this.book.getBookId().getValue(), this.book.getUserId().getValue(), this.reviewTextArea.getText(), this.rating.getRating())) {
             Alerts.showErrorAlert("Error", "Error while reviewing book");
             return;
         }
