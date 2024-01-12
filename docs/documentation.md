@@ -165,3 +165,87 @@ Klient biblioteki może wyświetlać i modyfikować swój profil:
 - resources/user.fxml
 
 ![Profil użytkownika](./images/profile.png)
+
+## Settings
+
+Administrator może zmienić globalne ustawienia systemu zarządzającego np. wartość opłat, serwer SMTP z którego korzystać będzie sysyem:
+- resources/adminSettings.fxml
+- resources/changeAdminPassword.fxml
+- resources/configureEmailServer.fxml
+- resources/changeFeePerDay.fxml
+- service/UserService.java
+- service/SettingsService.java
+- session/UserSession.java
+- repository/SettingsRepository.java
+- repository/UserRepository.java
+- controller/AdminSettingsController.java
+
+![Zmiana hasła administratora](./updates/settings_sign.png)
+![Zmiana opłat](./updates/settings_fee.png)
+![Zmiana serwera SMTP](./updates/settings_mail.png)
+
+## Annoucements
+
+Bibliotekarz oraz administrator mogą zlecać wysyłanie maili powiadamiających odpowiednich użytkowników:
+- resources/addNotification.fxml
+- controller/AddNotificationController.java
+- service/EmailService.java
+- service/NotificationService.java
+- service/BookService.java
+- service/UserService.java
+- repository/SettingsRepository.java
+- repository/BookRepository.java
+- repository/UserRepository.java
+- repository/IssuedBooksRepository.java
+
+![Dodawanie powiadomienia](./updates/add_notification.png)
+
+## Statistics
+
+Statystyki dostępne zarówno dla zwykłych użytkowników jak i dla administratorów/bibliotekarzy
+
+Dla użytkowników:
+- resources/statisticsUser.fxml
+- controller/StatisticsUserController.java
+
+![Statystyki użytkownika](./data/stats_us.png)
+
+Dla użytkowników:
+- resources/statisticsAdmin.fxml
+- controller/StatisticsAdminController.java
+
+![Statystyki administratora](./data/stats_ad.png)
+
+Wspólne:
+- resources/charts.fxml
+- controller/popups/ChartsController.java
+- service/StatisticsService.java
+- repository/UserRepository.java
+- repository/BookRepository.java
+- repository/AuthorRepository.java
+- repository/GenresRepository.java
+- repository/ReadBookRepository.java
+- repository/ReviewBookRepository.java
+- repository/IssuedBookRepository.java
+
+![Wspólne wykresy](./data/charts.png)
+
+## Recomendations
+
+Część aplikacji odpowiadająca za polecanie użytkownikom książek na podstawie zaobserwowanych preferencji:
+- recommender/
+- controller/RecommendedBookController.java
+- service/BookService.java
+- repository/BookRepository.java
+
+![Polecanie książki](./data/recommended.png)
+
+## Reviews
+
+Pozwala użytkownikom na ocenę oraz recenzję książek:
+- service/popups/ReviewBookController.java
+- resources/reviewBook.fxml
+
+![Ocena i recenzja książek](./updates/reviewing.png)
+
+
