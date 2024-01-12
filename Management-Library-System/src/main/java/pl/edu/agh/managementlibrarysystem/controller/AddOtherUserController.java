@@ -15,6 +15,7 @@ import javafx.scene.paint.Color;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import pl.edu.agh.managementlibrarysystem.controller.abstraction.BaseController;
+import pl.edu.agh.managementlibrarysystem.controller.abstraction.ResizeableBaseController;
 import pl.edu.agh.managementlibrarysystem.model.util.Permission;
 import pl.edu.agh.managementlibrarysystem.service.UserService;
 
@@ -24,7 +25,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Controller
-public class AddOtherUserController extends BaseController implements Initializable {
+public class AddOtherUserController extends ResizeableBaseController implements Initializable {
 
     private final UserService userService;
     private final Pattern patternEmail;
@@ -183,9 +184,4 @@ public class AddOtherUserController extends BaseController implements Initializa
         });
     }
 
-    public void fullscreen(MouseEvent mouseEvent) {
-    }
-
-    public void unfullscreen(MouseEvent mouseEvent) {
-    }
 }

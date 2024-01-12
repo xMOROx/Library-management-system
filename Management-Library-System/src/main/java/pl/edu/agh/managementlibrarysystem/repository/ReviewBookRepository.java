@@ -14,7 +14,11 @@ import java.util.List;
 public interface ReviewBookRepository extends JpaRepository<ReviewBook, reviewBooksKey> {
     String FIND_ALL_RATED_BOOKS_BY_USER_ID_n = "SELECT * FROM review_books WHERE user_id = ?1 AND rating IS NOT NULL or rating != -1";
     String CALCULATE_AVG_RATING_BY_BOOK_ID_n = "SELECT AVG(rating) FROM review_books WHERE book_id = ?1 AND rating IS NOT NULL";
-
+    String COUNT_REVIEWS_GIVEN = "SELECT COUNT(rb.review) FROM review_books rb INNER JOIN users u ON u.id = rb.user_id WHERE u.id = ?1";
+    String COUNT_ALL_REVIEWS_GIVEN = "SELECT COUNT(rb.review) FROM review_books rb INNER JOIN users u ON u.id = rb.user_id WHERE rb.review !=\"\" ";
+    String COUNT_RATINGS_GIVEN = "SELECT COUNT(rb.rating) FROM review_books rb INNER JOIN users u ON u.id = rb.user_id WHERE u.id = ?1 AND rb.review !=\"\"";
+    String COUNT_ALL_RATINGS_GIVEN = "SELECT COUNT(rb.rating) FROM review_books rb INNER JOIN users u ON u.id = rb.user_id";
+    String AVG_RATINGS_GIVEN = "SELECT AVG(rb.rating) FROM review_books rb INNER JOIN users u ON u.id = rb.user_id WHERE u.id = ?1";
     List<ReviewBook> findAllByUserId(Long id);
 
     boolean reviewBook(long bookId, long userId, String review, double rating);
@@ -28,4 +32,15 @@ public interface ReviewBookRepository extends JpaRepository<ReviewBook, reviewBo
 
     @Query(value = CALCULATE_AVG_RATING_BY_BOOK_ID_n, nativeQuery = true)
     double calculateAvgRatingByBookId(Long book);
+
+    @Query(value = COUNT_REVIEWS_GIVEN, nativeQuery = true)
+    Integer getCountOfReviewsGiven(Long id);
+    @Query(value = COUNT_RATINGS_GIVEN, nativeQuery = true)
+    Integer getCountOfRatingsGiven(Long id);
+    @Query(value = AVG_RATINGS_GIVEN, nativeQuery = true)
+    Double getAvgOfRatingsGiven(Long id);
+    @Query(value = COUNT_ALL_REVIEWS_GIVEN, nativeQuery = true)
+    Integer getCountOfALLReviewsGiven();
+    @Query(value = COUNT_ALL_RATINGS_GIVEN, nativeQuery = true)
+    Integer getCountOfALLRatingsGiven();
 }

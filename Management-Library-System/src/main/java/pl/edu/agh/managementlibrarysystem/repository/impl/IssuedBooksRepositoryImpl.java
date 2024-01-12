@@ -11,6 +11,7 @@ import pl.edu.agh.managementlibrarysystem.repository.BookRepository;
 import pl.edu.agh.managementlibrarysystem.repository.ReadBookRepository;
 import pl.edu.agh.managementlibrarysystem.repository.SettingsRepository;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Objects;
 
@@ -54,6 +55,7 @@ public class IssuedBooksRepositoryImpl {
         entityManager.createNativeQuery(query).executeUpdate();
         entityManager.createNativeQuery(queryUpdateRemainingBooks).executeUpdate();
     }
+
 
     @Transactional
     @SuppressWarnings("unused")
