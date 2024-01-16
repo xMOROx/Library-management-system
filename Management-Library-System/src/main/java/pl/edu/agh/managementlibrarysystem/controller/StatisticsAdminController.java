@@ -58,14 +58,11 @@ public class StatisticsAdminController extends StatisticsController {
 
     private List<UserStatsDTO> usersData;
     private List<BookStatsDTO> booksData;
-    private List<String> otherStatistics;
-
 
     public StatisticsAdminController(ApplicationContext applicationContext,
                                      StatisticsService statisticsService,
                                      UserSession session) {
         super(applicationContext,statisticsService,session);
-        this.otherStatistics = new ArrayList<>();
     }
 
     @Override
@@ -108,6 +105,7 @@ public class StatisticsAdminController extends StatisticsController {
     }
     public void initStatistics() {
         List<String> stats = statisticsService.getAllUsersStatistics();
+        List<String> otherStatistics = new ArrayList<>();
         otherStatistics.add("All read books:                    "+ stats.get(0));
         otherStatistics.add("All ratings given:                 "+ stats.get(1));
         otherStatistics.add("All reviews given:                 "+stats.get(2));

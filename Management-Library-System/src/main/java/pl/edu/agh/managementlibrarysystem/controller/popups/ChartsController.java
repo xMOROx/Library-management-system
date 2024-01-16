@@ -83,6 +83,31 @@ public class ChartsController  extends ResizeableBaseController implements Initi
         for(Object[] row:data){
             series.getData().add(new XYChart.Data<String,Number>((String) row[0],(Number) row[1]));
         }
+        var k = new NumberAxis.DefaultFormatter(yAxis);
+        yAxis.setTickLabelFormatter(new StringConverter<Number>() {
+            @Override
+            public String toString(Number number) {
+
+                String[] splitted = k.toString(number).split("\\.");
+                if (splitted.length==1){
+                    return splitted[0];
+                }
+                String res = splitted[0];
+                for(int i=0;i<splitted[1].length();i++){
+                    if(splitted[1].charAt(i)!='0'){
+                        res = "";
+                        break;
+                    }
+                }
+                return res;
+
+            }
+            @Override
+            public Number fromString(String string) {
+                Number val = Double.parseDouble(string);
+                return val.intValue();
+            }
+        });
         chart.getData().add(series);
         yAxis.setMinorTickCount(0);
         yAxis.setMinorTickVisible(false);
