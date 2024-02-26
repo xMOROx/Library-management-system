@@ -16,6 +16,7 @@ public interface SettingsRepository extends JpaRepository<Settings, Long> {
 
     @Query(value = GET_SETTING_VALUE_WITH_GIVEN_NAME, nativeQuery = true)
     String getSettingValueWithGivenName(@Param("name") String name);
+
     @Modifying
     @Query(value = UPDATE_FEE_PER_DAY, nativeQuery = true)
     void updateFeePerDay(@Param("newFee") double newFee);

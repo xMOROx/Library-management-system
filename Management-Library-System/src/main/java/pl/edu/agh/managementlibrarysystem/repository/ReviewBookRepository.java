@@ -19,6 +19,7 @@ public interface ReviewBookRepository extends JpaRepository<ReviewBook, reviewBo
     String COUNT_RATINGS_GIVEN = "SELECT COUNT(rb.rating) FROM review_books rb INNER JOIN users u ON u.id = rb.user_id WHERE u.id = ?1 AND rb.review !=\"\"";
     String COUNT_ALL_RATINGS_GIVEN = "SELECT COUNT(rb.rating) FROM review_books rb INNER JOIN users u ON u.id = rb.user_id";
     String AVG_RATINGS_GIVEN = "SELECT AVG(rb.rating) FROM review_books rb INNER JOIN users u ON u.id = rb.user_id WHERE u.id = ?1";
+
     List<ReviewBook> findAllByUserId(Long id);
 
     boolean reviewBook(long bookId, long userId, String review, double rating);
@@ -35,12 +36,16 @@ public interface ReviewBookRepository extends JpaRepository<ReviewBook, reviewBo
 
     @Query(value = COUNT_REVIEWS_GIVEN, nativeQuery = true)
     Integer getCountOfReviewsGiven(Long id);
+
     @Query(value = COUNT_RATINGS_GIVEN, nativeQuery = true)
     Integer getCountOfRatingsGiven(Long id);
+
     @Query(value = AVG_RATINGS_GIVEN, nativeQuery = true)
     Double getAvgOfRatingsGiven(Long id);
+
     @Query(value = COUNT_ALL_REVIEWS_GIVEN, nativeQuery = true)
     Integer getCountOfALLReviewsGiven();
+
     @Query(value = COUNT_ALL_RATINGS_GIVEN, nativeQuery = true)
     Integer getCountOfALLRatingsGiven();
 }

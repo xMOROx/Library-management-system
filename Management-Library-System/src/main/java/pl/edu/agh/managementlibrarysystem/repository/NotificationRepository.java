@@ -10,9 +10,12 @@ import java.util.List;
 
 @Repository
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
+    String FIND_ALL_USER_BY_EMAIL = "SELECT n FROM notifications n WHERE n.user.email = :email";
+    String SUM_ALL_BY_USER_EMAIL = "SELECT COUNT(n) FROM notifications n WHERE n.user.email = :email AND n.accepted = false";
 
-    @Query("SELECT n FROM notifications n WHERE n.user.email = :email")
-    List<Notification> findALLByUserEmail(@Param("email") String email);
-    @Query("SELECT COUNT(n) FROM notifications n WHERE n.user.email = :email AND n.accepted = false")
+    @Query(FIND_ALL_USER_BY_EMAIL)
+    List<Notification> findAllByUserEmail(@Param("email") String email);
+
+    @Query(SUM_ALL_BY_USER_EMAIL)
     Integer sumAllByUserEmail(@Param("email") String email);
 }

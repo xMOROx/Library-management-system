@@ -24,6 +24,7 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     String CHECK_IF_BOOK_IS_AVAILABLE = "SELECT b.availability FROM books b WHERE b.isbn = ?1";
     String NUMBER_OF_ISSUES = "SELECT b.title, COUNT(*) as number FROM books b INNER JOIN issued_books ib ON b.id = ib.book_id GROUP BY b.id ORDER BY number DESC LIMIT ?1";
     String UPDATE_BOOK_AVAILABILITY_BY_ISBN = "UPDATE books b SET b.availability = 'unavailable' WHERE b.isbn = ?1";
+
     @Query(FIND_BY_ISBN)
     Optional<Book> findByIsbn(String isbn);
 
@@ -45,13 +46,18 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     @Query(CHECK_IF_BOOK_IS_AVAILABLE)
     String checkIfBookIsAvailable(String isbn);
 
-    @Query(value=NUMBER_OF_ISSUES,nativeQuery = true)
+    @Query(value = NUMBER_OF_ISSUES, nativeQuery = true)
     List<Object[]> getNumberOfIssues(Integer top);
+
     @Modifying
     @Query(UPDATE_BOOK_AVAILABILITY_BY_ISBN)
     void updateBookAvailabilityByIsbn(String isbn);
+
     void deleteBookByIsbn(String isbn);
+
     Optional<Book> saveNewBookWithGivenParams(Book book, String authorName, String authorLastname, String publisherName, String genreType);
+
     Optional<Book> updateBookWithGivenParams(Long bookId, BookDTO bookDTO, String authorName, String authorLastname, String publisherName, String genreType);
+
     List<BookStatsDTO> getALLBookStats();
 }

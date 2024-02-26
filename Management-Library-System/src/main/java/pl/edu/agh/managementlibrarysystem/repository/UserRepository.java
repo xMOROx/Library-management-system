@@ -16,13 +16,17 @@ import java.util.Optional;
 @Transactional
 public interface UserRepository extends JpaRepository<User, Long> {
     String NUMBER_OF_USERS = "SELECT COUNT(*) FROM users WHERE users.permission = \"NORMAL_USER\"";
+    String UPDATE_USER = "UPDATE users u SET u.firstname = ?2, u.lastname = ?3, u.email=?4, u.password=?5, u.permission=?6 WHERE u.id=?1";
+
     Optional<User> findByEmail(String email);
 
     @Modifying
-    @Query("UPDATE users u SET u.firstname = ?2, u.lastname = ?3, u.email=?4, u.password=?5, u.permission=?6 WHERE u.id=?1")
-    int updateUser(Long id, String firstname, String lastname, String email, String password, Permission permission);
+    @Query(UPDATE_USER)
+    void updateUser(Long id, String firstname, String lastname, String email, String password, Permission permission);
 
-    List<UserStatsDTO> getALLUserStats();
     @Query(value = NUMBER_OF_USERS, nativeQuery = true)
     Integer getNumberOfNormalUsers();
+
+    List<UserStatsDTO> getALLUserStats();
+
 }

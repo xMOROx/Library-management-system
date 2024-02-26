@@ -19,14 +19,19 @@ public interface ReadBookRepository extends JpaRepository<ReadBook, Long> {
 
     @Query(FIND_ALL_READ_BOOK_AVAILABLE_TO_VOTE_BY_USER_ID)
     List<ReadBook> findAllReadBookAvailableToVoteByUserId(Long id);
+
     @Query(value = COUNT_READ_BOOKS, nativeQuery = true)
     Integer getCountOfReadBooks(Long id);
+
     @Query(value = COUNT_ALL_READ_BOOKS, nativeQuery = true)
     Integer getCountAllOfReadBooks();
+
     @Query(value = SUM_USER_FEES, nativeQuery = true)
     Double getSumOfUserFees(Long id);
+
     @Query(value = NUMBER_OF_READ, nativeQuery = true)
     Integer getNumberOfReadAndIssued();
+
     List<ReadBook> findAllByUserId(Long id);
 
 }
