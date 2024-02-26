@@ -22,7 +22,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
 import pl.edu.agh.managementlibrarysystem.DTO.NotificationDTO;
 import pl.edu.agh.managementlibrarysystem.controller.abstraction.ControllerWithTableView;
-import pl.edu.agh.managementlibrarysystem.enums.BorderpaneFields;
+import pl.edu.agh.managementlibrarysystem.utils.enums.BorderpaneFields;
 import pl.edu.agh.managementlibrarysystem.event.BorderPaneReadyEvent;
 import pl.edu.agh.managementlibrarysystem.event.SetItemToBorderPaneEvent;
 import pl.edu.agh.managementlibrarysystem.event.fxml.LeavingBorderPaneEvent;

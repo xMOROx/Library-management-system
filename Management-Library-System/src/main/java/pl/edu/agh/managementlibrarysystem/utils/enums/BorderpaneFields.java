@@ -1,4 +1,4 @@
-package pl.edu.agh.managementlibrarysystem.enums;
+package pl.edu.agh.managementlibrarysystem.utils.enums;
 
 public enum BorderpaneFields{
     CENTER,

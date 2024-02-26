@@ -1,10 +1,9 @@
 package pl.edu.agh.managementlibrarysystem.event;
 
 import javafx.scene.Node;
-import javafx.scene.control.TableView;
 import javafx.scene.layout.BorderPane;
 import org.springframework.context.ApplicationEvent;
-import pl.edu.agh.managementlibrarysystem.enums.BorderpaneFields;
+import pl.edu.agh.managementlibrarysystem.utils.enums.BorderpaneFields;
 
 import java.util.List;
 

@@ -1,13 +1,11 @@
 package pl.edu.agh.managementlibrarysystem.event.listeners;
 
 import javafx.scene.Node;
-import javafx.scene.control.TableView;
 import javafx.scene.layout.BorderPane;
 import lombok.NoArgsConstructor;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
-import pl.edu.agh.managementlibrarysystem.enums.BorderpaneFields;
+import pl.edu.agh.managementlibrarysystem.utils.enums.BorderpaneFields;
 import pl.edu.agh.managementlibrarysystem.event.SetItemToBorderPaneEvent;
 
 import java.util.logging.Level;

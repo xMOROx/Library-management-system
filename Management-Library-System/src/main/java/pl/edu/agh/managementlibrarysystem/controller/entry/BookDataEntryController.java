@@ -18,7 +18,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
 import pl.edu.agh.managementlibrarysystem.DTO.BookDTO;
 import pl.edu.agh.managementlibrarysystem.controller.abstraction.BaseDataEntryController;
-import pl.edu.agh.managementlibrarysystem.enums.CoverType;
+import pl.edu.agh.managementlibrarysystem.utils.enums.CoverType;
 import pl.edu.agh.managementlibrarysystem.event.BorderPaneReadyEvent;
 import pl.edu.agh.managementlibrarysystem.event.fxml.LeavingBorderPaneEvent;
 import pl.edu.agh.managementlibrarysystem.event.fxml.NewItemAddedEvent;
